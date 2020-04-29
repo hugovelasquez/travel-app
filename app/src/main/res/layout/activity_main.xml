@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_marginTop="125dp"
+        android:layout_marginStart="75dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_btnAdd"
+        android:textSize="50sp"/>
+
+    <Button
+        android:id="@+id/btnView"
+        android:layout_below="@+id/btnAdd"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="75dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_btnView"
+        android:textSize="50sp"/>
+
+    <TextView
+        android:id="@+id/txtAppCredits"
+        android:layout_marginTop="500dp"
+        android:layout_marginStart="50dp"
+        android:textSize="20dp"
+        android:textStyle="italic"
+        android:text="Welcome to this App! It stores and displays all the travel information from Hugo and Sofia's amazing trips \n - Created by Hugo and Sofia, 2020 - \n \n Icon made by iconixar from www.flaticon.com"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

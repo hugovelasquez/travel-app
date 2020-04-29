@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView
+        android:id="@+id/txtlistStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistFromCountry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistFromCity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistToCountry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistToCity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+    <TextView
+        android:id="@+id/txtlistTripDesc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="13"
+        android:textAlignment="center"
+        android:textSize="@dimen/textSize_listAdapter"/>
+
+
+</LinearLayout>
+

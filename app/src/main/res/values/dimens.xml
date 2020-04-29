@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- trip_information_add.xml -->
+    <dimen name="leftMarginMain">50dp</dimen>
+    <dimen name="leftMarginSub">65dp</dimen>
+
+    <dimen name="editTextWidthMain">190dp</dimen>
+    <dimen name="editTextWidthSub">240dp</dimen>
+
+    <dimen name="FromTopMargin">30dp</dimen>
+    <dimen name="StartDateTopMargin">155dp</dimen>
+    <dimen name="ToTopMargin">230dp</dimen>
+    <dimen name="EndDateTopMargin">355dp</dimen>
+    <dimen name="DescTopMargin">460dp</dimen>
+
+    <dimen name="txtSizeMain">30sp</dimen>
+    <dimen name="txtSizeSub">25sp</dimen>
+
+    <!-- trip_information_view.xml and list_adapter_view.xml -->
+    <dimen name="vertMargin">60dp</dimen>
+    <dimen name="horMargin">5dp</dimen>
+    <dimen name="textSize_listAdapter">20sp</dimen>
+
+</resources>

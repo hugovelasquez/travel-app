@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- ////////// FROM ////////// -->
+    <TextView
+        android:id="@+id/txtFrom"
+        android:layout_marginTop="@dimen/FromTopMargin"
+        android:layout_marginStart="@dimen/leftMarginMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_From"
+        android:textSize="@dimen/txtSizeMain"
+        />
+
+    <TextView
+        android:id="@+id/txtFromCountry"
+        android:layout_below="@+id/txtFrom"
+        android:layout_marginStart="@dimen/leftMarginSub"
+        android:layout_width="100dp"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="@string/text_Country"
+        android:textSize="@dimen/txtSizeSub"/>
+
+    <TextView
+        android:id="@+id/txtFromCity"
+        android:layout_below="@+id/txtFromCountry"
+        android:layout_marginStart="@dimen/leftMarginSub"
+        android:layout_marginTop="5dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/text_City"
+        android:textSize="@dimen/txtSizeSub"/>
+
+
+    <EditText
+        android:id="@+id/editFromCountry"
+        android:layout_width="@dimen/editTextWidthSub"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtFrom"
+        android:layout_toEndOf="@+id/txtFromCountry"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/editFromCity"
+        android:layout_below="@+id/txtFromCountry"
+        android:layout_toEndOf="@+id/txtFromCity"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:layout_width="@dimen/editTextWidthSub"
+        android:layout_height="wrap_content" />
+
+    <!-- ////////// START DATE ////////// -->
+    <TextView
+        android:id="@+id/txtStartDate"
+        android:layout_marginTop="@dimen/StartDateTopMargin"
+        android:layout_marginStart="@dimen/leftMarginMain"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_StartDate"
+        android:textSize="@dimen/txtSizeMain"/>
+
+
+    <EditText
+        android:id="@+id/editStartDate"
+        android:layout_marginTop="@dimen/StartDateTopMargin"
+        android:layout_toEndOf="@+id/txtStartDate"
+        android:textAlignment="center"
+        android:layout_width="@dimen/editTextWidthMain"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtStartDateFormat"
+        android:layout_below="@+id/editStartDate"
+        android:layout_marginStart="215dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_DateFormat"
+        android:textSize="20sp"/>
+
+    <!-- ////////// TO ////////// -->
+    <TextView
+        android:id="@+id/txtTo"
+        android:layout_marginTop="@dimen/ToTopMargin"
+        android:layout_marginStart="@dimen/leftMarginMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_To"
+        android:textSize="@dimen/txtSizeMain"/>
+
+
+    <TextView
+        android:id="@+id/txtToCountry"
+        android:layout_below="@+id/txtTo"
+        android:layout_marginStart="@dimen/leftMarginSub"
+        android:layout_width="100dp"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="@string/text_Country"
+        android:textSize="@dimen/txtSizeSub"/>
+
+    <TextView
+        android:id="@+id/txtToCity"
+        android:layout_below="@+id/txtToCountry"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="@dimen/leftMarginSub"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/text_City"
+        android:textSize="@dimen/txtSizeSub"/>
+
+    <EditText
+        android:id="@+id/editToCountry"
+        android:layout_below="@+id/txtTo"
+        android:layout_toEndOf="@+id/txtToCountry"
+        android:textAlignment="center"
+        android:layout_width="@dimen/editTextWidthSub"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editToCity"
+        android:layout_below="@+id/txtToCountry"
+        android:layout_toEndOf="@+id/txtToCity"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:layout_width="@dimen/editTextWidthSub"
+        android:layout_height="wrap_content" />
+
+    <!-- ////////// END DATE ////////// -->
+    <TextView
+        android:id="@+id/txtEndDate"
+        android:layout_marginTop="@dimen/EndDateTopMargin"
+        android:layout_marginStart="@dimen/leftMarginMain"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_EndDate"
+        android:textSize="@dimen/txtSizeMain"/>
+
+    <EditText
+        android:id="@+id/editEndDate"
+        android:layout_marginTop="@dimen/EndDateTopMargin"
+        android:layout_toEndOf="@+id/txtEndDate"
+        android:textAlignment="center"
+        android:layout_width="@dimen/editTextWidthMain"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtEndDateFormat"
+        android:layout_below="@+id/editEndDate"
+        android:layout_marginStart="215dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_DateFormat"
+        android:textSize="20sp"/>
+
+    <!-- ////////// DESCRIPTION ////////// -->
+    <TextView
+        android:id="@+id/txtTripDes"
+        android:layout_marginTop="@dimen/DescTopMargin"
+        android:layout_marginStart="@dimen/leftMarginMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_tripDesc"
+        android:textSize="@dimen/txtSizeMain"/>
+
+    <EditText
+        android:id="@+id/editDescription"
+        android:layout_below="@id/txtTripDes"
+        android:layout_marginStart="120dp"
+        android:textAlignment="center"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" />
+
+    <!-- ////////// ADD BUTTON ////////// -->
+
+    <Button
+        android:id="@+id/btnAddToList"
+        android:layout_below="@id/editDescription"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="180dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_btnAddToDb"
+        android:textSize="30sp"/>
+
+    <!-- ////////// IMAGE VIEW ////////// -->
+
+    <ImageView
+        android:id="@+id/imgAddTrip"
+        android:layout_toRightOf="@+id/editFromCountry"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/travelapp_image"
+        android:layout_width="600dp"
+        android:layout_height="400dp"/>
+
+</RelativeLayout>
