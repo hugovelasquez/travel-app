@@ -44,27 +44,27 @@ public class MultiColumnAdapter extends ArrayAdapter<User> {
             TextView toCityUser = (TextView) convertView.findViewById(R.id.txtlistToCity);
             TextView tripDescUser = (TextView) convertView.findViewById(R.id.txtlistTripDesc);
 
-            if (startDateUser != null){
-                startDateUser.setText((user.getStartDateUser()));
-            }
-            if (endDateUser != null){
-                endDateUser.setText((user.getEndDateUser()));
-            }
-            if (fromCountryUser != null){
-                fromCountryUser.setText((user.getFromCountryUser()));
-            }
-            if (fromCityUser != null){
-                fromCityUser.setText((user.getFromCityUser()));
-            }
-            if (toCountryUser != null){
-                toCountryUser.setText((user.getToCountryUser()));
-            }
-            if (toCityUser != null){
-                toCityUser.setText((user.getToCityUser()));
-            }
-            if (tripDescUser != null){
-                tripDescUser.setText((user.getTripDescUser()));
-            }
+//            if (startDateUser != null){
+//                startDateUser.setText((user.getStartDateUser()));
+//            }
+//            if (endDateUser != null){
+//                endDateUser.setText((user.getEndDateUser()));
+//            }
+//            if (fromCountryUser != null){
+//                fromCountryUser.setText((user.getFromCountryUser()));
+//            }
+//            if (fromCityUser != null){
+//                fromCityUser.setText((user.getFromCityUser()));
+//            }
+//            if (toCountryUser != null){
+//                toCountryUser.setText((user.getToCountryUser()));
+//            }
+//            if (toCityUser != null){
+//                toCityUser.setText((user.getToCityUser()));
+//            }
+//            if (tripDescUser != null){
+//                tripDescUser.setText((user.getTripDescUser()));
+//            }
         }
         return convertView;
     }

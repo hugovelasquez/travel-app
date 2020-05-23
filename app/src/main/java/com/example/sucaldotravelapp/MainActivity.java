@@ -1,46 +1,82 @@
 package com.example.sucaldotravelapp;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+// implements "Navigation...Listener" needed for defining the drawer menu listeners
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // Define variables
-    private Button btnAdd, btnView;
-    DatabaseHelper myDB;  // this is the DatabaseHelper class I created
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Link activity to layout xml
+        // link xml layout to this activity
         setContentView(R.layout.activity_main);
 
-        // Assignment of xml objects to variables
-        btnAdd = findViewById(R.id.btnAdd);
-        btnView = findViewById(R.id.btnView);
+        // Activate toolbar on top
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        myDB = new DatabaseHelper(this);
+        // Assign xml object to drawer variable
+        drawer = findViewById(R.id.drawer_layout);
 
-        // Click listener for btnAdd. It links this activity with the new activity "AddTripInformation".
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addTripInfoIntent = new Intent(MainActivity.this, AddTripInformation.class);
-                startActivity(addTripInfoIntent);
-            }
-        });
+        // Define Listener for drawer menu
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        // Click listener for btnView. It links this activity with the new activity "ViewTripInformation".
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewTripInfoIntent = new Intent(MainActivity.this, ViewTripInformation.class);
-                startActivity(viewTripInfoIntent);
-            }
-        });
+        // Add toggle capability to the drawer
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Show My Trips as a default
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MyTripsFragment()).commit();
+            // Show as selected in the drawer menu
+            navigationView.setCheckedItem(R.id.nav_my_trips);
+        }
+        getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
+
+    }
+
+    // Definition of listeners for each option in drawer menu.
+    // When option is selected, replace the xml object fragment_container with
+    // the layout within the corresponding fragment class
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_my_trips:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MyTripsFragment()).commit();
+                getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
+                break;
+            case R.id.nav_add_trip:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AddTripFragment()).commit();
+                getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    // For displaying purposes only (close drawer if user presses back button)
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
+

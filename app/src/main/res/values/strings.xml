@@ -13,4 +13,10 @@
     <string name="text_Desc">Trip description:</string>
     <string name="text_btnAddToDb">Add to list</string>
     <string name="txt_tripDesc">Trip Description:</string>
+
+    <!-- navbar -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navbar_my_trips">My Trips</string>
+    <string name="navbar_add_trip">Add Trip</string>
 </resources>

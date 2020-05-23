@@ -22,7 +22,7 @@ public class ViewTripInformation extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // link this activity to layout xml
-        setContentView(R.layout.trip_information_view);
+        setContentView(R.layout.my_trips_view);
 
         // Assignment of xml object
         listView = findViewById(R.id.listView);
@@ -41,9 +41,9 @@ public class ViewTripInformation extends AppCompatActivity {
         } else {
             while(data.moveToNext()){
                 // Definition of type User for userList. It contains info from all database columns.
-                user = new User(data.getString(1), data.getString(2), data.getString(3), data.getString(4),
-                        data.getString(5),data.getString(6),data.getString(7));
-                userList.add(user);
+//                user = new User(data.getString(1), data.getString(2), data.getString(3), data.getString(4),
+//                        data.getString(5),data.getString(6),data.getString(7));
+//                userList.add(user);
 
                 Log.d("TAG", data.getString(1));
                 Log.d("TAG", data.getString(6));

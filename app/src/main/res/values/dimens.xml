@@ -16,7 +16,7 @@
     <dimen name="txtSizeMain">30sp</dimen>
     <dimen name="txtSizeSub">25sp</dimen>
 
-    <!-- trip_information_view.xml and list_adapter_view.xml -->
+    <!-- my_trips_view.xmlt_adapter_view.xml -->
     <dimen name="vertMargin">60dp</dimen>
     <dimen name="horMargin">5dp</dimen>
     <dimen name="textSize_listAdapter">20sp</dimen>
