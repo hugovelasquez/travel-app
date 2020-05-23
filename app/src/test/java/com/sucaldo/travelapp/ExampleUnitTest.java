@@ -1,4 +1,4 @@
-package com.example.sucaldotravelapp;
+package com.sucaldo.travelapp;
 
 import org.junit.Test;
 

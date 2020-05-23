@@ -1,4 +1,4 @@
-package com.example.sucaldotravelapp;
+package com.sucaldo.travelapp;
 
 // I created this listAdapter class to help me define a bridge between the multi-column xml layout I created
 // and the data I want to show. All rights go to YouTube Channel "CodingWithMitch".

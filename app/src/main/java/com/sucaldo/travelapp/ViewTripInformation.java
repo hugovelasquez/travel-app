@@ -1,4 +1,4 @@
-package com.example.sucaldotravelapp;
+package com.sucaldo.travelapp;
 
 import android.database.Cursor;
 import android.os.Bundle;

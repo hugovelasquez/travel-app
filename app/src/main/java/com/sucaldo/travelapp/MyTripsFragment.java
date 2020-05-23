@@ -1,4 +1,4 @@
-package com.example.sucaldotravelapp;
+package com.sucaldo.travelapp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
