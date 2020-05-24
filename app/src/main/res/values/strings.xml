@@ -1,22 +1,15 @@
 <resources>
     <string name="app_name">TravelApp</string>
 
-    <string name="text_btnAdd">Add Trip</string>
-    <string name="text_btnView">View Trips</string>
-    <string name="text_From">From:</string>
-    <string name="text_Country">Country</string>
-    <string name="text_City">Place</string>
-    <string name="text_To">To:</string>
-    <string name="text_StartDate">Start Date:</string>
-    <string name="text_DateFormat">(DD.MM.YYYY)</string>
-    <string name="text_EndDate">End Date:</string>
-    <string name="text_Desc">Trip description:</string>
-    <string name="text_btnAddToDb">Add to list</string>
-    <string name="txt_tripDesc">Trip Description:</string>
-
     <!-- navbar -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navbar_my_trips">My Trips</string>
     <string name="navbar_add_trip">Add Trip</string>
+
+    <string name="text_from">From</string>
+    <string name="text_country">Country</string>
+    <string name="text_city">City</string>
+    <string name="text_to">To</string>
+    <string name="text_trip_start">Trip start</string>
 </resources>
