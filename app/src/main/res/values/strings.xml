@@ -16,4 +16,5 @@
     <string name="text_trip_descr">Description</string>
     <string name="text_save">Save</string>
     <string name="text_cancel">Cancel</string>
+    <string name="char_limit">30</string>
 </resources>

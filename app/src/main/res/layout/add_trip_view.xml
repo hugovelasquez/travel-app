@@ -17,6 +17,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/text_from"
                 android:layout_height="wrap_content"
                 android:text="@string/text_from"
                 android:layout_marginTop="15dp"
@@ -27,10 +28,10 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/from_country"
                     style="@style/label_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:hint="@string/text_country" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/from_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text_city"
@@ -52,7 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
+                android:id="@+id/text_to"
                 android:layout_height="wrap_content"
                 android:text="@string/text_to"
                 android:layout_marginTop="15dp"
@@ -63,10 +67,10 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/to_country"
                     style="@style/label_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:hint="@string/text_country" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,6 +81,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/to_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text_city"
@@ -90,6 +95,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/text_start"
                 android:layout_height="wrap_content"
                 android:text="@string/text_trip_start"
                 style="@style/textview_label" />
@@ -104,6 +110,7 @@
                 style="@style/label_text"/>
 
             <ImageView
+                android:id="@+id/date_icon_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -117,6 +124,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/text_end"
                 android:layout_height="wrap_content"
                 android:text="@string/text_trip_end"
                 style="@style/textview_label" />
@@ -131,6 +139,7 @@
                 style="@style/label_text"/>
 
             <ImageView
+                android:id="@+id/date_icon_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -143,9 +152,11 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_descr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text_trip_descr"
+                android:maxLength="@string/char_limit"
                 style="@style/label_text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,13 +167,14 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn_save"
                 style="@style/button"
                 android:text="@string/text_save"/>
 
             <Button
+                android:id="@+id/btn_end"
                 style="@style/button"
                 android:text="@string/text_cancel"/>
-
 
         </LinearLayout>
 
@@ -170,6 +182,7 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/add_trip_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/layout_margin"
