@@ -3,5 +3,6 @@
 
     <dimen name="layout_margin">30dp</dimen>
     <dimen name="label_indentation">75dp</dimen>
+    <dimen name="icon_size">35dp</dimen>
 
 </resources>

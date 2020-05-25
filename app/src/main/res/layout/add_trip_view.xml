@@ -110,9 +110,9 @@
                 style="@style/label_text"/>
 
             <ImageView
-                android:id="@+id/date_icon_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/start_date_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
                 android:src="@drawable/date_icon"/>
 
@@ -139,9 +139,9 @@
                 style="@style/label_text"/>
 
             <ImageView
-                android:id="@+id/date_icon_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/end_date_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
                 android:src="@drawable/date_icon"/>
 
