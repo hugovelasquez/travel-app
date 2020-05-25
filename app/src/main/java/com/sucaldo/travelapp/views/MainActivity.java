@@ -1,4 +1,4 @@
-package com.sucaldo.travelapp;
+package com.sucaldo.travelapp.views;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.sucaldo.travelapp.R;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

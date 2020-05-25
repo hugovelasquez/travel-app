@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">          <!--set no action bar as a standard for the layouts-->
 
-        <activity android:name="com.sucaldo.travelapp.MainActivity">
+        <activity android:name="com.sucaldo.travelapp.views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

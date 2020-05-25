@@ -1,4 +1,4 @@
-package com.sucaldo.travelapp;
+package com.sucaldo.travelapp.db;
 
 // I have created this new class called DatabaseHelper to help me set up a database for my App.
 // It works using SQLite. All rights go to YouTube Channel "CodingWithMitch".

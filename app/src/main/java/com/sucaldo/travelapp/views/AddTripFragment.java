@@ -1,4 +1,4 @@
-package com.sucaldo.travelapp;
+package com.sucaldo.travelapp.views;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.sucaldo.travelapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

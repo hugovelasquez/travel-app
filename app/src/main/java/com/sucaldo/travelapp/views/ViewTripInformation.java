@@ -1,4 +1,4 @@
-package com.sucaldo.travelapp;
+package com.sucaldo.travelapp.views;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,6 +7,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.User;
+
 import java.util.ArrayList;
 
 public class ViewTripInformation extends AppCompatActivity {

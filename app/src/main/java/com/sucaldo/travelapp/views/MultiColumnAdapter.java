@@ -1,4 +1,4 @@
-package com.sucaldo.travelapp;
+package com.sucaldo.travelapp.views;
 
 // I created this listAdapter class to help me define a bridge between the multi-column xml layout I created
 // and the data I want to show. All rights go to YouTube Channel "CodingWithMitch".
@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.model.User;
+
 import java.util.ArrayList;
 
 public class MultiColumnAdapter extends ArrayAdapter<User> {
