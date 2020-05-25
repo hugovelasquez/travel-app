@@ -1,6 +1,8 @@
 package com.sucaldo.travelapp.views;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +31,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private DatePickerDialog picker;
     private EditText startDate, endDate;
     private ImageView startDateIcon, endDateIcon;
-    private TextInputEditText fromCountry, fromCity, toCountry, toCity;
-    private Button btnSave;
+    private TextInputEditText fromCountry, fromCity, toCountry, toCity, description;
+    private Button btnSave, btnCancel;
 
     @Nullable
     @Override
@@ -47,12 +49,16 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         toCountry = rootView.findViewById(R.id.to_country);
         toCity = rootView.findViewById(R.id.to_city);
         fromCity = rootView.findViewById(R.id.from_city);
+        description = rootView.findViewById(R.id.input_descr);
         btnSave = rootView.findViewById(R.id.btn_save);
+        btnCancel = rootView.findViewById(R.id.btn_cancel);
+
 
         // Set listeners
         startDateIcon.setOnClickListener(this);
         endDateIcon.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
 
         return rootView;
     }
@@ -73,13 +79,48 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_save:
                 saveTrip();
                 break;
+            case R.id.btn_cancel:
+                goToMyTrips();
+                break;
         }
+    }
+
+    private void goToMyTrips() {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new MyTripsFragment()).commit();
+        activity.getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
+        activity.navigationView.setCheckedItem(R.id.nav_my_trips);
     }
 
     private void saveTrip() {
         if (isTripValid()) {
-            Toast.makeText(getContext(), "Saving trip", Toast.LENGTH_SHORT).show();
+            //TODO save trip to db
+            showTripSavedPopUpMessage();
         }
+    }
+
+    private void showTripSavedPopUpMessage(){
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setTitle("Trip Saved");
+        alertDialog.setMessage("What do you want to do?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Go to My Trips", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                goToMyTrips();
+            } });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Add another Trip", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                fromCountry.setText("");
+                fromCity.setText("");
+                toCountry.setText("");
+                toCity.setText("");
+                startDate.setText("");
+                endDate.setText("");
+                description.setText("");
+            }});
+        alertDialog.show();
     }
 
     private boolean isTripValid() {
