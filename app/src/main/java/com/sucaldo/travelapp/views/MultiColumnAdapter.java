@@ -12,21 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.model.User;
+import com.sucaldo.travelapp.model.Trip;
 
 import java.util.ArrayList;
 
-public class MultiColumnAdapter extends ArrayAdapter<User> {
+public class MultiColumnAdapter extends ArrayAdapter<Trip> {
 
     // Definition of variables
     private LayoutInflater mInflater;
-    private ArrayList<User> users;
+    private ArrayList<Trip> trips;
     private int mViewResourceId;
 
 
-    public MultiColumnAdapter(Context context, int textViewResourceId, ArrayList<User> users) {
-        super(context,textViewResourceId,users);
-        this.users = users;
+    public MultiColumnAdapter(Context context, int textViewResourceId, ArrayList<Trip> trips) {
+        super(context,textViewResourceId, trips);
+        this.trips = trips;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mViewResourceId = textViewResourceId;
 
@@ -36,9 +36,9 @@ public class MultiColumnAdapter extends ArrayAdapter<User> {
     public View getView(int position, View convertView, ViewGroup parents){
         convertView = mInflater.inflate(mViewResourceId,null);
 
-        User user = users.get(position);
+        Trip trip = trips.get(position);
 
-        if(user != null){
+        if(trip != null){
             // Reference to all textView Id's in the multi-column xml layout
             TextView startDateUser = (TextView) convertView.findViewById(R.id.txtlistStartDate);
             TextView endDateUser = (TextView) convertView.findViewById(R.id.txtlistEndDate);

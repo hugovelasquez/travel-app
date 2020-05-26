@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,10 +30,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     // Definition of variables
     private DatePickerDialog picker;
-    private EditText startDate, endDate;
+    private EditText startDateField, endDateField;
     private ImageView startDateIcon, endDateIcon;
     private TextInputEditText fromCountry, fromCity, toCountry, toCity, description;
     private Button btnSave, btnCancel;
+    private Date startDate, endDate;
 
     @Nullable
     @Override
@@ -41,8 +43,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.add_trip_view, container, false);
 
         // Assign variables
-        startDate = rootView.findViewById(R.id.trip_start_date);
-        endDate = rootView.findViewById(R.id.trip_end_date);
+        startDateField = rootView.findViewById(R.id.trip_start_date);
+        endDateField = rootView.findViewById(R.id.trip_end_date);
         startDateIcon = rootView.findViewById(R.id.start_date_icon);
         endDateIcon = rootView.findViewById(R.id.end_date_icon);
         fromCountry = rootView.findViewById(R.id.from_country);
@@ -69,11 +71,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.start_date_icon:
-                picker = getPicker(startDate);
+                picker = getPicker(startDateField);
                 picker.show();
                 break;
             case R.id.end_date_icon:
-                picker = getPicker(endDate);
+                picker = getPicker(endDateField);
                 picker.show();
                 break;
             case R.id.btn_save:
@@ -96,7 +98,23 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private void saveTrip() {
         if (isTripValid()) {
             //TODO save trip to db
-            showTripSavedPopUpMessage();
+            String fromCountryString = fromCountry.getText().toString();
+            String fromCityString = fromCity.getText().toString();
+            String toCountryString = toCountry.getText().toString();
+            String toCityString = toCity.getText().toString();
+            String descriptionString = description.getText().toString();
+            // start and end Date already processed in method isTripValid
+            Trip newTrip = new Trip(fromCountryString,fromCityString,toCountryString,toCityString,descriptionString,startDate,endDate);
+            // open database
+            DatabaseHelper myDB = new DatabaseHelper(getContext());
+            if (myDB.addTrip(newTrip)){
+                showTripSavedPopUpMessage();
+            } else {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Trip could not be saved");
+                alertDialog.setMessage("Please try again later");
+                alertDialog.show();
+            }
         }
     }
 
@@ -116,8 +134,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 fromCity.setText("");
                 toCountry.setText("");
                 toCity.setText("");
-                startDate.setText("");
-                endDate.setText("");
+                startDateField.setText("");
+                endDateField.setText("");
                 description.setText("");
             }});
         alertDialog.show();
@@ -128,7 +146,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         boolean fromCityValid = checkIfFieldInputIsEmpty(fromCity);
         boolean toCountryValid = checkIfFieldInputIsEmpty(toCountry);
         boolean toCityValid = checkIfFieldInputIsEmpty(toCity);
-        boolean startAndEndDateValid = validateStartAndEndDate(startDate, endDate);
+        boolean startAndEndDateValid = validateStartAndEndDate(startDateField, endDateField);
         // return true only if all are true
         return fromCountryValid && fromCityValid && toCountryValid && toCityValid && startAndEndDateValid;
     }
@@ -143,8 +161,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     private boolean validateStartAndEndDate(EditText startDateField, EditText endDateField) {
         SimpleDateFormat formatter = new SimpleDateFormat("d.M.yyyy");
-        Date startDate;
-        Date endDate;
 
         // Return false if either start or end Date field are empty
         if (!checkIfFieldInputIsEmpty(startDateField) | !checkIfFieldInputIsEmpty(endDateField)) {
