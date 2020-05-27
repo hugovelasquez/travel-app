@@ -1,6 +1,8 @@
 package com.sucaldo.travelapp.model;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Trip {
@@ -13,6 +15,7 @@ public class Trip {
         private Date startDate;
         private Date endDate;
 
+        // Constructor for adding trips to database
         public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, Date startDate, Date endDate) {
                 this.fromCountry = fromCountry;
                 this.fromCity = fromCity;
@@ -21,6 +24,30 @@ public class Trip {
                 this.description = description;
                 this.startDate = startDate;
                 this.endDate = endDate;
+        }
+
+        // Constructor for getting trips from database
+        public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, String startDate, String endDate) {
+            this.fromCountry = fromCountry;
+            this.fromCity = fromCity;
+            this.toCountry = toCountry;
+            this.toCity = toCity;
+            this.description = description;
+            // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
+            // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
+            // so that app does not crash.
+            try {
+                this.startDate = new SimpleDateFormat().parse(startDate);
+            }
+            catch (ParseException e) {
+                this.startDate = new Date();
+            }
+            try {
+                this.endDate = new SimpleDateFormat().parse(startDate);
+            }
+            catch (ParseException e) {
+                this.endDate = new Date();
+            }
         }
 
         public String getFromCountry() {

@@ -7,6 +7,7 @@
     <string name="navbar_my_trips">My Trips</string>
     <string name="navbar_add_trip">Add Trip</string>
 
+    <!-- add_trip -->
     <string name="text_from">From</string>
     <string name="text_country">Country</string>
     <string name="text_city">City</string>
@@ -20,4 +21,11 @@
     <string name="text_empty_field_error">Field is empty</string>
     <string name="text_date_format_error">Date format is invalid</string>
     <string name="text_end_date_error">End date is before start date</string>
+    <string name="text_alert_dialog_trip_not_saved_title">Trip could not be saved</string>
+    <string name="text_alert_dialog_trip_not_saved_message">Please try again later</string>
+    <string name="text_alert_dialog_trip_saved_title">Trip Saved</string>
+    <string name="text_alert_dialog_trip_saved_message">What do you want to do?</string>
+    <string name="text_go_to_trips">Go to My Trips</string>
+    <string name="text_add_another_trip">Add another Trip</string>
+    <string name="date_format">d.M.yyyy</string>
 </resources>

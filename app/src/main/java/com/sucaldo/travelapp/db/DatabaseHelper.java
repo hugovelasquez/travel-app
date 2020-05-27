@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.sucaldo.travelapp.model.Trip;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -61,10 +63,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Method for a query out of the database
-    public Cursor getListContents (){
+    public List<Trip> getAllTrips(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        return data;
+
+        int numRows = data.getCount();
+        if (numRows == 0){
+            // empty list will be returned
+            return new ArrayList<>();
+        } else {
+            List<Trip> trips = new ArrayList<>();
+            while (data.moveToNext()) {
+               Trip trip = new Trip(data.getString(1), data.getString(2), data.getString(3), data.getString(4),
+                       data.getString(5),data.getString(6),data.getString(7));
+               trips.add(trip);
+            }
+            return trips;
+        }
+
     }
 
   /*  // Method for retrieving the ID of an specific list item

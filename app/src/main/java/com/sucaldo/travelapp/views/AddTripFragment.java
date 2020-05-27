@@ -97,7 +97,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     private void saveTrip() {
         if (isTripValid()) {
-            //TODO save trip to db
             String fromCountryString = fromCountry.getText().toString();
             String fromCityString = fromCity.getText().toString();
             String toCountryString = toCountry.getText().toString();
@@ -111,8 +110,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 showTripSavedPopUpMessage();
             } else {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Trip could not be saved");
-                alertDialog.setMessage("Please try again later");
+                alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
+                alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
                 alertDialog.show();
             }
         }
@@ -121,14 +120,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private void showTripSavedPopUpMessage(){
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.setTitle("Trip Saved");
-        alertDialog.setMessage("What do you want to do?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Go to My Trips", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_saved_title));
+        alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_saved_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.text_go_to_trips), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 goToMyTrips();
             } });
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Add another Trip", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.text_add_another_trip), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 fromCountry.setText("");
                 fromCity.setText("");
@@ -160,7 +159,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     }
 
     private boolean validateStartAndEndDate(EditText startDateField, EditText endDateField) {
-        SimpleDateFormat formatter = new SimpleDateFormat("d.M.yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format));
 
         // Return false if either start or end Date field are empty
         if (!checkIfFieldInputIsEmpty(startDateField) | !checkIfFieldInputIsEmpty(endDateField)) {
