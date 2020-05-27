@@ -1,8 +1,5 @@
 package com.sucaldo.travelapp.views;
 
-// I created this listAdapter class to help me define a bridge between the multi-column xml layout I created
-// and the data I want to show. All rights go to YouTube Channel "CodingWithMitch".
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,17 +11,15 @@ import android.widget.TextView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.Trip;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MultiColumnAdapter extends ArrayAdapter<Trip> {
 
-    // Definition of variables
     private LayoutInflater mInflater;
-    private ArrayList<Trip> trips;
+    private List<Trip> trips;
     private int mViewResourceId;
 
-
-    public MultiColumnAdapter(Context context, int textViewResourceId, ArrayList<Trip> trips) {
+    public MultiColumnAdapter(Context context, int textViewResourceId, List<Trip> trips) {
         super(context,textViewResourceId, trips);
         this.trips = trips;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,36 +34,18 @@ public class MultiColumnAdapter extends ArrayAdapter<Trip> {
         Trip trip = trips.get(position);
 
         if(trip != null){
-            // Reference to all textView Id's in the multi-column xml layout
-            TextView startDateUser = (TextView) convertView.findViewById(R.id.txtlistStartDate);
-            TextView endDateUser = (TextView) convertView.findViewById(R.id.txtlistEndDate);
-            TextView fromCountryUser = (TextView) convertView.findViewById(R.id.txtlistFromCountry);
-            TextView fromCityUser = (TextView) convertView.findViewById(R.id.txtlistFromCity);
-            TextView toCountryUser = (TextView) convertView.findViewById(R.id.txtlistToCountry);
-            TextView toCityUser = (TextView) convertView.findViewById(R.id.txtlistToCity);
-            TextView tripDescUser = (TextView) convertView.findViewById(R.id.txtlistTripDesc);
+            // Link to all textView IDs in list_adapter_view.xml
+            TextView startDate = convertView.findViewById(R.id.start_date);
+            TextView endDate = convertView.findViewById(R.id.end_date);
+            TextView fromCity = convertView.findViewById(R.id.from_city);
+            TextView toCity = convertView.findViewById(R.id.to_city);
+            TextView description = convertView.findViewById(R.id.description);
 
-//            if (startDateUser != null){
-//                startDateUser.setText((user.getStartDateUser()));
-//            }
-//            if (endDateUser != null){
-//                endDateUser.setText((user.getEndDateUser()));
-//            }
-//            if (fromCountryUser != null){
-//                fromCountryUser.setText((user.getFromCountryUser()));
-//            }
-//            if (fromCityUser != null){
-//                fromCityUser.setText((user.getFromCityUser()));
-//            }
-//            if (toCountryUser != null){
-//                toCountryUser.setText((user.getToCountryUser()));
-//            }
-//            if (toCityUser != null){
-//                toCityUser.setText((user.getToCityUser()));
-//            }
-//            if (tripDescUser != null){
-//                tripDescUser.setText((user.getTripDescUser()));
-//            }
+            startDate.setText(trip.getStartDate().toString());
+            endDate.setText(trip.getEndDate().toString());
+            fromCity.setText(trip.getFromCity());
+            toCity.setText(trip.getToCity());
+            description.setText(trip.getDescription());
         }
         return convertView;
     }

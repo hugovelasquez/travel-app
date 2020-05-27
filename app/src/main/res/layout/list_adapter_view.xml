@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     
     <TextView
-        android:id="@+id/txtlistStartDate"
+        android:id="@+id/start_date"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="15"
@@ -14,7 +14,7 @@
         android:textSize="5dp"/>
 
     <TextView
-        android:id="@+id/txtlistEndDate"
+        android:id="@+id/end_date"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="15"
@@ -22,7 +22,7 @@
         android:textSize="5dp"/>
 
     <TextView
-        android:id="@+id/txtlistFromCountry"
+        android:id="@+id/from_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="15"
@@ -30,7 +30,7 @@
         android:textSize="5dp"/>
 
     <TextView
-        android:id="@+id/txtlistFromCity"
+        android:id="@+id/to_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="15"
@@ -38,23 +38,7 @@
         android:textSize="5dp"/>
 
     <TextView
-        android:id="@+id/txtlistToCountry"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
-
-    <TextView
-        android:id="@+id/txtlistToCity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
-
-    <TextView
-        android:id="@+id/txtlistTripDesc"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="13"
