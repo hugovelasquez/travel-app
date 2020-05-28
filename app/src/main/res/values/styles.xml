@@ -27,4 +27,17 @@
         <item name="android:padding">5dp</item>
     </style>
 
+    <style name="list_adapter" parent="label_text">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">15</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="list_adapter_header" parent="list_adapter">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

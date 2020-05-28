@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class Trip {
 
+        private final String DATE_FORMAT_DB = "EEE MMM dd HH:mm:ss zzz yyyy";
+
         private String fromCountry;
         private String fromCity;
         private String toCountry;
@@ -37,13 +39,13 @@ public class Trip {
             // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
             // so that app does not crash.
             try {
-                this.startDate = new SimpleDateFormat().parse(startDate);
+                this.startDate = new SimpleDateFormat(DATE_FORMAT_DB).parse(startDate);
             }
             catch (ParseException e) {
                 this.startDate = new Date();
             }
             try {
-                this.endDate = new SimpleDateFormat().parse(startDate);
+                this.endDate = new SimpleDateFormat(DATE_FORMAT_DB).parse(startDate);
             }
             catch (ParseException e) {
                 this.endDate = new Date();

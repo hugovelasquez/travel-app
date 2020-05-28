@@ -7,43 +7,24 @@
     
     <TextView
         android:id="@+id/start_date"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
+        style="@style/list_adapter" />
 
     <TextView
         android:id="@+id/end_date"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
+        style="@style/list_adapter"/>
 
     <TextView
         android:id="@+id/from_city"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
+        style="@style/list_adapter"/>
 
     <TextView
         android:id="@+id/to_city"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
+        style="@style/list_adapter"/>
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_weight="13"
-        android:textAlignment="center"
-        android:textSize="5dp"/>
+        style="@style/list_adapter"/>
 
 
 </LinearLayout>

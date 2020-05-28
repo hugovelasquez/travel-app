@@ -28,4 +28,7 @@
     <string name="text_go_to_trips">Go to My Trips</string>
     <string name="text_add_another_trip">Add another Trip</string>
     <string name="date_format">d.M.yyyy</string>
+    <string name="date_format_pretty">dd.MM.yy</string>
+    <string name="header_start_date">Start Date</string>
+    <string name="header_end_date">End Date</string>
 </resources>

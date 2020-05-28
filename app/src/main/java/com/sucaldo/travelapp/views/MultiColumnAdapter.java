@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.Trip;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MultiColumnAdapter extends ArrayAdapter<Trip> {
@@ -41,12 +43,19 @@ public class MultiColumnAdapter extends ArrayAdapter<Trip> {
             TextView toCity = convertView.findViewById(R.id.to_city);
             TextView description = convertView.findViewById(R.id.description);
 
-            startDate.setText(trip.getStartDate().toString());
-            endDate.setText(trip.getEndDate().toString());
+            startDate.setText(getFormattedDate(trip.getStartDate()));
+            endDate.setText(getFormattedDate(trip.getEndDate()));
             fromCity.setText(trip.getFromCity());
             toCity.setText(trip.getToCity());
             description.setText(trip.getDescription());
         }
         return convertView;
     }
+
+    private String getFormattedDate (Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(getContext().getString(R.string.date_format_pretty));
+        return dateFormat.format(date);
+    }
 }
+
+
