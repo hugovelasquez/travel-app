@@ -9,6 +9,7 @@ public class Trip {
 
         private final String DATE_FORMAT_DB = "EEE MMM dd HH:mm:ss zzz yyyy";
 
+        private int id;
         private String fromCountry;
         private String fromCity;
         private String toCountry;
@@ -29,12 +30,13 @@ public class Trip {
         }
 
         // Constructor for getting trips from database
-        public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, String startDate, String endDate) {
+        public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, String startDate, String endDate, int id) {
             this.fromCountry = fromCountry;
             this.fromCity = fromCity;
             this.toCountry = toCountry;
             this.toCity = toCity;
             this.description = description;
+            this.id = id;
             // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
             // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
             // so that app does not crash.
@@ -106,5 +108,9 @@ public class Trip {
 
         public void setEndDate(Date endDate) {
                 this.endDate = endDate;
+        }
+
+        public int getId() {
+            return id;
         }
 }

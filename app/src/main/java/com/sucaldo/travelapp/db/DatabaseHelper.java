@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             List<Trip> trips = new ArrayList<>();
             while (data.moveToNext()) {
                Trip trip = new Trip(data.getString(1), data.getString(2), data.getString(3), data.getString(4),
-                       data.getString(5),data.getString(6),data.getString(7));
+                       data.getString(5),data.getString(6),data.getString(7), data.getInt(0));
                trips.add(trip);
             }
             return trips;
