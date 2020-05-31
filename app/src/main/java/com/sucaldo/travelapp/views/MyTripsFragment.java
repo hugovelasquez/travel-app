@@ -25,6 +25,9 @@ public class MyTripsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.my_trips_view, container, false);
 
+        // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
+        ((MainActivity) getActivity()).navigationView.getMenu().getItem(0).setChecked(true);
+
         ListView listView = rootView.findViewById(R.id.listView);
 
         DatabaseHelper myDB = new DatabaseHelper(getContext());
@@ -38,11 +41,29 @@ public class MyTripsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Trip trip = (Trip) parent.getItemAtPosition(position);
-                // TODO open fragment and pass trip
+
+                openTripDetailFragment();
+                passTripIdToOtherFragments(trip);
+
             }
         });
 
         return rootView;
+    }
+
+    private void openTripDetailFragment(){
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new TripDetailsFragment()).commit();
+        activity.getSupportActionBar().setTitle(getString(R.string.navbar_trip_details));
+        // unchecked drawer item because we are leaving this fragment
+        activity.navigationView.getMenu().getItem(0).setChecked(false);
+    }
+
+    private void passTripIdToOtherFragments (Trip trip){
+        Bundle result = new Bundle();
+        result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(trip.getId()));
+        getParentFragmentManager().setFragmentResult(getString(R.string.fragment_key_request_key), result);
     }
 
 }
