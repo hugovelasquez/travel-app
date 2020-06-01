@@ -43,8 +43,8 @@ public class MultiColumnAdapter extends ArrayAdapter<Trip> {
             TextView toCity = convertView.findViewById(R.id.to_city);
             TextView description = convertView.findViewById(R.id.description);
 
-            startDate.setText(getFormattedDate(trip.getStartDate()));
-            endDate.setText(getFormattedDate(trip.getEndDate()));
+            startDate.setText(trip.getFormattedStartDate());
+            endDate.setText(trip.getFormattedEndDate());
             fromCity.setText(trip.getFromCity());
             toCity.setText(trip.getToCity());
             description.setText(trip.getDescription());
@@ -52,10 +52,6 @@ public class MultiColumnAdapter extends ArrayAdapter<Trip> {
         return convertView;
     }
 
-    private String getFormattedDate (Date date){
-        SimpleDateFormat dateFormat = new SimpleDateFormat(getContext().getString(R.string.date_format_pretty));
-        return dateFormat.format(date);
-    }
 }
 
 

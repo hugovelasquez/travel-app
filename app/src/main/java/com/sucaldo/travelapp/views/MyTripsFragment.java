@@ -62,6 +62,7 @@ public class MyTripsFragment extends Fragment {
 
     private void passTripIdToOtherFragments (Trip trip){
         Bundle result = new Bundle();
+        // toString() cannot be used on a primitive, therefore use String.valueOf()
         result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(trip.getId()));
         getParentFragmentManager().setFragmentResult(getString(R.string.fragment_key_request_key), result);
     }

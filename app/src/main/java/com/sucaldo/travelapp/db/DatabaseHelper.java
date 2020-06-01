@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Method for adding a value into database
+    // Method for adding a trip into database
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Method for a query out of the database
+    // Method for a query out of database
     public List<Trip> getAllTrips(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -74,23 +74,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             List<Trip> trips = new ArrayList<>();
             while (data.moveToNext()) {
-               Trip trip = new Trip(data.getString(1), data.getString(2), data.getString(3), data.getString(4),
-                       data.getString(5),data.getString(6),data.getString(7), data.getInt(0));
-               trips.add(trip);
+               trips.add(new Trip(data));
             }
             return trips;
         }
-
     }
 
-  /*  // Method for retrieving the ID of an specific list item
-    public Cursor getItemID (String name){
+   // Method for retrieving trip out of database
+    public Trip getTripById(String id){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT " + COL1 + " FROM " + TABLE_NAME +
-                " WHERE " + COL2 + " = '" + name + "'", null);
-        return data;
-    }
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COL_ID + " = '" + id + "'", null);
 
+        while (data.moveToNext()) {
+            return new Trip(data);
+        }
+        return null;
+    }
+/*
     // Method for updating a field in database
     public void updateName(String newName, int id, String oldName){
         SQLiteDatabase db = this.getWritableDatabase();
