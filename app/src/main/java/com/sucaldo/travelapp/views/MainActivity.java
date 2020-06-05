@@ -80,5 +80,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+    public void goToMyTrips() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new MyTripsFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
+        navigationView.setCheckedItem(R.id.nav_my_trips);
+    }
+
 }
 

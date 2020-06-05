@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,13 +19,25 @@ import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 
 
-public class TripDetailsFragment extends Fragment {
+public class TripDetailsFragment extends Fragment implements View.OnClickListener {
+
+    private Button btnDelete, btnEdit, btnCancel;
+    private MainActivity activity;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.trip_details_view, container, false);
 
+        activity = (MainActivity) getActivity();
+        btnEdit = rootView.findViewById(R.id.btn_edit_view);
+        btnCancel = rootView.findViewById(R.id.btn_cancel_view);
+        btnDelete = rootView.findViewById(R.id.btn_delete_view);
+
+        btnCancel.setOnClickListener(this);
+
+        // Get information from other fragment
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_key_request_key), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
@@ -52,5 +65,14 @@ public class TripDetailsFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_cancel_view:
+                activity.goToMyTrips();
+                break;
+        }
     }
 }

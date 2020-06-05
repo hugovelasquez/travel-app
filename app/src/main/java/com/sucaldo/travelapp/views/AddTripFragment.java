@@ -35,12 +35,15 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private TextInputEditText fromCountry, fromCity, toCountry, toCity, description;
     private Button btnSave, btnCancel;
     private Date startDate, endDate;
+    private MainActivity activity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Link xml layout file with this fragment
         View rootView = inflater.inflate(R.layout.add_trip_view, container, false);
+
+        activity = (MainActivity) getActivity();
 
         // Assign variables
         startDateField = rootView.findViewById(R.id.trip_start_date);
@@ -82,18 +85,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 saveTrip();
                 break;
             case R.id.btn_cancel:
-                goToMyTrips();
+                activity.goToMyTrips();
                 break;
         }
     }
 
-    private void goToMyTrips() {
-        MainActivity activity = (MainActivity) getActivity();
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new MyTripsFragment()).commit();
-        activity.getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
-        activity.navigationView.setCheckedItem(R.id.nav_my_trips);
-    }
 
     private void saveTrip() {
         if (isTripValid()) {
@@ -124,7 +120,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_saved_message));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.text_go_to_trips), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                goToMyTrips();
+                activity.goToMyTrips();
             } });
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.text_add_another_trip), new DialogInterface.OnClickListener() {
