@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,8 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
 
     private Button btnDelete, btnEdit, btnCancel;
     private MainActivity activity;
+    private int tripId;
+    private DatabaseHelper myDB;
 
 
     @Nullable
@@ -36,14 +39,16 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
         btnDelete = rootView.findViewById(R.id.btn_delete_view);
 
         btnCancel.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
+
+        myDB = new DatabaseHelper(getContext());
 
         // Get information from other fragment
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_key_request_key), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                String tripId = bundle.getString(getString(R.string.fragment_key_trip_id));
-
-                DatabaseHelper myDB = new DatabaseHelper(getContext());
+                String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
+                tripId = Integer. parseInt(tripIdString);
                 Trip trip = myDB.getTripById(tripId);
 
                 TextView fromCountry = rootView.findViewById(R.id.from_country_view);
@@ -73,6 +78,12 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
             case R.id.btn_cancel_view:
                 activity.goToMyTrips();
                 break;
+            case R.id.btn_delete_view:
+                myDB.deleteTrip(tripId);
+                activity.goToMyTrips();
+                Toast.makeText(getContext(), R.string.text_trip_deleted, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
+
 }

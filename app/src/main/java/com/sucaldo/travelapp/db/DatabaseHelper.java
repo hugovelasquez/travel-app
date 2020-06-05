@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
    // Method for retrieving trip out of database
-    public Trip getTripById(String id){
+    public Trip getTripById(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME +
                 " WHERE " + COL_ID + " = '" + id + "'", null);
@@ -99,11 +99,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " = '" + newName + "' WHERE " + COL1 + " = '" + id + "'" +
                 " AND " + COL2 + " = '" + oldName + "'");
     }
-
+*/
     // Method for deleting a field in database
-    public void deleteName(int id, String name){
+    public void deleteTrip(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COL1 + " = '" + id + "'" +
-                " AND " + COL2 + " = '" + name + "'");
-    }*/
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COL_ID + " = " + id);
+    }
 }
