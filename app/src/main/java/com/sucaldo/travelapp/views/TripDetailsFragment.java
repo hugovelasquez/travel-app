@@ -2,7 +2,6 @@ package com.sucaldo.travelapp.views;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
 
         btnCancel.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
+        btnEdit.setOnClickListener(this);
 
         myDB = new DatabaseHelper(getContext());
 
@@ -82,6 +82,9 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 myDB.deleteTrip(tripId);
                 activity.goToMyTrips();
                 Toast.makeText(getContext(), R.string.text_trip_deleted, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_edit_view:
+                // TODO add edit logic
                 break;
         }
     }

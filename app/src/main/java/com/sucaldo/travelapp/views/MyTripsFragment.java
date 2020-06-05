@@ -1,7 +1,6 @@
 package com.sucaldo.travelapp.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,17 @@ import java.util.List;
 
 public class MyTripsFragment extends Fragment {
 
+    private MainActivity activity;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.my_trips_view, container, false);
 
+        activity = (MainActivity) getActivity();
+
         // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
-        ((MainActivity) getActivity()).navigationView.getMenu().getItem(0).setChecked(true);
+        activity.navigationView.getMenu().getItem(0).setChecked(true);
 
         ListView listView = rootView.findViewById(R.id.listView);
 
@@ -43,7 +46,7 @@ public class MyTripsFragment extends Fragment {
                 Trip trip = (Trip) parent.getItemAtPosition(position);
 
                 openTripDetailFragment();
-                passTripIdToOtherFragments(trip);
+                activity.passTripIdToOtherFragments(trip);
 
             }
         });
@@ -52,19 +55,11 @@ public class MyTripsFragment extends Fragment {
     }
 
     private void openTripDetailFragment(){
-        MainActivity activity = (MainActivity) getActivity();
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new TripDetailsFragment()).commit();
         activity.getSupportActionBar().setTitle(getString(R.string.navbar_trip_details));
         // unchecked drawer item because we are leaving this fragment
         activity.navigationView.getMenu().getItem(0).setChecked(false);
-    }
-
-    private void passTripIdToOtherFragments (Trip trip){
-        Bundle result = new Bundle();
-        // toString() cannot be used on a primitive, therefore use String.valueOf()
-        result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(trip.getId()));
-        getParentFragmentManager().setFragmentResult(getString(R.string.fragment_key_request_key), result);
     }
 
 }
