@@ -44,7 +44,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
         myDB = new DatabaseHelper(getContext());
 
         // Get information from other fragment
-        getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_key_request_key), this, new FragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_view), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
                 String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
@@ -84,7 +84,8 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(), R.string.text_trip_deleted, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_edit_view:
-                // TODO add edit logic
+                activity.goToAddTrip();
+                activity.passTripIdToOtherFragments(tripId, getString(R.string.fragment_request_key_edit));
                 break;
         }
     }

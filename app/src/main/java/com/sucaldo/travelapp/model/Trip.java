@@ -3,8 +3,6 @@ package com.sucaldo.travelapp.model;
 
 import android.database.Cursor;
 
-import com.sucaldo.travelapp.R;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +11,7 @@ public class Trip {
 
     private final String DATE_FORMAT_DB = "EEE MMM dd HH:mm:ss zzz yyyy";
     private final String DATE_FORMAT_PRETTY = "dd.MM.yy";
+    private final String DATE_FORMAT_PICKER = "d.M.yyyy";
 
     private int id;
     private String fromCountry;
@@ -34,6 +33,7 @@ public class Trip {
         this.endDate = endDate;
     }
 
+    // Constructor for getting trip out of database
     public Trip(Cursor data) {
         this.fromCountry = data.getString(1);
         this.fromCity = data.getString(2);
@@ -118,12 +118,23 @@ public class Trip {
 
 
     public String getFormattedStartDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PRETTY);
-        return dateFormat.format(startDate);
+        return formatDate(startDate, DATE_FORMAT_PRETTY);
     }
 
     public String getFormattedEndDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PRETTY);
-        return dateFormat.format(endDate);
+        return formatDate(endDate, DATE_FORMAT_PRETTY);
+    }
+
+    public String getPickerFormattedStartDate() {
+        return formatDate(startDate, DATE_FORMAT_PICKER);
+    }
+
+    public String getPickerFormattedEndDate() {
+        return formatDate(endDate, DATE_FORMAT_PICKER);
+    }
+
+    private String formatDate(Date date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.format(date);
     }
 }

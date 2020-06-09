@@ -46,7 +46,7 @@ public class MyTripsFragment extends Fragment {
                 Trip trip = (Trip) parent.getItemAtPosition(position);
 
                 openTripDetailFragment();
-                activity.passTripIdToOtherFragments(trip);
+                activity.passTripIdToOtherFragments(trip.getId(), getString(R.string.fragment_request_key_view));
 
             }
         });

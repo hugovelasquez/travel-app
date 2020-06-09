@@ -11,10 +11,12 @@
     <string name="navbar_my_trips">My Trips</string>
     <string name="navbar_add_trip">Add Trip</string>
     <string name="navbar_trip_details">Trip Details</string>
+    <string name="navbar_edit_trip">Edit Trip</string>
 
     <!-- fragment keys -->
     <string name="fragment_key_trip_id">tripId</string>
-    <string name="fragment_key_request_key">requestKey</string>
+    <string name="fragment_request_key_view">requestKeyView</string>
+    <string name="fragment_request_key_edit">requestKeyEdit</string>
 
     <!-- views -->
     <string name="text_from">From</string>
@@ -41,6 +43,7 @@
     <string name="text_edit">edit</string>
     <string name="text_delete">delete</string>
     <string name="text_trip_deleted">Trip deleted</string>
+    <string name="text_trip_updated">Trip was updated</string>
 
 
 </resources>

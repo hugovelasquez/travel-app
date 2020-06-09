@@ -89,11 +89,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_my_trips);
     }
 
-    public void passTripIdToOtherFragments (Trip trip){
+    public void goToAddTrip() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new AddTripFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
+    }
+
+    public void passTripIdToOtherFragments (int tripId, String fragmentRequestKey){
         Bundle result = new Bundle();
         // toString() cannot be used on a primitive, therefore use String.valueOf()
-        result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(trip.getId()));
-        getSupportFragmentManager().setFragmentResult(getString(R.string.fragment_key_request_key), result);
+        result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(tripId));
+        getSupportFragmentManager().setFragmentResult(fragmentRequestKey, result);
     }
 }
 

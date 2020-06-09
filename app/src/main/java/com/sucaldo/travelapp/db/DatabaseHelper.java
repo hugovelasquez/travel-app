@@ -91,15 +91,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return null;
     }
-/*
-    // Method for updating a field in database
-    public void updateName(String newName, int id, String oldName){
+
+    // Method for updating a trip in the database
+    public void updateTrip(Trip trip){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL2 +
-                " = '" + newName + "' WHERE " + COL1 + " = '" + id + "'" +
-                " AND " + COL2 + " = '" + oldName + "'");
+        db.execSQL("UPDATE " + TABLE_NAME + " SET " +
+                COL_FRCTRY + " = '" + trip.getFromCountry() + "'," +
+                COL_FRCTY + " = '" + trip.getFromCity() + "'," +
+                COL_TOCTRY + " = '" + trip.getToCountry() + "'," +
+                COL_TOCTY + " = '" + trip.getToCity() + "'," +
+                COL_DESCR + " = '" + trip.getDescription() + "'," +
+                COL_STDATE + " = '" + trip.getStartDate() + "'," +
+                COL_EDATE + " = '" + trip.getEndDate() + "'"+
+                " WHERE " + COL_ID + " = " + trip.getId() );
     }
-*/
+
     // Method for deleting a field in database
     public void deleteTrip(int id){
         SQLiteDatabase db = this.getWritableDatabase();
