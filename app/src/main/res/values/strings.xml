@@ -44,6 +44,11 @@
     <string name="text_delete">delete</string>
     <string name="text_trip_deleted">Trip deleted</string>
     <string name="text_trip_updated">Trip was updated</string>
+    <string name="text_radio_simple">Simple Trip</string>
+    <string name="text_radio_multi">Multi-Stop</string>
+    <string name="text_add_next_stop">Add next stop</string>
+    <string name="text_trip_completed">Trip completed</string>
+    <string name="text_alert_dialog_stop_saved_title">Stop Saved</string>
 
 
 </resources>

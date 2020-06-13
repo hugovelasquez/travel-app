@@ -4,14 +4,16 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private Date startDate, endDate;
     private MainActivity activity;
     private DatabaseHelper myDB;
+    private RadioGroup radioGroup;
+    private RadioButton radioSimple, radioMulti;
 
     private Trip trip;
 
@@ -63,6 +67,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         description = rootView.findViewById(R.id.input_descr);
         btnSave = rootView.findViewById(R.id.btn_save);
         btnCancel = rootView.findViewById(R.id.btn_cancel);
+        radioGroup = rootView.findViewById(R.id.radio_group);
+        radioSimple = rootView.findViewById(R.id.radio_simple);
+        radioMulti = rootView.findViewById(R.id.radio_multi);
+
+        // Default case is simple trip
+        radioSimple.setChecked(true);
 
         // Method will be automatically called only if fragment request key from TripDetailsFragment.java is present
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
@@ -72,6 +82,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 trip = myDB.getTripById(Integer.parseInt(tripIdString));
 
                 activity.getSupportActionBar().setTitle(getString(R.string.navbar_edit_trip));
+                // RadioGroup not necessary
+                ((ViewManager) radioGroup.getParent()).removeView(radioGroup);
 
                 fromCountry.setText(trip.getFromCountry());
                 fromCity.setText(trip.getFromCity());
@@ -94,8 +106,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
-
         switch (v.getId()) {
             case R.id.start_date_icon:
                 picker = getPicker(startDateField);
@@ -125,35 +135,44 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             // start and end Date already processed in method isTripValid
 
             if (trip == null) {
-                Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, startDate, endDate);
-                if (myDB.addTrip(newTrip)) {
-                    showTripSavedPopUpMessage();
-                } else {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                    alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
-                    alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
-                    alertDialog.show();
-                }
-            }
-            else {
+                saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+            } else {
                 // We will enter this part of the code only if a trip was retrieved from the database
-                trip.setFromCountry(fromCountryString);
-                trip.setFromCity(fromCityString);
-                trip.setToCountry(toCountryString);
-                trip.setToCity(toCityString);
-                trip.setDescription(descriptionString);
-                trip.setStartDate(startDate);
-                trip.setEndDate(endDate);
-
-                myDB.updateTrip(trip);
-
-                activity.goToMyTrips();
-                Toast.makeText(getContext(), R.string.text_trip_updated, Toast.LENGTH_SHORT).show();
+                updateTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
             }
         }
     }
 
-    private void showTripSavedPopUpMessage() {
+    private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString) {
+        Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, startDate, endDate);
+        if (myDB.addTrip(newTrip)) {
+            if (radioSimple.isChecked()) {
+                showSimpleTripSavedPopUpMessage();
+            } else {
+                showMultiTripSavedPopUpMessage();
+            }
+        } else {
+                showTripSavedErrorPopUpMessage();
+        }
+    }
+
+
+    private void updateTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString) {
+        trip.setFromCountry(fromCountryString);
+        trip.setFromCity(fromCityString);
+        trip.setToCountry(toCountryString);
+        trip.setToCity(toCityString);
+        trip.setDescription(descriptionString);
+        trip.setStartDate(startDate);
+        trip.setEndDate(endDate);
+
+        myDB.updateTrip(trip);
+
+        activity.goToMyTrips();
+        Toast.makeText(getContext(), R.string.text_trip_updated, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showSimpleTripSavedPopUpMessage() {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_saved_title));
@@ -175,6 +194,32 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 description.setText("");
             }
         });
+        alertDialog.show();
+    }
+
+    private void showMultiTripSavedPopUpMessage() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setTitle(getString(R.string.text_alert_dialog_stop_saved_title));
+        alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_saved_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.text_add_next_stop), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO add next stop
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.text_trip_completed), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                activity.goToMyTrips();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void showTripSavedErrorPopUpMessage(){
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
+        alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
         alertDialog.show();
     }
 
