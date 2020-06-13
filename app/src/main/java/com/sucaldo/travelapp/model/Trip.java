@@ -14,6 +14,7 @@ public class Trip {
     private final String DATE_FORMAT_PICKER = "d.M.yyyy";
 
     private int id;
+    private int groupId;
     private String fromCountry;
     private String fromCity;
     private String toCountry;
@@ -41,6 +42,7 @@ public class Trip {
         this.toCity = data.getString(4);
         this.description = data.getString(5);
         this.id = data.getInt(0);
+        this.groupId = data.getInt(8);
         // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
@@ -116,6 +118,13 @@ public class Trip {
         return id;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
     public String getFormattedStartDate() {
         return formatDate(startDate, DATE_FORMAT_PRETTY);

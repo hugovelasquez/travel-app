@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.sucaldo.travelapp.model.Trip;
 
@@ -17,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "my_trips.db";
     public static final String TABLE_NAME = "trips";
     public static final String COL_ID = "ID";
+    public static final String COL_GRP_ID = "GROUPID";
     public static final String COL_FRCTRY = "FROMCOUNTRY";
     public static final String COL_FRCTY = "FROMCITY";
     public static final String COL_TOCTRY = "TOCOUNTRY";
@@ -35,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // SQLite does not have data type varchar() or Date
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " FROMCOUNTRY TEXT, FROMCITY TEXT, TOCOUNTRY TEXT, TOCITY TEXT, DESCRIPTION TEXT, STARTDATE TEXT, ENDDATE TEXT)";
+                " FROMCOUNTRY TEXT, FROMCITY TEXT, TOCOUNTRY TEXT, TOCITY TEXT, DESCRIPTION TEXT, STARTDATE TEXT, ENDDATE TEXT, GROUPID INTEGER)";
         db.execSQL(createTable);
     }
     @Override
@@ -44,10 +46,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    private int getNextAvailableGroupId (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT IFNULL(MAX(" + COL_GRP_ID + " ),0) FROM " + TABLE_NAME , null);
+
+        while (data.moveToNext()) {
+            int lastGroupId = Integer.valueOf(data.getString(0));
+            return ++lastGroupId;
+        }
+        return 0;
+    }
+
     // Method for adding a trip into database
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_GRP_ID, getNextAvailableGroupId());
         contentValues.put(COL_FRCTRY, trip.getFromCountry());
         contentValues.put(COL_FRCTY, trip.getFromCity());
         contentValues.put(COL_TOCTRY, trip.getToCountry());
@@ -102,7 +116,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_TOCTY + " = '" + trip.getToCity() + "'," +
                 COL_DESCR + " = '" + trip.getDescription() + "'," +
                 COL_STDATE + " = '" + trip.getStartDate() + "'," +
-                COL_EDATE + " = '" + trip.getEndDate() + "'"+
+                COL_EDATE + " = '" + trip.getEndDate() + "'," +
+                COL_GRP_ID + " = '" + trip.getGroupId() + "'"+
                 " WHERE " + COL_ID + " = " + trip.getId() );
     }
 
