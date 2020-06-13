@@ -11,4 +11,5 @@ Android App that stores and displays your travel history
 1. Calculate kms
 1. Statistics 
 1. World Map
+1. Add "home" option in settings
 1. Import/Export trip list as `*.csv`
