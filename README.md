@@ -6,10 +6,10 @@ Android App that stores and displays your travel history
 - Android Studio
 
 # To Do:
-1. Test on physical device
-2. Figure out what to do with complicated trips
-3. How to present the trip list (stichwort: group by year, dropdown)
-4. Calculate kms
-5. Statistics 
-6. World Map
-7. Import/Export trip list as `*.csv`
+1. Figure out what to do with complicated trips
+1. How to present the trip list (stichwort: group by year, dropdown)
+1. Calculate kms
+1. Statistics 
+1. World Map
+1. Add "home" option in settings
+1. Import/Export trip list as `*.csv`
