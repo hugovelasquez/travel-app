@@ -21,10 +21,14 @@
 
     <style name="button">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_width">110dp</item>
         <item name="android:layout_margin">15dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="button_trip_view" parent="button">
+        <item name="android:layout_margin">2dp</item>
     </style>
 
     <style name="list_adapter" parent="label_text">
@@ -38,6 +42,7 @@
 
     <style name="list_adapter_header" parent="list_adapter">
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#000000</item>
     </style>
 
 </resources>
