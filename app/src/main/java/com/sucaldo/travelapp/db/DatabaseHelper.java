@@ -57,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 0;
     }
 
+
     // Method for adding a trip into database
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -74,6 +75,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         return result != -1;
+    }
+
+    public int getLastTripId (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
+
+        while (data.moveToNext()) {
+            return Integer.valueOf(data.getString(0));
+        }
+        return 0;
     }
 
     // Method for a query out of database

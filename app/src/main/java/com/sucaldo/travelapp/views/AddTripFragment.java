@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentResultListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.AddTripMode;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.text.ParseException;
@@ -44,6 +45,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private DatabaseHelper myDB;
     private RadioGroup radioGroup;
     private RadioButton radioSimple, radioMulti;
+    private AddTripMode tripMode;
 
     private Trip trip;
 
@@ -73,11 +75,13 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         // Default case is simple trip
         radioSimple.setChecked(true);
+        tripMode = AddTripMode.ADD_SIMPLE_TRIP_MODE;
 
-        // Method will be automatically called only if fragment request key from TripDetailsFragment.java is present
+        // Method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                tripMode = AddTripMode.EDIT_MODE;
                 String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
                 trip = myDB.getTripById(Integer.parseInt(tripIdString));
 
@@ -134,11 +138,16 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             String descriptionString = description.getText().toString();
             // start and end Date already processed in method isTripValid
 
-            if (trip == null) {
-                saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
-            } else {
-                // We will enter this part of the code only if a trip was retrieved from the database
-                updateTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+            switch (tripMode) {
+                case ADD_SIMPLE_TRIP_MODE:
+                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+                    break;
+                case EDIT_MODE:
+                    updateTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+                    break;
+                case ADD_MULTI_TRIP_MODE:
+                    //TODO save multi stop
+                    break;
             }
         }
     }
@@ -204,7 +213,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_saved_message));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.text_add_next_stop), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO add next stop
+                setupLayoutForNextStop();
             }
         });
 
@@ -221,6 +230,21 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
         alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
         alertDialog.show();
+    }
+
+    private void setupLayoutForNextStop() {
+        tripMode = AddTripMode.ADD_MULTI_TRIP_MODE;
+        radioGroup.setVisibility(View.INVISIBLE);
+        trip = myDB.getTripById(myDB.getLastTripId());
+        fromCountry.setText(trip.getToCountry());
+        fromCity.setText(trip.getToCity());
+        startDateField.setText(trip.getPickerFormattedEndDate());
+
+        toCountry.setText("");
+        toCity.setText("");
+        description.setText("");
+        endDateField.setText("");
+        activity.getSupportActionBar().setTitle(getString(R.string.navbar_add_stop));
     }
 
     private boolean isTripValid() {

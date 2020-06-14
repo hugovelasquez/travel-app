@@ -101,5 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(tripId));
         getSupportFragmentManager().setFragmentResult(fragmentRequestKey, result);
     }
+
 }
 

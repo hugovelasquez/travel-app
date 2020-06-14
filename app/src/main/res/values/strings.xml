@@ -12,11 +12,14 @@
     <string name="navbar_add_trip">Add Trip</string>
     <string name="navbar_trip_details">Trip Details</string>
     <string name="navbar_edit_trip">Edit Trip</string>
+    <string name="navbar_add_stop">Add Stop</string>
 
     <!-- fragment keys -->
     <string name="fragment_key_trip_id">tripId</string>
     <string name="fragment_request_key_view">requestKeyView</string>
     <string name="fragment_request_key_edit">requestKeyEdit</string>
+    <string name="fragment_key_group_id">groupId</string>
+    <string name="fragment_request_key_group">requestKeyGroup</string>
 
     <!-- views -->
     <string name="text_from">From</string>

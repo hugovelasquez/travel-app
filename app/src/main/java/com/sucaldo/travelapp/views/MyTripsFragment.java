@@ -39,7 +39,7 @@ public class MyTripsFragment extends Fragment {
         MultiColumnAdapter listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, trips);
         listView.setAdapter(listAdapter);
 
-        // Define listener
+        // Define listener for items in listView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
