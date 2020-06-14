@@ -140,20 +140,20 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
             switch (tripMode) {
                 case ADD_SIMPLE_TRIP_MODE:
-                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, -1);
                     break;
                 case EDIT_MODE:
                     updateTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
                     break;
                 case ADD_MULTI_TRIP_MODE:
-                    //TODO save multi stop
+                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, trip.getGroupId());
                     break;
             }
         }
     }
 
-    private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString) {
-        Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, startDate, endDate);
+    private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString, int groupId) {
+        Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, startDate, endDate, groupId);
         if (myDB.addTrip(newTrip)) {
             if (radioSimple.isChecked()) {
                 showSimpleTripSavedPopUpMessage();

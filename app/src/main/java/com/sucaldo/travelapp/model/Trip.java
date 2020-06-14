@@ -24,7 +24,7 @@ public class Trip {
     private Date endDate;
 
     // Constructor for adding trips to database
-    public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, Date startDate, Date endDate) {
+    public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, Date startDate, Date endDate, int groupId) {
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
@@ -32,6 +32,7 @@ public class Trip {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.groupId = groupId;
     }
 
     // Constructor for getting trip out of database

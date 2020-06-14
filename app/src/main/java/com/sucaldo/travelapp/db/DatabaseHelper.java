@@ -18,7 +18,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "my_trips.db";
     public static final String TABLE_NAME = "trips";
     public static final String COL_ID = "ID";
-    public static final String COL_GRP_ID = "GROUPID";
     public static final String COL_FRCTRY = "FROMCOUNTRY";
     public static final String COL_FRCTY = "FROMCITY";
     public static final String COL_TOCTRY = "TOCOUNTRY";
@@ -26,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_DESCR = "DESCRIPTION";
     public static final String COL_STDATE = "STARTDATE";
     public static final String COL_EDATE = "ENDDATE";
+    public static final String COL_GRP_ID = "GROUPID";
 
     // Initialization of Database
     public DatabaseHelper(Context context) {
@@ -62,7 +62,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_GRP_ID, getNextAvailableGroupId());
         contentValues.put(COL_FRCTRY, trip.getFromCountry());
         contentValues.put(COL_FRCTY, trip.getFromCity());
         contentValues.put(COL_TOCTRY, trip.getToCountry());
@@ -70,6 +69,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DESCR, trip.getDescription());
         contentValues.put(COL_STDATE, trip.getStartDate().toString());
         contentValues.put(COL_EDATE, trip.getEndDate().toString());
+        if (trip.getGroupId() == -1) {
+            contentValues.put(COL_GRP_ID, getNextAvailableGroupId());
+        } else {
+            contentValues.put(COL_GRP_ID, trip.getGroupId());
+        }
 
         //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
         long result = db.insert(TABLE_NAME, null, contentValues);
