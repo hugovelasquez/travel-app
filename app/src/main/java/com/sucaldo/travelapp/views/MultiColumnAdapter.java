@@ -11,19 +11,18 @@ import android.widget.TextView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.Trip;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class MultiColumnAdapter extends ArrayAdapter<Trip> {
+public class MultiColumnAdapter extends ArrayAdapter<Object> {
 
     private LayoutInflater mInflater;
-    private List<Trip> trips;
+    // List of type Object because it can get inputs from two different classes Trip or Integer
+    private List<Object> tripsAndYears;
     private int mViewResourceId;
 
-    public MultiColumnAdapter(Context context, int textViewResourceId, List<Trip> trips) {
-        super(context,textViewResourceId, trips);
-        this.trips = trips;
+    public MultiColumnAdapter(Context context, int textViewResourceId, List<Object> tripsAndYears) {
+        super(context,textViewResourceId, tripsAndYears);
+        this.tripsAndYears = tripsAndYears;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mViewResourceId = textViewResourceId;
 
@@ -33,21 +32,26 @@ public class MultiColumnAdapter extends ArrayAdapter<Trip> {
     public View getView(int position, View convertView, ViewGroup parents){
         convertView = mInflater.inflate(mViewResourceId,null);
 
-        Trip trip = trips.get(position);
+        // Link to all textView IDs in list_adapter_view.xml
+        TextView startDate = convertView.findViewById(R.id.start_date);
+        TextView endDate = convertView.findViewById(R.id.end_date);
+        TextView fromCity = convertView.findViewById(R.id.from_city);
+        TextView toCity = convertView.findViewById(R.id.to_city);
+        TextView description = convertView.findViewById(R.id.description);
 
-        if(trip != null){
-            // Link to all textView IDs in list_adapter_view.xml
-            TextView startDate = convertView.findViewById(R.id.start_date);
-            TextView endDate = convertView.findViewById(R.id.end_date);
-            TextView fromCity = convertView.findViewById(R.id.from_city);
-            TextView toCity = convertView.findViewById(R.id.to_city);
-            TextView description = convertView.findViewById(R.id.description);
-
+        Object tripOrYear = tripsAndYears.get(position);
+        // Casting necessary to differentiate
+        if (tripOrYear instanceof Trip) {
+            Trip trip = (Trip) tripOrYear;
             startDate.setText(trip.getFormattedStartDate());
             endDate.setText(trip.getFormattedEndDate());
             fromCity.setText(trip.getFromCity());
             toCity.setText(trip.getToCity());
             description.setText(trip.getDescription());
+        }
+        if (tripOrYear instanceof Integer){
+            Integer year = (Integer) tripOrYear;
+            startDate.setText(year.toString());
         }
         return convertView;
     }

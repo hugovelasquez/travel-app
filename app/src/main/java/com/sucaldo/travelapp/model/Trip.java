@@ -9,10 +9,6 @@ import java.util.Date;
 
 public class Trip {
 
-    private final String DATE_FORMAT_DB = "EEE MMM dd HH:mm:ss zzz yyyy";
-    private final String DATE_FORMAT_PRETTY = "dd.MM.yy";
-    private final String DATE_FORMAT_PICKER = "d.M.yyyy";
-
     private int id;
     private int groupId;
     private String fromCountry;
@@ -48,12 +44,12 @@ public class Trip {
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
         try {
-            this.startDate = new SimpleDateFormat(DATE_FORMAT_DB).parse(data.getString(6));
+            this.startDate = new SimpleDateFormat(DateFormat.DB).parse(data.getString(6));
         } catch (ParseException e) {
             this.startDate = new Date();
         }
         try {
-            this.endDate = new SimpleDateFormat(DATE_FORMAT_DB).parse(data.getString(7));
+            this.endDate = new SimpleDateFormat(DateFormat.DB).parse(data.getString(7));
         } catch (ParseException e) {
             this.endDate = new Date();
         }
@@ -128,19 +124,19 @@ public class Trip {
     }
 
     public String getFormattedStartDate() {
-        return formatDate(startDate, DATE_FORMAT_PRETTY);
+        return formatDate(startDate, DateFormat.PRETTY);
     }
 
     public String getFormattedEndDate() {
-        return formatDate(endDate, DATE_FORMAT_PRETTY);
+        return formatDate(endDate, DateFormat.PRETTY);
     }
 
     public String getPickerFormattedStartDate() {
-        return formatDate(startDate, DATE_FORMAT_PICKER);
+        return formatDate(startDate, DateFormat.PICKER);
     }
 
     public String getPickerFormattedEndDate() {
-        return formatDate(endDate, DATE_FORMAT_PICKER);
+        return formatDate(endDate, DateFormat.PICKER);
     }
 
     private String formatDate(Date date, String format) {

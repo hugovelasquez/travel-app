@@ -5,11 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
+import com.sucaldo.travelapp.model.DateFormat;
 import com.sucaldo.travelapp.model.Trip;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -140,5 +146,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteTrip(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COL_ID + " = " + id);
+    }
+
+    // Method for selecting all distinct trip years in database
+    public List<Integer> getAllYearsOfTrips (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + COL_STDATE + " FROM " + TABLE_NAME, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0){
+            // empty list will be returned
+            return new ArrayList<>();
+        } else {
+            List<Integer> years = new ArrayList<>();
+            while (data.moveToNext()) {
+                String dateString = data.getString(0);
+                Date startDate;
+                try {
+                    startDate = new SimpleDateFormat(DateFormat.DB).parse(dateString);
+                } catch (ParseException e) {
+                    startDate = new Date();
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startDate);
+                int year = cal.get(Calendar.YEAR);
+
+                if (!years.contains(year)) {
+                    years.add(year);
+                }
+            }
+            Collections.sort(years);
+            return years;
+        }
+    }
+
+    public List<Trip> getTripsOfYear(int year){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL_STDATE +
+                " LIKE '%" + year +"' ", null);
+
+        int numRows = data.getCount();
+        if (numRows == 0){
+            // empty list will be returned
+            return new ArrayList<>();
+        } else {
+            List<Trip> trips = new ArrayList<>();
+            while (data.moveToNext()) {
+                trips.add(new Trip(data));
+            }
+            trips.sort(new Comparator<Trip>() {
+                @Override
+                public int compare(Trip trip1, Trip trip2) {
+                    // Short way of defining a simple "if-else-statement"
+                    // if true put trip1 -1 position above trip2, else put trip1 1 position after trip2
+                    return trip1.getStartDate().before(trip2.getStartDate()) ? -1 : 1;
+                }
+
+            });
+            return trips;
+        }
     }
 }

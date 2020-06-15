@@ -15,11 +15,15 @@ import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyTripsFragment extends Fragment {
 
     private MainActivity activity;
+    private DatabaseHelper myDB;
+    private MultiColumnAdapter listAdapter;
+    private ListView listView;
 
     @Nullable
     @Override
@@ -27,26 +31,36 @@ public class MyTripsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.my_trips_view, container, false);
 
         activity = (MainActivity) getActivity();
+        myDB = new DatabaseHelper(getContext());
 
         // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
         activity.navigationView.getMenu().getItem(0).setChecked(true);
 
-        ListView listView = rootView.findViewById(R.id.listView);
+        listView = rootView.findViewById(R.id.listView);
 
-        DatabaseHelper myDB = new DatabaseHelper(getContext());
-        List<Trip> trips = myDB.getAllTrips();
-        // Adapt the one-column listView object to a multi-column layout
-        MultiColumnAdapter listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, trips);
-        listView.setAdapter(listAdapter);
+        List<Integer> years = myDB.getAllYearsOfTrips();
+        // List of type Object because it can get inputs from two different classes Trip or Integer
+        final List<Object> tripsAndYears = new ArrayList<>();
+        tripsAndYears.addAll(years);
+
+        setAdapterOfListView(tripsAndYears);
 
         // Define listener for items in listView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Trip trip = (Trip) parent.getItemAtPosition(position);
-
-                openTripDetailFragment();
-                activity.passTripIdToOtherFragments(trip.getId(), getString(R.string.fragment_request_key_view));
+                Object tripOrYear = parent.getItemAtPosition(position);
+                if (tripOrYear instanceof Trip) {
+                    // Casting necessary to differentiate
+                    Trip trip = (Trip) tripOrYear;
+                    openTripDetailFragment();
+                    activity.passTripIdToOtherFragments(trip.getId(), getString(R.string.fragment_request_key_view));
+                }
+                if (tripOrYear instanceof Integer) {
+                    // Casting necessary to differentiate
+                    Integer year = (Integer) tripOrYear;
+                    addTripsOfClickedYearToList(year,tripsAndYears);
+                }
 
             }
         });
@@ -62,4 +76,15 @@ public class MyTripsFragment extends Fragment {
         activity.navigationView.getMenu().getItem(0).setChecked(false);
     }
 
+    private void addTripsOfClickedYearToList (int year, List<Object> tripsAndYears){
+        List<Trip> trips = myDB.getTripsOfYear(year);
+        // trips of clicked year to be added after that year in the listview
+        tripsAndYears.addAll(tripsAndYears.indexOf(year) + 1, trips);
+        setAdapterOfListView(tripsAndYears);
+    }
+
+    private void setAdapterOfListView(List<Object> tripsAndYears) {
+        listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, tripsAndYears);
+        listView.setAdapter(listAdapter);
+    }
 }
