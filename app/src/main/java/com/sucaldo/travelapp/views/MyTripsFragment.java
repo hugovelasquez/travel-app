@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
+import com.sucaldo.travelapp.model.YearListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,14 @@ public class MyTripsFragment extends Fragment {
         listView = rootView.findViewById(R.id.listView);
 
         List<Integer> years = myDB.getAllYearsOfTrips();
+        List <YearListItem> yearItems = new ArrayList<>();
+        for(int year : years) {
+            yearItems.add(new YearListItem(year));
+        }
+
         // List of type Object because it can get inputs from two different classes Trip or Integer
         final List<Object> tripsAndYears = new ArrayList<>();
-        tripsAndYears.addAll(years);
+        tripsAndYears.addAll(yearItems);
 
         setAdapterOfListView(tripsAndYears);
 
@@ -56,10 +62,17 @@ public class MyTripsFragment extends Fragment {
                     openTripDetailFragment();
                     activity.passTripIdToOtherFragments(trip.getId(), getString(R.string.fragment_request_key_view));
                 }
-                if (tripOrYear instanceof Integer) {
+                if (tripOrYear instanceof YearListItem) {
                     // Casting necessary to differentiate
-                    Integer year = (Integer) tripOrYear;
-                    addTripsOfClickedYearToList(year,tripsAndYears);
+                    YearListItem yearItem = (YearListItem) tripOrYear;
+                    if (yearItem.isExpanded()) {
+                        removeTripsOfClickedYearFromList(yearItem, tripsAndYears);
+                    }
+                    else {
+                        addTripsOfClickedYearToList(yearItem,tripsAndYears);
+                    }
+                    // toggle --> means set to true if value was false, or set to false if value was true
+                    yearItem.setExpanded(!yearItem.isExpanded());
                 }
 
             }
@@ -76,10 +89,25 @@ public class MyTripsFragment extends Fragment {
         activity.navigationView.getMenu().getItem(0).setChecked(false);
     }
 
-    private void addTripsOfClickedYearToList (int year, List<Object> tripsAndYears){
-        List<Trip> trips = myDB.getTripsOfYear(year);
+    private void addTripsOfClickedYearToList (YearListItem yearItem, List<Object> tripsAndYears){
+        List<Trip> trips = myDB.getTripsOfYear(yearItem.getYear());
         // trips of clicked year to be added after that year in the listview
-        tripsAndYears.addAll(tripsAndYears.indexOf(year) + 1, trips);
+        tripsAndYears.addAll(tripsAndYears.indexOf(yearItem) + 1, trips);
+        setAdapterOfListView(tripsAndYears);
+    }
+
+    private void removeTripsOfClickedYearFromList(YearListItem yearListItem, List<Object> tripsAndYears) {
+        List<Object> tripsToRemove = new ArrayList<>();
+        for (int i = (tripsAndYears.indexOf(yearListItem) + 1); i < tripsAndYears.size(); i++){
+            Object listItem = tripsAndYears.get(i);
+            if (listItem instanceof Trip){
+                tripsToRemove.add(listItem);
+            }
+            if (listItem instanceof YearListItem){
+                break;
+            }
+        }
+        tripsAndYears.removeAll(tripsToRemove);
         setAdapterOfListView(tripsAndYears);
     }
 

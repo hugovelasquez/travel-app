@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.Trip;
+import com.sucaldo.travelapp.model.YearListItem;
 
 import java.util.List;
 
@@ -49,9 +50,9 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
             toCity.setText(trip.getToCity());
             description.setText(trip.getDescription());
         }
-        if (tripOrYear instanceof Integer){
-            Integer year = (Integer) tripOrYear;
-            startDate.setText(year.toString());
+        if (tripOrYear instanceof YearListItem){
+            YearListItem year = (YearListItem) tripOrYear;
+            startDate.setText(year.getYear().toString());
         }
         return convertView;
     }
