@@ -31,7 +31,7 @@
     <string name="text_trip_descr">Description</string>
     <string name="text_save">Save</string>
     <string name="text_cancel">Cancel</string>
-    <string name="char_limit">30</string>
+    <string name="char_limit">25</string>
     <string name="text_empty_field_error">Field is empty</string>
     <string name="text_date_format_error">Date format is invalid</string>
     <string name="text_end_date_error">End date is before start date</string>

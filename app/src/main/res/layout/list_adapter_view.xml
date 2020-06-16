@@ -4,7 +4,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
+    <ImageView
+        android:id="@+id/dropdown_arrow"
+        android:layout_width="@dimen/icon_size_dropdown"
+        android:layout_height="@dimen/icon_size_dropdown"
+        android:layout_gravity="center"
+      />
+
     <TextView
         android:id="@+id/start_date"
         style="@style/list_adapter" />

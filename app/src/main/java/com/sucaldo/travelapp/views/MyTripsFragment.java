@@ -66,13 +66,13 @@ public class MyTripsFragment extends Fragment {
                     // Casting necessary to differentiate
                     YearListItem yearItem = (YearListItem) tripOrYear;
                     if (yearItem.isExpanded()) {
+                        yearItem.setExpanded(false);
                         removeTripsOfClickedYearFromList(yearItem, tripsAndYears);
                     }
                     else {
+                        yearItem.setExpanded(true);
                         addTripsOfClickedYearToList(yearItem,tripsAndYears);
                     }
-                    // toggle --> means set to true if value was false, or set to false if value was true
-                    yearItem.setExpanded(!yearItem.isExpanded());
                 }
 
             }

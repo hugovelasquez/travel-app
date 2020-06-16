@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.Trip;
@@ -39,6 +42,7 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
         TextView fromCity = convertView.findViewById(R.id.from_city);
         TextView toCity = convertView.findViewById(R.id.to_city);
         TextView description = convertView.findViewById(R.id.description);
+        ImageView dropdownArrow = convertView.findViewById(R.id.dropdown_arrow);
 
         Object tripOrYear = tripsAndYears.get(position);
         // Casting necessary to differentiate
@@ -49,10 +53,21 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
             fromCity.setText(trip.getFromCity());
             toCity.setText(trip.getToCity());
             description.setText(trip.getDescription());
+            dropdownArrow.getLayoutParams().width = 0;
+            dropdownArrow.requestLayout();
         }
         if (tripOrYear instanceof YearListItem){
             YearListItem year = (YearListItem) tripOrYear;
             startDate.setText(year.getYear().toString());
+            startDate.setTextColor(ResourcesCompat.getColor(convertView.getResources(), R.color.black, null));
+            startDate.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+
+            if (year.isExpanded()) {
+                dropdownArrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            } else {
+                dropdownArrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+            }
+
         }
         return convertView;
     }
