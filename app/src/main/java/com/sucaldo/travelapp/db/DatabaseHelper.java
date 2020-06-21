@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DateFormat;
 import com.sucaldo.travelapp.model.Trip;
 
@@ -56,8 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableTrips);
 
         String createTableCityLoc = "CREATE TABLE " + TABLE_CITY_LOC + " (" + COL_CITY_LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " " + COL_CITY_LOC_CTRY + " TEXT, " + COL_CITY_LOC_CTY + " TEXT, " + COL_LAT + " TEXT, " +
-                " " + COL_LONG + " TEXT)";
+                " " + COL_CITY_LOC_CTRY + " TEXT, " + COL_CITY_LOC_CTY + " TEXT, " + COL_LAT + " FLOAT, " +
+                " " + COL_LONG + " FLOAT)";
         db.execSQL(createTableCityLoc);
     }
     @Override
@@ -65,32 +66,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_TRIPS);
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_CITY_LOC);
         onCreate(db);
-    }
-
-    public boolean addCityLocItem (String country, String city, String latitude, String longitude){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_CITY_LOC_CTRY, country);
-        contentValues.put(COL_CITY_LOC_CTY, city);
-        contentValues.put(COL_LAT, latitude);
-        contentValues.put(COL_LONG, longitude);
-
-        //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
-        long result = db.insert(TABLE_CITY_LOC, null, contentValues);
-
-        return result != -1;
-    }
-
-    public boolean isCityLocTableEmpty(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC, null);
-
-        while (data.moveToNext()) {
-            int rowCount = Integer.valueOf(data.getString(0));
-            // to consider all possible return values of count (0, -1, etc.)
-            return rowCount < 1;
-        }
-        return true;
     }
 
     // Method for adding a trip into database
@@ -229,5 +204,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             });
             return trips;
         }
+    }
+
+    public boolean addCityLocItem (String country, String city, Float latitude, Float longitude){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_CITY_LOC_CTRY, country);
+        contentValues.put(COL_CITY_LOC_CTY, city);
+        contentValues.put(COL_LAT, latitude);
+        contentValues.put(COL_LONG, longitude);
+
+        //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
+        long result = db.insert(TABLE_CITY_LOC, null, contentValues);
+
+        return result != -1;
+    }
+
+    public boolean isCityLocTableEmpty(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC, null);
+
+        while (data.moveToNext()) {
+            int rowCount = Integer.valueOf(data.getString(0));
+            // to consider all possible return values of count (0, -1, etc.)
+            return rowCount < 1;
+        }
+        return true;
+    }
+
+    public CityLocation getLatitudeAndLongitudeOfCity(String country, String city){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + COL_LAT + " , " + COL_LONG + " FROM " + TABLE_CITY_LOC + " WHERE "
+                + COL_CITY_LOC_CTRY + " = '" + country + "' AND " + COL_CITY_LOC_CTY + " = '" + city + "'", null);
+
+        while (data.moveToNext()) {
+            return new CityLocation(data);
+        }
+        return null;
+    }
+
+    public void saveCityLocationIfNotInDb(CityLocation cityLocation){
+        if (isCityLocationInDb(cityLocation)){
+            return;
+        }
+        addCityLocItem(cityLocation.getCountry(), cityLocation.getCity(), cityLocation.getLatitude(), cityLocation.getLongitude());
+    }
+
+    private boolean isCityLocationInDb (CityLocation cityLocation){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_CTRY +
+                " = '" + cityLocation.getCountry() + "' AND " + COL_CITY_LOC_CTY + " = '" + cityLocation.getCity() + "'", null);
+
+        while (data.moveToNext()) {
+            int rowCount = Integer.valueOf(data.getString(0));
+            return rowCount >= 1;
+        }
+        return false;
     }
 }

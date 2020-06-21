@@ -23,7 +23,7 @@ public class CsvHelper {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 Log.d("CSV", nextLine[0] + nextLine[1] + nextLine[2] + nextLine[3]);
-                myDB.addCityLocItem(nextLine[3], nextLine[0], nextLine[1], nextLine[2]);
+                myDB.addCityLocItem(nextLine[3], nextLine[0], Float.parseFloat(nextLine[1]), Float.parseFloat(nextLine[2]));
             }
         } catch (IOException e) {
             Log.e("CSV", "Line in .csv file could not be read");

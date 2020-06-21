@@ -9,8 +9,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/layout_margin"
         android:layout_weight="3"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -19,17 +18,19 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <RadioButton android:id="@+id/radio_simple"
+            <RadioButton
+                android:id="@+id/radio_simple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/text_radio_simple" />
 
-            <RadioButton android:id="@+id/radio_multi"
+            <RadioButton
+                android:id="@+id/radio_multi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/text_radio_multi"/>
+                android:text="@string/text_radio_multi" />
 
         </RadioGroup>
 
@@ -40,10 +41,10 @@
 
             <TextView
                 android:id="@+id/text_from"
+                style="@style/textview_label"
                 android:layout_height="wrap_content"
-                android:text="@string/text_from"
                 android:layout_marginTop="15dp"
-                style="@style/textview_label" />
+                android:text="@string/text_from" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -54,7 +55,9 @@
                     style="@style/label_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text_country" />
+                    android:hint="@string/text_country"
+                    android:maxLength="@string/char_limit_ctry_cty" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -65,12 +68,61 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/from_city"
+                style="@style/label_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/text_city"
                 android:layout_marginStart="@dimen/label_indentation"
-                style="@style/label_text" />
+                android:hint="@string/text_city"
+                android:maxLength="@string/char_limit_ctry_cty" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/from_lat"
+                    style="@style/label_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/label_indentation"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/text_latitude"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:maxLength="@string/char_limit_lat_long" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/from_long"
+                    style="@style/label_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:hint="@string/text_longitude"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:maxLength="@string/char_limit_lat_long" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/from_loc_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_refresh_black_24dp" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,10 +131,10 @@
 
             <TextView
                 android:id="@+id/text_to"
+                style="@style/textview_label"
                 android:layout_height="wrap_content"
-                android:text="@string/text_to"
                 android:layout_marginTop="15dp"
-                style="@style/textview_label" />
+                android:text="@string/text_to" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -93,7 +145,8 @@
                     style="@style/label_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text_country" />
+                    android:hint="@string/text_country"
+                    android:maxLength="@string/char_limit_ctry_cty" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -104,12 +157,60 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/to_city"
+                style="@style/label_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/text_city"
                 android:layout_marginStart="@dimen/label_indentation"
-                style="@style/label_text" />
+                android:hint="@string/text_city"
+                android:maxLength="@string/char_limit_ctry_cty" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/to_lat"
+                    style="@style/label_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/label_indentation"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/text_latitude"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:maxLength="@string/char_limit_lat_long" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/to_long"
+                    style="@style/label_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:hint="@string/text_longitude"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:maxLength="@string/char_limit_lat_long" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/to_loc_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_refresh_black_24dp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
@@ -118,25 +219,25 @@
 
             <TextView
                 android:id="@+id/text_start"
+                style="@style/textview_label"
                 android:layout_height="wrap_content"
-                android:text="@string/text_trip_start"
-                style="@style/textview_label" />
+                android:text="@string/text_trip_start" />
 
             <EditText
                 android:id="@+id/trip_start_date"
-                android:layout_height="wrap_content"
+                style="@style/label_text"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="10"
-                android:inputType="date"
-                style="@style/label_text"/>
+                android:inputType="date" />
 
             <ImageView
                 android:id="@+id/start_date_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
-                android:src="@drawable/date_icon"/>
+                android:src="@drawable/date_icon" />
 
         </LinearLayout>
 
@@ -147,25 +248,25 @@
 
             <TextView
                 android:id="@+id/text_end"
+                style="@style/textview_label"
                 android:layout_height="wrap_content"
-                android:text="@string/text_trip_end"
-                style="@style/textview_label" />
+                android:text="@string/text_trip_end" />
 
             <EditText
                 android:id="@+id/trip_end_date"
-                android:layout_height="wrap_content"
+                style="@style/label_text"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="10"
-                android:inputType="date"
-                style="@style/label_text"/>
+                android:inputType="date" />
 
             <ImageView
                 android:id="@+id/end_date_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
-                android:src="@drawable/date_icon"/>
+                android:src="@drawable/date_icon" />
 
         </LinearLayout>
 
@@ -175,12 +276,29 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_descr"
+                style="@style/label_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/text_trip_descr"
-                android:maxLength="@string/char_limit"
-                style="@style/label_text" />
+                android:maxLength="@string/char_limit_descr" />
         </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/add_trip_image"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="@dimen/layout_margin"
+            android:src="@drawable/add_trip_foto_display">
+
+        </ImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,27 +309,14 @@
             <Button
                 android:id="@+id/btn_save"
                 style="@style/button"
-                android:text="@string/text_save"/>
+                android:text="@string/text_save" />
 
             <Button
                 android:id="@+id/btn_cancel"
                 style="@style/button"
-                android:text="@string/text_cancel"/>
+                android:text="@string/text_cancel" />
 
         </LinearLayout>
 
-
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/add_trip_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/layout_margin"
-        android:layout_weight="2"
-        android:src="@drawable/add_trip_foto_display">
-
-    </ImageView>
-
-
 </LinearLayout>

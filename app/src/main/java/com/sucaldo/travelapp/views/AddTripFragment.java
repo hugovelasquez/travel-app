@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.AddTripMode;
+import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.text.ParseException;
@@ -37,8 +38,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     // Definition of variables
     private DatePickerDialog picker;
     private EditText startDateField, endDateField;
-    private ImageView startDateIcon, endDateIcon;
-    private TextInputEditText fromCountry, fromCity, toCountry, toCity, description;
+    private ImageView startDateIcon, endDateIcon, fromLocIcon, toLocIcon;
+    private TextInputEditText fromCountry, fromCity, toCountry, toCity, description, fromLat, fromLong, toLat, toLong;
     private Button btnSave, btnCancel;
     private Date startDate, endDate;
     private MainActivity activity;
@@ -67,6 +68,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         toCity = rootView.findViewById(R.id.to_city);
         fromCity = rootView.findViewById(R.id.from_city);
         description = rootView.findViewById(R.id.input_descr);
+        fromLat = rootView.findViewById(R.id.from_lat);
+        fromLong = rootView.findViewById(R.id.from_long);
+        toLat = rootView.findViewById(R.id.to_lat);
+        toLong = rootView.findViewById(R.id.to_long);
+        fromLocIcon = rootView.findViewById(R.id.from_loc_icon);
+        toLocIcon = rootView.findViewById(R.id.to_loc_icon);
         btnSave = rootView.findViewById(R.id.btn_save);
         btnCancel = rootView.findViewById(R.id.btn_cancel);
         radioGroup = rootView.findViewById(R.id.radio_group);
@@ -104,6 +111,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         endDateIcon.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        fromLocIcon.setOnClickListener(this);
+        toLocIcon.setOnClickListener(this);
 
         return rootView;
     }
@@ -125,9 +134,28 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_cancel:
                 activity.goToMyTrips();
                 break;
+            case R.id.from_loc_icon:
+                getLocationOfCity(fromCountry.getText().toString(),fromCity.getText().toString(), fromLat, fromLong);
+                break;
+            case R.id.to_loc_icon:
+                getLocationOfCity(toCountry.getText().toString(),toCity.getText().toString(), toLat, toLong);
+                break;
         }
     }
 
+    private void getLocationOfCity (String country, String city, TextInputEditText latitude, TextInputEditText longitude){
+        latitude.setError(null);
+        longitude.setError(null);
+
+        CityLocation cityLocation = myDB.getLatitudeAndLongitudeOfCity(country,city);
+        if (cityLocation == null){
+            latitude.setError(getString(R.string.text_location_error));
+            longitude.setError(getString(R.string.text_location_error));
+        } else {
+            latitude.setText(Float.toString(cityLocation.getLatitude()));
+            longitude.setText(Float.toString(cityLocation.getLongitude()));
+        }
+    }
 
     private void saveTrip() {
         if (isTripValid()) {
@@ -136,7 +164,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             String toCountryString = toCountry.getText().toString();
             String toCityString = toCity.getText().toString();
             String descriptionString = description.getText().toString();
+            float fromLatitude = Float.parseFloat(fromLat.getText().toString());
+            float fromLongitude = Float.parseFloat(fromLong.getText().toString());
+            float toLatitude = Float.parseFloat(toLat.getText().toString());
+            float toLongitude = Float.parseFloat(toLong.getText().toString());
             // start and end Date already processed in method isTripValid
+
+            myDB.saveCityLocationIfNotInDb(new CityLocation(fromCountryString, fromCityString, fromLatitude, fromLongitude));
+            myDB.saveCityLocationIfNotInDb(new CityLocation(toCountryString, toCityString, toLatitude, toLongitude));
 
             switch (tripMode) {
                 case ADD_SIMPLE_TRIP_MODE:
@@ -201,6 +236,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 startDateField.setText("");
                 endDateField.setText("");
                 description.setText("");
+                fromLat.setText("");
+                fromLong.setText("");
+                toLat.setText("");
+                toLong.setText("");
             }
         });
         alertDialog.show();
@@ -239,11 +278,15 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         fromCountry.setText(trip.getToCountry());
         fromCity.setText(trip.getToCity());
         startDateField.setText(trip.getPickerFormattedEndDate());
+        fromLat.setText(toLat.getText());
+        fromLong.setText(toLong.getText());
 
         toCountry.setText("");
         toCity.setText("");
         description.setText("");
         endDateField.setText("");
+        toLat.setText("");
+        toLong.setText("");
         activity.getSupportActionBar().setTitle(getString(R.string.navbar_add_stop));
     }
 
@@ -252,9 +295,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         boolean fromCityValid = checkIfFieldInputIsEmpty(fromCity);
         boolean toCountryValid = checkIfFieldInputIsEmpty(toCountry);
         boolean toCityValid = checkIfFieldInputIsEmpty(toCity);
+        boolean fromLatValid = checkIfFieldInputIsEmpty(fromLat);
+        boolean toLatValid = checkIfFieldInputIsEmpty(toLat);
+        boolean fromLongValid = checkIfFieldInputIsEmpty(fromLong);
+        boolean toLongValid = checkIfFieldInputIsEmpty(toLong);
         boolean startAndEndDateValid = validateStartAndEndDate(startDateField, endDateField);
         // return true only if all are true
-        return fromCountryValid && fromCityValid && toCountryValid && toCityValid && startAndEndDateValid;
+        return fromCountryValid && fromCityValid && toCountryValid && toCityValid && startAndEndDateValid
+                && fromLatValid && fromLongValid && toLatValid && toLongValid;
     }
 
     private boolean checkIfFieldInputIsEmpty(EditText editText) {

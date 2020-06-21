@@ -21,6 +21,11 @@
     <string name="fragment_key_group_id">groupId</string>
     <string name="fragment_request_key_group">requestKeyGroup</string>
 
+    <!-- character limits -->
+    <string name="char_limit_descr">25</string>
+    <string name="char_limit_ctry_cty">20</string>
+    <string name="char_limit_lat_long">9</string>
+
     <!-- views -->
     <string name="text_from">From</string>
     <string name="text_country">Country</string>
@@ -31,7 +36,6 @@
     <string name="text_trip_descr">Description</string>
     <string name="text_save">Save</string>
     <string name="text_cancel">Cancel</string>
-    <string name="char_limit">25</string>
     <string name="text_empty_field_error">Field is empty</string>
     <string name="text_date_format_error">Date format is invalid</string>
     <string name="text_end_date_error">End date is before start date</string>
@@ -52,6 +56,9 @@
     <string name="text_add_next_stop">Add next stop</string>
     <string name="text_trip_completed">Trip completed</string>
     <string name="text_alert_dialog_stop_saved_title">Stop Saved</string>
+    <string name="text_latitude">Latitude</string>
+    <string name="text_longitude">Longitude</string>
+    <string name="text_location_error">Not in db. Add manually.</string>
 
 
 </resources>
