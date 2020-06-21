@@ -1,17 +1,20 @@
 package com.sucaldo.travelapp.views;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.db.CsvHelper;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.model.YearListItem;
@@ -33,6 +36,19 @@ public class MyTripsFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
+
+        if (myDB.isCityLocTableEmpty()){
+            Toast.makeText(getContext(),"Adding latitude and longitude of cities worldwide to database",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"This might take a while...",Toast.LENGTH_LONG).show();
+            // Read csv data in the background
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    new CsvHelper(myDB).readCsvFile(getResources().openRawResource(R.raw.worldcities));
+                }
+            });
+
+        }
 
         // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
         activity.navigationView.getMenu().getItem(0).setChecked(true);
