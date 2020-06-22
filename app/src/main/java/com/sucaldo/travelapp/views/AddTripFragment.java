@@ -103,6 +103,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 description.setText(trip.getDescription());
                 startDateField.setText(trip.getPickerFormattedStartDate());
                 endDateField.setText(trip.getPickerFormattedEndDate());
+                getLocationOfCity(trip.getFromCountry(), trip.getFromCity(), fromLat, fromLong);
+                getLocationOfCity(trip.getToCountry(), trip.getToCity(), toLat, toLong);
             }
         });
 
@@ -172,23 +174,46 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
             myDB.saveCityLocationIfNotInDb(new CityLocation(fromCountryString, fromCityString, fromLatitude, fromLongitude));
             myDB.saveCityLocationIfNotInDb(new CityLocation(toCountryString, toCityString, toLatitude, toLongitude));
+            long distance = getDistanceFromLatLongInKms(fromLatitude, fromLongitude, toLatitude, toLongitude);
 
             switch (tripMode) {
                 case ADD_SIMPLE_TRIP_MODE:
-                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, -1);
+                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                            descriptionString, -1, radioSimple.isChecked() ? distance * 2 : distance);
                     break;
                 case EDIT_MODE:
-                    updateTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString);
+                    updateTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                            descriptionString, distance);
                     break;
                 case ADD_MULTI_TRIP_MODE:
-                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, trip.getGroupId());
+                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                            descriptionString, trip.getGroupId(), distance);
                     break;
             }
         }
     }
 
-    private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString, int groupId) {
-        Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString, descriptionString, startDate, endDate, groupId);
+    private long getDistanceFromLatLongInKms (float lat1, float long1, float lat2, float long2){
+        int radiusEarth = 6371;
+        double dLat = degToRadius(lat2-lat1);
+        double dLong = degToRadius(long2-long1);
+        double a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(degToRadius(lat1)) * Math.cos(degToRadius(lat2)) *
+                Math.sin(dLong/2) * Math.sin(dLong/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = radiusEarth * c;
+        return Math.round(d);
+    }
+
+    private double degToRadius (float deg){
+        return deg * (Math.PI/180);
+    }
+
+    private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString,
+                             String toCityString, String descriptionString, int groupId, long distance) {
+        Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString,
+                descriptionString, startDate, endDate, groupId, distance);
         if (myDB.addTrip(newTrip)) {
             if (radioSimple.isChecked()) {
                 showSimpleTripSavedPopUpMessage();
@@ -201,7 +226,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void updateTrip(String fromCountryString, String fromCityString, String toCountryString, String toCityString, String descriptionString) {
+    private void updateTrip(String fromCountryString, String fromCityString, String toCountryString,
+                            String toCityString, String descriptionString, long distance) {
         trip.setFromCountry(fromCountryString);
         trip.setFromCity(fromCityString);
         trip.setToCountry(toCountryString);
@@ -209,6 +235,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setDescription(descriptionString);
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
+        if (myDB.isTripMultiStop(trip.getGroupId())){
+            trip.setDistance(distance);
+        } else {
+            trip.setDistance(distance * 2);
+        }
 
         myDB.updateTrip(trip);
 

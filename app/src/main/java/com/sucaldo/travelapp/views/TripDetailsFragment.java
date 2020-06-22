@@ -18,6 +18,9 @@ import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 
 public class TripDetailsFragment extends Fragment implements View.OnClickListener {
 
@@ -58,6 +61,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 TextView startDate = rootView.findViewById(R.id.trip_start_date_view);
                 TextView endDate = rootView.findViewById(R.id.trip_end_date_view);
                 TextView description = rootView.findViewById(R.id.trip_description_view);
+                TextView distance = rootView.findViewById(R.id.trip_distance_view);
 
                 fromCountry.setText(trip.getFromCountry());
                 fromCity.setText(trip.getFromCity());
@@ -66,6 +70,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 startDate.setText(trip.getFormattedStartDate());
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
+                distance.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance()) + " km");
             }
         });
 

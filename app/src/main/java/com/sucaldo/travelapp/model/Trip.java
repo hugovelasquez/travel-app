@@ -18,9 +18,11 @@ public class Trip {
     private String description;
     private Date startDate;
     private Date endDate;
+    private long distance;
 
     // Constructor for adding trips to database
-    public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description, Date startDate, Date endDate, int groupId) {
+    public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description,
+                Date startDate, Date endDate, int groupId, long distance) {
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
@@ -29,6 +31,7 @@ public class Trip {
         this.startDate = startDate;
         this.endDate = endDate;
         this.groupId = groupId;
+        this.distance = distance;
     }
 
     // Constructor for getting trip out of database
@@ -40,6 +43,7 @@ public class Trip {
         this.description = data.getString(5);
         this.id = data.getInt(0);
         this.groupId = data.getInt(8);
+        this.distance = data.getLong(9);
         // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
@@ -121,6 +125,14 @@ public class Trip {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(long distance) {
+        this.distance = distance;
     }
 
     public String getFormattedStartDate() {
