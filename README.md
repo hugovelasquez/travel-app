@@ -6,7 +6,6 @@ Android App that stores and displays your travel history
 - Android Studio
 
 # To Do:
-1. Trip Details -> Add Multi-Stop Text
 1. Refactor code (Android Studio warnings, move clicklisteners to xml)
 1. Statistics 
 1. World Map
