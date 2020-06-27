@@ -75,6 +75,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 description.setText(trip.getDescription());
                 distance.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance()) + " km");
 
+                // Add information of stop number and next stop if trip is part of a muti-stop-trip
                 if (myDB.isTripMultiStop(trip.getGroupId())){
                     List<Trip> multiStopTrips = myDB.getAllTripsOfMultiStopSortedByDate(trip.getGroupId());
                     int index = getMultiTripIndex(multiStopTrips, trip.getId());

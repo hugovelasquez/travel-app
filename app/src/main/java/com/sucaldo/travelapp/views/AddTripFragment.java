@@ -312,8 +312,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         startDateField.setText(trip.getPickerFormattedEndDate());
         fromLat.setText(toLat.getText());
         fromLong.setText(toLong.getText());
+        toCountry.setText(trip.getToCountry());
 
-        toCountry.setText("");
         toCity.setText("");
         description.setText("");
         endDateField.setText("");
