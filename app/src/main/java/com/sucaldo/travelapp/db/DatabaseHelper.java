@@ -118,6 +118,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public List<Trip> getAllTripsOfMultiStopSortedByDate(int groupId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS + " WHERE " + COL_GRP_ID +
+                " = " + groupId, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0){
+            // empty list will be returned
+            return new ArrayList<>();
+        } else {
+            List<Trip> trips = new ArrayList<>();
+            while (data.moveToNext()) {
+                trips.add(new Trip(data));
+            }
+            trips.sort(new Comparator<Trip>() {
+                @Override
+                public int compare(Trip trip1, Trip trip2) {
+                    // Short way of defining a simple "if-else-statement"
+                    // if true put trip1 -1 position above trip2, else put trip1 1 position after trip2
+                    return trip1.getStartDate().before(trip2.getStartDate()) ? -1 : 1;
+                }
+
+            });
+            return trips;
+        }
+    }
+
     public int getLastTripId (){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
@@ -195,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Trip> getTripsOfYear(int year){
+    public List<Trip> getTripsOfYearSortedByDate(int year){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS + " WHERE " + COL_STDATE +
                 " LIKE '%" + year +"' ", null);

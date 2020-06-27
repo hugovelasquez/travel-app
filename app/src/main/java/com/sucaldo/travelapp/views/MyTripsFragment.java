@@ -106,7 +106,7 @@ public class MyTripsFragment extends Fragment {
     }
 
     private void addTripsOfClickedYearToList (YearListItem yearItem, List<Object> tripsAndYears){
-        List<Trip> trips = myDB.getTripsOfYear(yearItem.getYear());
+        List<Trip> trips = myDB.getTripsOfYearSortedByDate(yearItem.getYear());
         // trips of clicked year to be added after that year in the listview
         tripsAndYears.addAll(tripsAndYears.indexOf(yearItem) + 1, trips);
         setAdapterOfListView(tripsAndYears);

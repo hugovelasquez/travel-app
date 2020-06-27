@@ -85,6 +85,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         tripMode = AddTripMode.ADD_SIMPLE_TRIP_MODE;
 
         // Method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present
+        // This is the case when selecting a trip in the trips view to edit its content.
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {

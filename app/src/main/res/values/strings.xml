@@ -60,6 +60,10 @@
     <string name="text_longitude">Longitude</string>
     <string name="text_location_error">Not in db. Add manually.</string>
     <string name="text_distance">Distance</string>
+    <string name="multi_stop_number_text">Stop number: %1$d\n</string>
+    <string name="multi_stop_previous_stop_text">Previous stop: %1$s\n</string>
+    <string name="multi_stop_next_stop_text">Next stop: %1$s\n</string>
+    <string name="multi_stop_final_stop_text">Final stop</string>
 
 
 </resources>

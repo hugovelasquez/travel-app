@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -62,6 +64,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 TextView endDate = rootView.findViewById(R.id.trip_end_date_view);
                 TextView description = rootView.findViewById(R.id.trip_description_view);
                 TextView distance = rootView.findViewById(R.id.trip_distance_view);
+                TextView multiStopDescription = rootView.findViewById(R.id.trip_multitrip_descr_view);
 
                 fromCountry.setText(trip.getFromCountry());
                 fromCity.setText(trip.getFromCity());
@@ -71,10 +74,34 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
                 distance.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance()) + " km");
+
+                if (myDB.isTripMultiStop(trip.getGroupId())){
+                    List<Trip> multiStopTrips = myDB.getAllTripsOfMultiStopSortedByDate(trip.getGroupId());
+                    int index = getMultiTripIndex(multiStopTrips, trip.getId());
+                    String multiStopText = getString(R.string.multi_stop_number_text, index + 1);
+                    if (index < multiStopTrips.size() - 1) {
+                        String nextCity = multiStopTrips.get(index + 1).getToCity();
+                        multiStopText += getString(R.string.multi_stop_next_stop_text, nextCity);
+                    }  else {
+                        multiStopText += getString(R.string.multi_stop_final_stop_text);
+                    }
+                    multiStopDescription.setText(multiStopText);
+                } else {
+                    ((ViewManager) multiStopDescription.getParent()).removeView(multiStopDescription);
+                }
             }
         });
 
         return rootView;
+    }
+
+    private int getMultiTripIndex(List<Trip> trips, int tripId) {
+        for (Trip trip : trips){
+            if (trip.getId() == tripId){
+                return trips.indexOf(trip);
+            }
+        }
+        return 0;
     }
 
     @Override
