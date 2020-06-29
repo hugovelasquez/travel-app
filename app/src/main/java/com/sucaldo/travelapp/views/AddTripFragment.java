@@ -65,7 +65,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         toCountry = rootView.findViewById(R.id.to_country);
         toCity = rootView.findViewById(R.id.to_city);
         fromCity = rootView.findViewById(R.id.from_city);
-        description = rootView.findViewById(R.id.input_descr);
+        description = rootView.findViewById(R.id.input_description);
         fromLat = rootView.findViewById(R.id.from_lat);
         fromLong = rootView.findViewById(R.id.from_long);
         toLat = rootView.findViewById(R.id.to_lat);

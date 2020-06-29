@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +42,7 @@
 
             <TextView
                 android:id="@+id/text_from"
-                style="@style/textview_label"
+                style="@style/text_view_label"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="@string/text_from" />
@@ -56,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/text_country"
-                    android:maxLength="@string/char_limit_ctry_cty" />
+                    android:maxLength="@string/char_limit_country_or_city" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/label_indentation"
                 android:hint="@string/text_city"
-                android:maxLength="@string/char_limit_ctry_cty" />
+                android:maxLength="@string/char_limit_country_or_city" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -119,6 +120,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
+                android:contentDescription="@string/calculate_loc_image_description"
                 android:src="@drawable/ic_refresh_black_24dp" />
 
         </LinearLayout>
@@ -131,7 +133,7 @@
 
             <TextView
                 android:id="@+id/text_to"
-                style="@style/textview_label"
+                style="@style/text_view_label"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="@string/text_to" />
@@ -146,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/text_country"
-                    android:maxLength="@string/char_limit_ctry_cty" />
+                    android:maxLength="@string/char_limit_country_or_city" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -162,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/label_indentation"
                 android:hint="@string/text_city"
-                android:maxLength="@string/char_limit_ctry_cty" />
+                android:maxLength="@string/char_limit_country_or_city" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -208,6 +210,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
+                android:contentDescription="@string/calculate_loc_image_description"
                 android:src="@drawable/ic_refresh_black_24dp" />
 
         </LinearLayout>
@@ -219,17 +222,19 @@
 
             <TextView
                 android:id="@+id/text_start"
-                style="@style/textview_label"
+                style="@style/text_view_label"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/trip_start_date"
                 android:text="@string/text_trip_start" />
 
             <EditText
                 android:id="@+id/trip_start_date"
                 style="@style/label_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="10"
+                android:importantForAutofill="no"
                 android:inputType="date" />
 
             <ImageView
@@ -237,6 +242,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
+                android:contentDescription="@string/date_picker_image_description"
                 android:src="@drawable/date_icon" />
 
         </LinearLayout>
@@ -248,17 +254,19 @@
 
             <TextView
                 android:id="@+id/text_end"
-                style="@style/textview_label"
+                style="@style/text_view_label"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/trip_end_date"
                 android:text="@string/text_trip_end" />
 
             <EditText
                 android:id="@+id/trip_end_date"
                 style="@style/label_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="10"
+                android:importantForAutofill="no"
                 android:inputType="date" />
 
             <ImageView
@@ -266,6 +274,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_gravity="center"
+                android:contentDescription="@string/date_picker_image_description"
                 android:src="@drawable/date_icon" />
 
         </LinearLayout>
@@ -275,12 +284,12 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_descr"
+                android:id="@+id/input_description"
                 style="@style/label_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/text_trip_descr"
-                android:maxLength="@string/char_limit_descr" />
+                android:hint="@string/text_trip_description"
+                android:maxLength="@string/char_limit_description" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -296,7 +305,8 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_margin="@dimen/layout_margin"
-            android:src="@drawable/add_trip_foto_display">
+            android:contentDescription="@string/add_edit_trip_image_description"
+            android:src="@drawable/add_trip_photo_display">
 
         </ImageView>
 

@@ -15,32 +15,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Definition of variables
-    public static final String DATABASE_NAME = "my_trips.db";
-    public static final String TABLE_TRIPS = "trips";
-    public static final String COL_TRIPS_ID = "ID";
-    public static final String COL_FRCTRY = "FROMCOUNTRY";
-    public static final String COL_FRCTY = "FROMCITY";
-    public static final String COL_TOCTRY = "TOCOUNTRY";
-    public static final String COL_TOCTY = "TOCITY";
-    public static final String COL_DESCR = "DESCRIPTION";
-    public static final String COL_STDATE = "STARTDATE";
-    public static final String COL_EDATE = "ENDDATE";
-    public static final String COL_GRP_ID = "GROUPID";
-    public static final String COL_DIST = "DISTANCE";
+    private static final String DATABASE_NAME = "my_trips.db";
+    private static final String TABLE_TRIPS = "trips";
+    private static final String COL_TRIPS_ID = "ID";
+    private static final String COL_FROM_COUNTRY = "FROMCOUNTRY";
+    private static final String COL_FROM_CITY = "FROMCITY";
+    private static final String COL_TO_COUNTRY = "TOCOUNTRY";
+    private static final String COL_TO_CITY = "TOCITY";
+    private static final String COL_DESCRIPTION = "DESCRIPTION";
+    private static final String COL_START_DATE = "STARTDATE";
+    private static final String COL_END_DATE = "ENDDATE";
+    private static final String COL_GRP_ID = "GROUPID";
+    private static final String COL_DIST = "DISTANCE";
 
-    public static final String TABLE_CITY_LOC = "city_loc";
-    public static final String COL_CITY_LOC_ID = "ID";
-    public static final String COL_CITY_LOC_CTRY = "COUNTRY";
-    public static final String COL_CITY_LOC_CTY = "CITY";
-    public static final String COL_LAT = "LATITUDE";
-    public static final String COL_LONG = "LONGITUDE";
+    private static final String TABLE_CITY_LOC = "city_loc";
+    private static final String COL_CITY_LOC_ID = "ID";
+    private static final String COL_CITY_LOC_COUNTRY = "COUNTRY";
+    private static final String COL_CITY_LOC_CITY = "CITY";
+    private static final String COL_LAT = "LATITUDE";
+    private static final String COL_LONG = "LONGITUDE";
 
 
     // Initialization of Database
@@ -52,17 +52,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // SQLite does not have data type varchar() or Date
-        String createTableTrips = "CREATE TABLE " + TABLE_TRIPS + " (" + COL_TRIPS_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " " + COL_FRCTRY + " TEXT, " + COL_FRCTY + " TEXT, " + COL_TOCTRY + " TEXT, " + COL_TOCTY + " TEXT," +
-                " " + COL_DESCR + " TEXT, " + COL_STDATE + " TEXT, " + COL_EDATE + " TEXT, " + COL_GRP_ID + " INTEGER," +
+        String createTableTrips = "CREATE TABLE " + TABLE_TRIPS + " (" + COL_TRIPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " " + COL_FROM_COUNTRY + " TEXT, " + COL_FROM_CITY + " TEXT, " + COL_TO_COUNTRY + " TEXT, " + COL_TO_CITY + " TEXT," +
+                " " + COL_DESCRIPTION + " TEXT, " + COL_START_DATE + " TEXT, " + COL_END_DATE + " TEXT, " + COL_GRP_ID + " INTEGER," +
                 " " + COL_DIST + " INTEGER)";
         db.execSQL(createTableTrips);
 
         String createTableCityLoc = "CREATE TABLE " + TABLE_CITY_LOC + " (" + COL_CITY_LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " " + COL_CITY_LOC_CTRY + " TEXT, " + COL_CITY_LOC_CTY + " TEXT, " + COL_LAT + " FLOAT, " +
+                " " + COL_CITY_LOC_COUNTRY + " TEXT, " + COL_CITY_LOC_CITY + " TEXT, " + COL_LAT + " FLOAT, " +
                 " " + COL_LONG + " FLOAT)";
         db.execSQL(createTableCityLoc);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_TRIPS);
@@ -74,13 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_FRCTRY, trip.getFromCountry());
-        contentValues.put(COL_FRCTY, trip.getFromCity());
-        contentValues.put(COL_TOCTRY, trip.getToCountry());
-        contentValues.put(COL_TOCTY, trip.getToCity());
-        contentValues.put(COL_DESCR, trip.getDescription());
-        contentValues.put(COL_STDATE, trip.getStartDate().toString());
-        contentValues.put(COL_EDATE, trip.getEndDate().toString());
+        contentValues.put(COL_FROM_COUNTRY, trip.getFromCountry());
+        contentValues.put(COL_FROM_CITY, trip.getFromCity());
+        contentValues.put(COL_TO_COUNTRY, trip.getToCountry());
+        contentValues.put(COL_TO_CITY, trip.getToCity());
+        contentValues.put(COL_DESCRIPTION, trip.getDescription());
+        contentValues.put(COL_START_DATE, trip.getStartDate().toString());
+        contentValues.put(COL_END_DATE, trip.getEndDate().toString());
         contentValues.put(COL_DIST, trip.getDistance());
         if (trip.getGroupId() == -1) {
             contentValues.put(COL_GRP_ID, getNextAvailableGroupId());
@@ -95,36 +96,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // GroupIds are used for differentiation of multi-stop trips
-    private int getNextAvailableGroupId (){
+    private int getNextAvailableGroupId() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT IFNULL(MAX(" + COL_GRP_ID + " ),0) FROM " + TABLE_TRIPS, null);
-
-        while (data.moveToNext()) {
-            int lastGroupId = Integer.valueOf(data.getString(0));
-            return ++lastGroupId;
+        try {
+            while (data.moveToNext()) {
+                int lastGroupId = data.getInt(0);
+                return ++lastGroupId;
+            }
+            return 0;
+        } finally {
+            closeCursor(data);
         }
-        return 0;
     }
 
-    public boolean isTripMultiStop (int groupId){
+    public boolean isTripMultiStop(int groupId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_TRIPS +
-                " WHERE " + COL_GRP_ID + " = " + groupId , null);
-
-        while (data.moveToNext()) {
-            int rowCount = data.getInt(0);
-            return rowCount > 1;
+                " WHERE " + COL_GRP_ID + " = " + groupId, null);
+        try {
+            while (data.moveToNext()) {
+                int rowCount = data.getInt(0);
+                return rowCount > 1;
+            }
+            return false;
+        } finally {
+            closeCursor(data);
         }
-        return false;
     }
 
-    public List<Trip> getAllTripsOfMultiStopSortedByDate(int groupId){
+    public List<Trip> getAllTripsOfMultiStopSortedByDate(int groupId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS + " WHERE " + COL_GRP_ID +
                 " = " + groupId, null);
 
         int numRows = data.getCount();
-        if (numRows == 0){
+        if (numRows == 0) {
             // empty list will be returned
             return new ArrayList<>();
         } else {
@@ -132,32 +139,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (data.moveToNext()) {
                 trips.add(new Trip(data));
             }
-            trips.sort(new Comparator<Trip>() {
-                @Override
-                public int compare(Trip trip1, Trip trip2) {
-                    // Short way of defining a simple "if-else-statement"
-                    // if true put trip1 -1 position above trip2, else put trip1 1 position after trip2
-                    return trip1.getStartDate().before(trip2.getStartDate()) ? -1 : 1;
-                }
-
-            });
+            Collections.sort(trips);
             return trips;
         }
     }
 
-    public int getLastTripId (){
+    public int getLastTripId() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
-
-        while (data.moveToNext()) {
-            return Integer.valueOf(data.getString(0));
+        try {
+            while (data.moveToNext()) {
+                return data.getInt(0);
+            }
+            return 0;
+        } finally {
+            closeCursor(data);
         }
-        return 0;
     }
 
 
-   // Method for retrieving trip out of database
-    public Trip getTripById(int id){
+    // Method for retrieving trip out of database
+    public Trip getTripById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS +
                 " WHERE " + COL_TRIPS_ID + " = '" + id + "'", null);
@@ -169,66 +171,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Method for updating a trip in the database
-    public void updateTrip(Trip trip){
+    public void updateTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_TRIPS + " SET " +
-                COL_FRCTRY + " = '" + trip.getFromCountry() + "'," +
-                COL_FRCTY + " = '" + trip.getFromCity() + "'," +
-                COL_TOCTRY + " = '" + trip.getToCountry() + "'," +
-                COL_TOCTY + " = '" + trip.getToCity() + "'," +
-                COL_DESCR + " = '" + trip.getDescription() + "'," +
-                COL_STDATE + " = '" + trip.getStartDate() + "'," +
-                COL_EDATE + " = '" + trip.getEndDate() + "'," +
+                COL_FROM_COUNTRY + " = '" + trip.getFromCountry() + "'," +
+                COL_FROM_CITY + " = '" + trip.getFromCity() + "'," +
+                COL_TO_COUNTRY + " = '" + trip.getToCountry() + "'," +
+                COL_TO_CITY + " = '" + trip.getToCity() + "'," +
+                COL_DESCRIPTION + " = '" + trip.getDescription() + "'," +
+                COL_START_DATE + " = '" + trip.getStartDate() + "'," +
+                COL_END_DATE + " = '" + trip.getEndDate() + "'," +
                 COL_GRP_ID + " = '" + trip.getGroupId() + "'," +
                 COL_DIST + " = '" + trip.getDistance() + "' " +
-                " WHERE " + COL_TRIPS_ID + " = " + trip.getId() );
+                " WHERE " + COL_TRIPS_ID + " = " + trip.getId());
     }
 
     // Method for deleting a field in database
-    public void deleteTrip(int id){
+    public void deleteTrip(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TRIPS + " WHERE " + COL_TRIPS_ID + " = " + id);
     }
 
     // Method for selecting all distinct trip years in database
-    public List<Integer> getAllYearsOfTrips (){
+    public List<Integer> getAllYearsOfTrips() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT " + COL_STDATE + " FROM " + TABLE_TRIPS, null);
+        Cursor data = db.rawQuery("SELECT " + COL_START_DATE + " FROM " + TABLE_TRIPS, null);
+        try {
+            int numRows = data.getCount();
+            if (numRows == 0) {
+                // empty list will be returned
+                return new ArrayList<>();
+            } else {
+                List<Integer> years = new ArrayList<>();
+                while (data.moveToNext()) {
+                    String dateString = data.getString(0);
+                    Date startDate;
+                    try {
+                        startDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(dateString);
+                    } catch (ParseException e) {
+                        startDate = new Date();
+                    }
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(startDate);
+                    int year = cal.get(Calendar.YEAR);
 
-        int numRows = data.getCount();
-        if (numRows == 0){
-            // empty list will be returned
-            return new ArrayList<>();
-        } else {
-            List<Integer> years = new ArrayList<>();
-            while (data.moveToNext()) {
-                String dateString = data.getString(0);
-                Date startDate;
-                try {
-                    startDate = new SimpleDateFormat(DateFormat.DB).parse(dateString);
-                } catch (ParseException e) {
-                    startDate = new Date();
+                    if (!years.contains(year)) {
+                        years.add(year);
+                    }
                 }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(startDate);
-                int year = cal.get(Calendar.YEAR);
-
-                if (!years.contains(year)) {
-                    years.add(year);
-                }
+                Collections.sort(years);
+                return years;
             }
-            Collections.sort(years);
-            return years;
+        } finally {
+            closeCursor(data);
         }
+
     }
 
-    public List<Trip> getTripsOfYearSortedByDate(int year){
+    public List<Trip> getTripsOfYearSortedByDate(int year) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS + " WHERE " + COL_STDATE +
-                " LIKE '%" + year +"' ", null);
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS + " WHERE " + COL_START_DATE +
+                " LIKE '%" + year + "' ", null);
 
         int numRows = data.getCount();
-        if (numRows == 0){
+        if (numRows == 0) {
             // empty list will be returned
             return new ArrayList<>();
         } else {
@@ -236,24 +242,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (data.moveToNext()) {
                 trips.add(new Trip(data));
             }
-            trips.sort(new Comparator<Trip>() {
-                @Override
-                public int compare(Trip trip1, Trip trip2) {
-                    // Short way of defining a simple "if-else-statement"
-                    // if true put trip1 -1 position above trip2, else put trip1 1 position after trip2
-                    return trip1.getStartDate().before(trip2.getStartDate()) ? -1 : 1;
-                }
-
-            });
+            Collections.sort(trips);
             return trips;
         }
     }
 
-    public boolean addCityLocItem (String country, String city, Float latitude, Float longitude){
+    public boolean addCityLocItem(String country, String city, Float latitude, Float longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_CITY_LOC_CTRY, country);
-        contentValues.put(COL_CITY_LOC_CTY, city);
+        contentValues.put(COL_CITY_LOC_COUNTRY, country);
+        contentValues.put(COL_CITY_LOC_CITY, city);
         contentValues.put(COL_LAT, latitude);
         contentValues.put(COL_LONG, longitude);
 
@@ -263,22 +261,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean isCityLocTableEmpty(){
+    public boolean isCityLocTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC, null);
-
-        while (data.moveToNext()) {
-            int rowCount = Integer.valueOf(data.getString(0));
-            // to consider all possible return values of count (0, -1, etc.)
-            return rowCount < 1;
+        try {
+            while (data.moveToNext()) {
+                int rowCount = data.getInt(0);
+                // to consider all possible return values of count (0, -1, etc.)
+                return rowCount < 1;
+            }
+            return true;
+        } finally {
+            closeCursor(data);
         }
-        return true;
     }
 
-    public CityLocation getLatitudeAndLongitudeOfCity(String country, String city){
+    public CityLocation getLatitudeAndLongitudeOfCity(String country, String city) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT " + COL_LAT + " , " + COL_LONG + " FROM " + TABLE_CITY_LOC + " WHERE "
-                + COL_CITY_LOC_CTRY + " = '" + country + "' AND " + COL_CITY_LOC_CTY + " = '" + city + "'", null);
+                + COL_CITY_LOC_COUNTRY + " = '" + country + "' AND " + COL_CITY_LOC_CITY + " = '" + city + "'", null);
 
         while (data.moveToNext()) {
             return new CityLocation(data);
@@ -286,22 +287,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public void saveCityLocationIfNotInDb(CityLocation cityLocation){
-        if (isCityLocationInDb(cityLocation)){
+    public void saveCityLocationIfNotInDb(CityLocation cityLocation) {
+        if (isCityLocationInDb(cityLocation)) {
             return;
         }
         addCityLocItem(cityLocation.getCountry(), cityLocation.getCity(), cityLocation.getLatitude(), cityLocation.getLongitude());
     }
 
-    private boolean isCityLocationInDb (CityLocation cityLocation){
+    private boolean isCityLocationInDb(CityLocation cityLocation) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_CTRY +
-                " = '" + cityLocation.getCountry() + "' AND " + COL_CITY_LOC_CTY + " = '" + cityLocation.getCity() + "'", null);
-
-        while (data.moveToNext()) {
-            int rowCount = Integer.valueOf(data.getString(0));
-            return rowCount >= 1;
+        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY +
+                " = '" + cityLocation.getCountry() + "' AND " + COL_CITY_LOC_CITY + " = '" + cityLocation.getCity() + "'", null);
+        try {
+            while (data.moveToNext()) {
+                int rowCount = data.getInt(0);
+                return rowCount >= 1;
+            }
+            return false;
+        } finally {
+            closeCursor(data);
         }
-        return false;
+    }
+
+    private void closeCursor(Cursor cursor) {
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 }

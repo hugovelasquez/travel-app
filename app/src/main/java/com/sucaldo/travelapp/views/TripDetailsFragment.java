@@ -26,7 +26,6 @@ import java.util.Locale;
 
 public class TripDetailsFragment extends Fragment implements View.OnClickListener {
 
-    private Button btnDelete, btnEdit, btnCancel;
     private MainActivity activity;
     private int tripId;
     private DatabaseHelper myDB;
@@ -38,9 +37,9 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
         final View rootView = inflater.inflate(R.layout.trip_details_view, container, false);
 
         activity = (MainActivity) getActivity();
-        btnEdit = rootView.findViewById(R.id.btn_edit_view);
-        btnCancel = rootView.findViewById(R.id.btn_cancel_view);
-        btnDelete = rootView.findViewById(R.id.btn_delete_view);
+        Button btnEdit = rootView.findViewById(R.id.btn_edit_view);
+        Button btnCancel = rootView.findViewById(R.id.btn_cancel_view);
+        Button btnDelete = rootView.findViewById(R.id.btn_delete_view);
 
         btnCancel.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
@@ -53,7 +52,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
                 String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
-                tripId = Integer. parseInt(tripIdString);
+                tripId = Integer.parseInt(tripIdString);
                 Trip trip = myDB.getTripById(tripId);
 
                 TextView fromCountry = rootView.findViewById(R.id.from_country_view);
@@ -73,17 +72,17 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 startDate.setText(trip.getFormattedStartDate());
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
-                distance.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance()) + " km");
+                distance.setText(getString(R.string.km_display_format, NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance())));
 
-                // Add information of stop number and next stop if trip is part of a muti-stop-trip
-                if (myDB.isTripMultiStop(trip.getGroupId())){
+                // Add information of stop number and next stop if trip is part of a multi-stop-trip
+                if (myDB.isTripMultiStop(trip.getGroupId())) {
                     List<Trip> multiStopTrips = myDB.getAllTripsOfMultiStopSortedByDate(trip.getGroupId());
                     int index = getMultiTripIndex(multiStopTrips, trip.getId());
                     String multiStopText = getString(R.string.multi_stop_number_text, index + 1);
                     if (index < multiStopTrips.size() - 1) {
                         String nextCity = multiStopTrips.get(index + 1).getToCity();
                         multiStopText += getString(R.string.multi_stop_next_stop_text, nextCity);
-                    }  else {
+                    } else {
                         multiStopText += getString(R.string.multi_stop_final_stop_text);
                     }
                     multiStopDescription.setText(multiStopText);
@@ -97,8 +96,8 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
     }
 
     private int getMultiTripIndex(List<Trip> trips, int tripId) {
-        for (Trip trip : trips){
-            if (trip.getId() == tripId){
+        for (Trip trip : trips) {
+            if (trip.getId() == tripId) {
                 return trips.indexOf(trip);
             }
         }

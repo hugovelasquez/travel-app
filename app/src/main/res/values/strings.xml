@@ -5,6 +5,7 @@
     <string name="date_format">d.M.yyyy</string>
     <string name="date_format_pretty">dd.MM.yy</string>
     <string name="date_picker_format">%1$d.%2$d.%3$d</string>
+    <string name="km_display_format">%1$s km</string>
 
     <!-- navbar -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -23,8 +24,8 @@
     <string name="fragment_request_key_group">requestKeyGroup</string>
 
     <!-- character limits -->
-    <string name="char_limit_descr">25</string>
-    <string name="char_limit_ctry_cty">20</string>
+    <string name="char_limit_description">25</string>
+    <string name="char_limit_country_or_city">20</string>
     <string name="char_limit_lat_long">9</string>
 
     <!-- views -->
@@ -34,7 +35,7 @@
     <string name="text_to">To</string>
     <string name="text_trip_start">Start</string>
     <string name="text_trip_end">End</string>
-    <string name="text_trip_descr">Description</string>
+    <string name="text_trip_description">Description</string>
     <string name="text_save">Save</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_empty_field_error">Field is empty</string>
@@ -65,6 +66,9 @@
     <string name="multi_stop_previous_stop_text">Previous stop: %1$s\n</string>
     <string name="multi_stop_next_stop_text">Next stop: %1$s\n</string>
     <string name="multi_stop_final_stop_text">Final stop</string>
+    <string name="calculate_loc_image_description">Calculate</string>
+    <string name="date_picker_image_description">open calendar</string>
+    <string name="add_edit_trip_image_description">Add or edit your trip</string>
 
 
 </resources>

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Trip {
+public class Trip implements Comparable<Trip>{
 
     private int id;
     private int groupId;
@@ -155,5 +155,16 @@ public class Trip {
     private String formatDate(Date date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(date);
+    }
+
+    @Override
+    public int compareTo(Trip o) {
+        if (this.getStartDate().before(o.getStartDate())) {
+            return -1;
+        }
+        if (this.getStartDate().after(o.getStartDate())) {
+            return 1;
+        }
+        return 0;
     }
 }

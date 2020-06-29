@@ -26,7 +26,6 @@ public class MyTripsFragment extends Fragment {
 
     private MainActivity activity;
     private DatabaseHelper myDB;
-    private MultiColumnAdapter listAdapter;
     private ListView listView;
 
     @Nullable
@@ -37,9 +36,9 @@ public class MyTripsFragment extends Fragment {
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
 
-        if (myDB.isCityLocTableEmpty()){
-            Toast.makeText(getContext(),"Adding latitude and longitude of cities worldwide to database",Toast.LENGTH_LONG).show();
-            Toast.makeText(getContext(),"This might take a while...",Toast.LENGTH_LONG).show();
+        if (myDB.isCityLocTableEmpty()) {
+            Toast.makeText(getContext(), "Adding latitude and longitude of cities worldwide to database", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "This might take a while...", Toast.LENGTH_LONG).show();
             // Read csv data in the background
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -56,8 +55,8 @@ public class MyTripsFragment extends Fragment {
         listView = rootView.findViewById(R.id.listView);
 
         List<Integer> years = myDB.getAllYearsOfTrips();
-        List <YearListItem> yearItems = new ArrayList<>();
-        for(int year : years) {
+        List<YearListItem> yearItems = new ArrayList<>();
+        for (int year : years) {
             yearItems.add(new YearListItem(year));
         }
 
@@ -84,10 +83,9 @@ public class MyTripsFragment extends Fragment {
                     if (yearItem.isExpanded()) {
                         yearItem.setExpanded(false);
                         removeTripsOfClickedYearFromList(yearItem, tripsAndYears);
-                    }
-                    else {
+                    } else {
                         yearItem.setExpanded(true);
-                        addTripsOfClickedYearToList(yearItem,tripsAndYears);
+                        addTripsOfClickedYearToList(yearItem, tripsAndYears);
                     }
                 }
 
@@ -97,7 +95,7 @@ public class MyTripsFragment extends Fragment {
         return rootView;
     }
 
-    private void openTripDetailFragment(){
+    private void openTripDetailFragment() {
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new TripDetailsFragment()).commit();
         activity.getSupportActionBar().setTitle(getString(R.string.navbar_trip_details));
@@ -105,21 +103,21 @@ public class MyTripsFragment extends Fragment {
         activity.navigationView.getMenu().getItem(0).setChecked(false);
     }
 
-    private void addTripsOfClickedYearToList (YearListItem yearItem, List<Object> tripsAndYears){
+    private void addTripsOfClickedYearToList(YearListItem yearItem, List<Object> tripsAndYears) {
         List<Trip> trips = myDB.getTripsOfYearSortedByDate(yearItem.getYear());
-        // trips of clicked year to be added after that year in the listview
+        // trips of clicked year to be added after that year in the list view
         tripsAndYears.addAll(tripsAndYears.indexOf(yearItem) + 1, trips);
         setAdapterOfListView(tripsAndYears);
     }
 
     private void removeTripsOfClickedYearFromList(YearListItem yearListItem, List<Object> tripsAndYears) {
         List<Object> tripsToRemove = new ArrayList<>();
-        for (int i = (tripsAndYears.indexOf(yearListItem) + 1); i < tripsAndYears.size(); i++){
+        for (int i = (tripsAndYears.indexOf(yearListItem) + 1); i < tripsAndYears.size(); i++) {
             Object listItem = tripsAndYears.get(i);
-            if (listItem instanceof Trip){
+            if (listItem instanceof Trip) {
                 tripsToRemove.add(listItem);
             }
-            if (listItem instanceof YearListItem){
+            if (listItem instanceof YearListItem) {
                 break;
             }
         }
@@ -128,7 +126,7 @@ public class MyTripsFragment extends Fragment {
     }
 
     private void setAdapterOfListView(List<Object> tripsAndYears) {
-        listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, tripsAndYears);
+        MultiColumnAdapter listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, tripsAndYears);
         listView.setAdapter(listAdapter);
     }
 }

@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/description"
-            android:text="@string/text_trip_descr"
+            android:text="@string/text_trip_description"
             android:layout_weight="13"
             style="@style/list_adapter_header"/>
 
