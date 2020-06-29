@@ -32,20 +32,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     // Definition of variables
-    private DatePickerDialog picker;
     private EditText startDateField, endDateField;
-    private ImageView startDateIcon, endDateIcon, fromLocIcon, toLocIcon;
     private TextInputEditText fromCountry, fromCity, toCountry, toCity, description, fromLat, fromLong, toLat, toLong;
-    private Button btnSave, btnCancel;
     private Date startDate, endDate;
     private MainActivity activity;
     private DatabaseHelper myDB;
     private RadioGroup radioGroup;
-    private RadioButton radioSimple, radioMulti;
+    private RadioButton radioSimple;
     private AddTripMode tripMode;
 
     private Trip trip;
@@ -61,8 +59,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         startDateField = rootView.findViewById(R.id.trip_start_date);
         endDateField = rootView.findViewById(R.id.trip_end_date);
-        startDateIcon = rootView.findViewById(R.id.start_date_icon);
-        endDateIcon = rootView.findViewById(R.id.end_date_icon);
+        ImageView startDateIcon = rootView.findViewById(R.id.start_date_icon);
+        ImageView endDateIcon = rootView.findViewById(R.id.end_date_icon);
         fromCountry = rootView.findViewById(R.id.from_country);
         toCountry = rootView.findViewById(R.id.to_country);
         toCity = rootView.findViewById(R.id.to_city);
@@ -72,13 +70,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         fromLong = rootView.findViewById(R.id.from_long);
         toLat = rootView.findViewById(R.id.to_lat);
         toLong = rootView.findViewById(R.id.to_long);
-        fromLocIcon = rootView.findViewById(R.id.from_loc_icon);
-        toLocIcon = rootView.findViewById(R.id.to_loc_icon);
-        btnSave = rootView.findViewById(R.id.btn_save);
-        btnCancel = rootView.findViewById(R.id.btn_cancel);
+        ImageView fromLocIcon = rootView.findViewById(R.id.from_loc_icon);
+        ImageView toLocIcon = rootView.findViewById(R.id.to_loc_icon);
+        Button btnSave = rootView.findViewById(R.id.btn_save);
+        Button btnCancel = rootView.findViewById(R.id.btn_cancel);
         radioGroup = rootView.findViewById(R.id.radio_group);
         radioSimple = rootView.findViewById(R.id.radio_simple);
-        radioMulti = rootView.findViewById(R.id.radio_multi);
 
         // Default case is simple trip
         radioSimple.setChecked(true);
@@ -122,6 +119,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        DatePickerDialog picker;
         switch (v.getId()) {
             case R.id.start_date_icon:
                 picker = getPicker(startDateField);
@@ -138,25 +136,25 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 activity.goToMyTrips();
                 break;
             case R.id.from_loc_icon:
-                getLocationOfCity(fromCountry.getText().toString(),fromCity.getText().toString(), fromLat, fromLong);
+                getLocationOfCity(fromCountry.getText().toString(), fromCity.getText().toString(), fromLat, fromLong);
                 break;
             case R.id.to_loc_icon:
-                getLocationOfCity(toCountry.getText().toString(),toCity.getText().toString(), toLat, toLong);
+                getLocationOfCity(toCountry.getText().toString(), toCity.getText().toString(), toLat, toLong);
                 break;
         }
     }
 
-    private void getLocationOfCity (String country, String city, TextInputEditText latitude, TextInputEditText longitude){
+    private void getLocationOfCity(String country, String city, TextInputEditText latitude, TextInputEditText longitude) {
         latitude.setError(null);
         longitude.setError(null);
 
-        CityLocation cityLocation = myDB.getLatitudeAndLongitudeOfCity(country,city);
-        if (cityLocation == null){
+        CityLocation cityLocation = myDB.getLatitudeAndLongitudeOfCity(country, city);
+        if (cityLocation == null) {
             latitude.setError(getString(R.string.text_location_error));
             longitude.setError(getString(R.string.text_location_error));
         } else {
-            latitude.setText(Float.toString(cityLocation.getLatitude()));
-            longitude.setText(Float.toString(cityLocation.getLongitude()));
+            latitude.setText(String.format(Locale.getDefault(), "%.4f", cityLocation.getLatitude()));
+            longitude.setText(String.format(Locale.getDefault(), "%.4f", cityLocation.getLongitude()));
         }
     }
 
@@ -194,21 +192,21 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private long getDistanceFromLatLongInKms (float lat1, float long1, float lat2, float long2){
+    private long getDistanceFromLatLongInKms(float lat1, float long1, float lat2, float long2) {
         int radiusEarth = 6371;
-        double dLat = degToRadius(lat2-lat1);
-        double dLong = degToRadius(long2-long1);
+        double dLat = degToRadius(lat2 - lat1);
+        double dLong = degToRadius(long2 - long1);
         double a =
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(degToRadius(lat1)) * Math.cos(degToRadius(lat2)) *
-                Math.sin(dLong/2) * Math.sin(dLong/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(degToRadius(lat1)) * Math.cos(degToRadius(lat2)) *
+                                Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = radiusEarth * c;
         return Math.round(d);
     }
 
-    private double degToRadius (float deg){
-        return deg * (Math.PI/180);
+    private double degToRadius(float deg) {
+        return deg * (Math.PI / 180);
     }
 
     private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString,
@@ -222,7 +220,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 showMultiTripSavedPopUpMessage();
             }
         } else {
-                showTripSavedErrorPopUpMessage();
+            showTripSavedErrorPopUpMessage();
         }
     }
 
@@ -236,7 +234,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setDescription(descriptionString);
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
-        if (myDB.isTripMultiStop(trip.getGroupId())){
+        if (myDB.isTripMultiStop(trip.getGroupId())) {
             trip.setDistance(distance);
         } else {
             trip.setDistance(distance * 2);
@@ -296,7 +294,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.show();
     }
 
-    private void showTripSavedErrorPopUpMessage(){
+    private void showTripSavedErrorPopUpMessage() {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
         alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
@@ -346,7 +344,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     }
 
     private boolean validateStartAndEndDate(EditText startDateField, EditText endDateField) {
-        SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format));
+        SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
 
         // Return false if either start or end Date field are empty
         if (!checkIfFieldInputIsEmpty(startDateField) | !checkIfFieldInputIsEmpty(endDateField)) {
@@ -377,16 +375,16 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     }
 
     private DatePickerDialog getPicker(final EditText dateInput) {
-        final Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
+        final Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
 
         return new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        dateInput.setText(dayOfMonth + "." + (monthOfYear + 1) + "." + year);
+                        dateInput.setText(getString(R.string.date_picker_format, dayOfMonth, monthOfYear + 1, year));
                         // if field not empty, remove error
                         dateInput.setError(null);
                     }

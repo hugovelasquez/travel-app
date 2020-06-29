@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 public class CsvHelper {
 
-    private DatabaseHelper myDB;
+    private final DatabaseHelper myDB;
 
     // Constructor to define input that CsvHelper receives
     public CsvHelper(DatabaseHelper myDB) {

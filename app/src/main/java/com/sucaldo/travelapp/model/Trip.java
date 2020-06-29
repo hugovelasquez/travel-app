@@ -6,6 +6,7 @@ import android.database.Cursor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Trip {
 
@@ -48,12 +49,12 @@ public class Trip {
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
         try {
-            this.startDate = new SimpleDateFormat(DateFormat.DB).parse(data.getString(6));
+            this.startDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(6));
         } catch (ParseException e) {
             this.startDate = new Date();
         }
         try {
-            this.endDate = new SimpleDateFormat(DateFormat.DB).parse(data.getString(7));
+            this.endDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(7));
         } catch (ParseException e) {
             this.endDate = new Date();
         }
@@ -152,7 +153,7 @@ public class Trip {
     }
 
     private String formatDate(Date date, String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(date);
     }
 }

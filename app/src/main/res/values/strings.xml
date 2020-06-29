@@ -4,6 +4,7 @@
     <!-- formats -->
     <string name="date_format">d.M.yyyy</string>
     <string name="date_format_pretty">dd.MM.yy</string>
+    <string name="date_picker_format">%1$d.%2$d.%3$d</string>
 
     <!-- navbar -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
