@@ -3,7 +3,6 @@
 
     <!-- formats -->
     <string name="date_format">d.M.yyyy</string>
-    <string name="date_format_pretty">dd.MM.yy</string>
     <string name="date_picker_format">%1$d.%2$d.%3$d</string>
     <string name="km_display_format">%1$s km</string>
 
@@ -20,8 +19,6 @@
     <string name="fragment_key_trip_id">tripId</string>
     <string name="fragment_request_key_view">requestKeyView</string>
     <string name="fragment_request_key_edit">requestKeyEdit</string>
-    <string name="fragment_key_group_id">groupId</string>
-    <string name="fragment_request_key_group">requestKeyGroup</string>
 
     <!-- character limits -->
     <string name="char_limit_description">25</string>
@@ -63,7 +60,6 @@
     <string name="text_location_error">Not in db. Add manually.</string>
     <string name="text_distance">Distance</string>
     <string name="multi_stop_number_text">Stop number: %1$d\n</string>
-    <string name="multi_stop_previous_stop_text">Previous stop: %1$s\n</string>
     <string name="multi_stop_next_stop_text">Next stop: %1$s\n</string>
     <string name="multi_stop_final_stop_text">Final stop</string>
     <string name="calculate_loc_image_description">Calculate</string>

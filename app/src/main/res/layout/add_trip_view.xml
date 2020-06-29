@@ -306,7 +306,7 @@
             android:layout_height="400dp"
             android:layout_margin="@dimen/layout_margin"
             android:contentDescription="@string/add_edit_trip_image_description"
-            android:src="@drawable/add_trip_photo_display">
+            android:src="@mipmap/add_trip_photo_display">
 
         </ImageView>
 
@@ -317,14 +317,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_save"
-                style="@style/button"
-                android:text="@string/text_save" />
-
-            <Button
                 android:id="@+id/btn_cancel"
                 style="@style/button"
                 android:text="@string/text_cancel" />
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/button"
+                android:text="@string/text_save" />
 
         </LinearLayout>
 

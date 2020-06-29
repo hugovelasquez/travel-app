@@ -124,10 +124,6 @@ public class Trip implements Comparable<Trip>{
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
     public long getDistance() {
         return distance;
     }
