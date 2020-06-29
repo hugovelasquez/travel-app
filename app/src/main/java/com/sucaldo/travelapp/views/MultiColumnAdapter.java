@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.sucaldo.travelapp.R;
@@ -16,6 +17,7 @@ import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.model.YearListItem;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MultiColumnAdapter extends ArrayAdapter<Object> {
 
@@ -25,7 +27,7 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
     private int mViewResourceId;
 
     public MultiColumnAdapter(Context context, int textViewResourceId, List<Object> tripsAndYears) {
-        super(context,textViewResourceId, tripsAndYears);
+        super(context, textViewResourceId, tripsAndYears);
         this.tripsAndYears = tripsAndYears;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mViewResourceId = textViewResourceId;
@@ -33,8 +35,9 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
         Log.d("TAG", "in MultiColumnListAdapter.class");
     }
 
-    public View getView(int position, View convertView, ViewGroup parents){
-        convertView = mInflater.inflate(mViewResourceId,null);
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parents) {
+        convertView = mInflater.inflate(mViewResourceId, null);
 
         // Link to all textView IDs in list_adapter_view.xml
         TextView startDate = convertView.findViewById(R.id.start_date);
@@ -56,9 +59,9 @@ public class MultiColumnAdapter extends ArrayAdapter<Object> {
             dropdownArrow.getLayoutParams().width = 0;
             dropdownArrow.requestLayout();
         }
-        if (tripOrYear instanceof YearListItem){
+        if (tripOrYear instanceof YearListItem) {
             YearListItem year = (YearListItem) tripOrYear;
-            startDate.setText(year.getYear().toString());
+            startDate.setText(String.format(Locale.getDefault(), "%d", year.getYear()));
             startDate.setTextColor(ResourcesCompat.getColor(convertView.getResources(), R.color.black, null));
             startDate.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 

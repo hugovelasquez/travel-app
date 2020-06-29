@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.model.Trip;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
     }
 
-    public void passTripIdToOtherFragments (int tripId, String fragmentRequestKey){
+    public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {
         Bundle result = new Bundle();
         // toString() cannot be used on a primitive, therefore use String.valueOf()
         result.putString(getString(R.string.fragment_key_trip_id), String.valueOf(tripId));

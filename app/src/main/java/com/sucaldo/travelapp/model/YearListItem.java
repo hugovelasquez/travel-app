@@ -14,10 +14,6 @@ public class YearListItem {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     public boolean isExpanded() {
         return expanded;
     }
