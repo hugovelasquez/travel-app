@@ -77,7 +77,7 @@
             <TextView
                 android:id="@+id/trip_start_date_view"
                 style="@style/text_view_label"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
 
@@ -97,8 +97,8 @@
             <TextView
                 android:id="@+id/trip_end_date_view"
                 style="@style/text_view_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_weight="2" />
 
         </LinearLayout>
@@ -117,9 +117,9 @@
             <TextView
                 android:id="@+id/trip_distance_view"
                 style="@style/text_view_label"
-                android:layout_marginStart="15dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_weight="2" />
 
         </LinearLayout>
@@ -131,7 +131,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/trip_multitrip_descr_view"
+            android:id="@+id/trip_multi_trip_description_view"
             style="@style/text_view_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -168,6 +168,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/layout_margin"
         android:layout_weight="2"
+        android:contentDescription="@string/add_edit_trip_image_description"
         android:src="@drawable/add_trip_photo_display">
 
     </ImageView>

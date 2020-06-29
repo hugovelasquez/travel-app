@@ -63,7 +63,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 TextView endDate = rootView.findViewById(R.id.trip_end_date_view);
                 TextView description = rootView.findViewById(R.id.trip_description_view);
                 TextView distance = rootView.findViewById(R.id.trip_distance_view);
-                TextView multiStopDescription = rootView.findViewById(R.id.trip_multitrip_descr_view);
+                TextView multiStopDescription = rootView.findViewById(R.id.trip_multi_trip_description_view);
 
                 fromCountry.setText(trip.getFromCountry());
                 fromCity.setText(trip.getFromCity());
