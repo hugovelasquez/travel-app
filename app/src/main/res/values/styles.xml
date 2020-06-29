@@ -31,7 +31,7 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <style name="list_adapter" >
+    <style name="list_adapter">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">15</item>
