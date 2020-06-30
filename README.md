@@ -8,6 +8,7 @@ Android App that stores and displays your travel history
 # To Do:
 1. Consider continent
 1. Add new cityloc function to xml layout
+1. Last trip of multi-stop trip: only kms count towards statistics
 1. Statistics 
 1. World Map
 1. Import/Export trip list as `*.csv`
