@@ -63,6 +63,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 TextView endDate = rootView.findViewById(R.id.trip_end_date_view);
                 TextView description = rootView.findViewById(R.id.trip_description_view);
                 TextView distance = rootView.findViewById(R.id.trip_distance_view);
+                TextView continent = rootView.findViewById(R.id.to_continent_view);
                 TextView multiStopDescription = rootView.findViewById(R.id.trip_multi_trip_description_view);
 
                 fromCountry.setText(trip.getFromCountry());
@@ -73,6 +74,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
                 distance.setText(getString(R.string.km_display_format, NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance())));
+                continent.setText(trip.getContinent());
 
                 // Add information of stop number and next stop if trip is part of a multi-stop-trip
                 if (myDB.isTripMultiStop(trip.getGroupId())) {

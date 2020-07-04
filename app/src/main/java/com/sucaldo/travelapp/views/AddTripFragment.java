@@ -212,7 +212,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString,
                              String toCityString, String descriptionString, int groupId, long distance) {
         Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString,
-                descriptionString, startDate, endDate, groupId, distance);
+                descriptionString, startDate, endDate, groupId, distance, myDB.getContinentOfCountry(toCountryString));
         if (myDB.addTrip(newTrip)) {
             if (radioSimple.isChecked()) {
                 showSimpleTripSavedPopUpMessage();
@@ -234,6 +234,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setDescription(descriptionString);
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
+        trip.setContinent(myDB.getContinentOfCountry(toCountryString));
         if (myDB.isTripMultiStop(trip.getGroupId())) {
             trip.setDistance(distance);
         } else {

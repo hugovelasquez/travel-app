@@ -63,6 +63,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/label_indentation" />
 
+        <TextView
+            android:id="@+id/to_continent_view"
+            style="@style/text_view_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/label_indentation" />
+
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -98,7 +105,7 @@
                 android:id="@+id/trip_end_date_view"
                 style="@style/text_view_label"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2" />
 
         </LinearLayout>
