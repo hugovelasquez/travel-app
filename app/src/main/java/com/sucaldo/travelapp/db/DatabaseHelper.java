@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_END_DATE = "ENDDATE";
     private static final String COL_GRP_ID = "GROUPID";
     private static final String COL_DIST = "DISTANCE";
+    private static final String COL_TRIPS_CONTINENT = "CONTINENT";
 
     private static final String TABLE_CITY_LOC = "city_loc";
     private static final String COL_CITY_LOC_ID = "ID";
@@ -42,6 +43,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_LAT = "LATITUDE";
     private static final String COL_LONG = "LONGITUDE";
 
+    private static final String TABLE_COUNTRIES = "countries";
+    private static final String COL_COUNTRIES_ID = "ID";
+    private static final String COL_COUNTRIES_CONTINENT = "CONTINENT";
+    private static final String COL_COUNTRIES_COUNTRY = "COUNTRY";
 
     // Initialization of Database
     public DatabaseHelper(Context context) {
@@ -62,14 +67,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " " + COL_CITY_LOC_COUNTRY + " TEXT, " + COL_CITY_LOC_CITY + " TEXT, " + COL_LAT + " FLOAT, " +
                 " " + COL_LONG + " FLOAT)";
         db.execSQL(createTableCityLoc);
+
+        String createTableCountries = "CREATE TABLE " + TABLE_COUNTRIES + " (" + COL_COUNTRIES_ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_COUNTRIES_CONTINENT + " TEXT, " + COL_COUNTRIES_COUNTRY
+                + " TEXT) ";
+        db.execSQL(createTableCountries);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_TRIPS);
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_CITY_LOC);
+        db.execSQL("DROP IF TABLE EXISTS " + TABLE_COUNTRIES);
         onCreate(db);
     }
+
+    /*
+    ********* TRIPS **********************
+     */
 
     // Method for adding a trip into database
     public Boolean addTrip(Trip trip) {
@@ -156,7 +171,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             closeCursor(data);
         }
     }
-
 
     // Method for retrieving trip out of database
     public Trip getTripById(int id) {
@@ -247,6 +261,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /*
+     ********* CITY LOCATION **********************
+     */
+
     public boolean addCityLocItem(String country, String city, Float latitude, Float longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -262,18 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isCityLocTableEmpty() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC, null);
-        try {
-            while (data.moveToNext()) {
-                int rowCount = data.getInt(0);
-                // to consider all possible return values of count (0, -1, etc.)
-                return rowCount < 1;
-            }
-            return true;
-        } finally {
-            closeCursor(data);
-        }
+        return isTableEmpty(TABLE_CITY_LOC);
     }
 
     public CityLocation getLatitudeAndLongitudeOfCity(String country, String city) {
@@ -304,6 +311,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 return rowCount >= 1;
             }
             return false;
+        } finally {
+            closeCursor(data);
+        }
+    }
+
+    /*
+     ********* COUNTRY AND CONTINENTS **********************
+     */
+
+    public boolean addCountryContinentItem(String country, String continent) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_COUNTRIES_COUNTRY, country);
+        contentValues.put(COL_COUNTRIES_CONTINENT, continent);
+
+        //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
+        long result = db.insert(TABLE_COUNTRIES, null, contentValues);
+
+        return result != -1;
+    }
+
+    public boolean isCountriesTableEmpty() {
+        return isTableEmpty(TABLE_COUNTRIES);
+    }
+
+    /*
+     ********* GENERAL **********************
+     */
+
+    private boolean isTableEmpty(String table) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + table, null);
+        try {
+            while (data.moveToNext()) {
+                int rowCount = data.getInt(0);
+                // to consider all possible return values of count (0, -1, etc.)
+                return rowCount < 1;
+            }
+            return true;
         } finally {
             closeCursor(data);
         }
