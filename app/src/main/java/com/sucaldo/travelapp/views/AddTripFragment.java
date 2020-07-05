@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,13 +40,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
     // Definition of variables
     private EditText startDateField, endDateField;
-    private TextInputEditText fromCountry, fromCity, toCountry, toCity, description, fromLat, fromLong, toLat, toLong;
+    private TextInputEditText fromCity, toCity, description, fromLat, fromLong, toLat, toLong;
     private Date startDate, endDate;
     private MainActivity activity;
     private DatabaseHelper myDB;
     private RadioGroup radioGroup;
     private RadioButton radioSimple;
     private AddTripMode tripMode;
+    private AutoCompleteTextView fromCountry, toCountry;
 
     private Trip trip;
 
@@ -80,6 +83,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         // Default case is simple trip
         radioSimple.setChecked(true);
         tripMode = AddTripMode.ADD_SIMPLE_TRIP_MODE;
+
+        // Set dropdown of all countries
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_dropdown_item_1line, myDB.getCountries());
+        fromCountry.setAdapter(adapter);
+        toCountry.setAdapter(adapter);
 
         // Method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present
         // This is the case when selecting a trip in the trips view to edit its content.

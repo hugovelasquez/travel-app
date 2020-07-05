@@ -353,6 +353,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isTableEmpty(TABLE_COUNTRIES);
     }
 
+    public List<String> getCountries() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT DISTINCT " + COL_COUNTRIES_COUNTRY + " FROM " + TABLE_COUNTRIES, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            // empty list will be returned
+            return new ArrayList<>();
+        } else {
+            List<String> countries = new ArrayList<>();
+            while (data.moveToNext()) {
+                countries.add(data.getString(0));
+            }
+            Collections.sort(countries);
+            return countries;
+        }
+    }
+
     /*
      ********* GENERAL **********************
      */
