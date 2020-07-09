@@ -96,9 +96,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_TRIPS_TO_CITY, trip.getToCity());
         contentValues.put(COL_TRIPS_DESCRIPTION, trip.getDescription());
         contentValues.put(COL_TRIPS_START_DATE, trip.getStartDate().toString());
-        contentValues.put(COL_TRIPS_END_DATE, trip.getEndDate().toString());
+        if (trip.getEndDate() != null) {
+            contentValues.put(COL_TRIPS_END_DATE, trip.getEndDate().toString());
+        }
         contentValues.put(COL_TRIPS_DIST, trip.getDistance());
-        contentValues.put(COL_TRIPS_CONTINENT, trip.getContinent());
+        contentValues.put(COL_TRIPS_CONTINENT, trip.getToContinent());
         if (trip.getGroupId() == -1) {
             contentValues.put(COL_TRIPS_GRP_ID, getNextAvailableGroupId());
         } else {
@@ -198,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_TRIPS_END_DATE + " = '" + trip.getEndDate() + "'," +
                 COL_TRIPS_GRP_ID + " = '" + trip.getGroupId() + "'," +
                 COL_TRIPS_DIST + " = '" + trip.getDistance() + "', " +
-                COL_TRIPS_CONTINENT + " = '" + trip.getContinent() + "' " +
+                COL_TRIPS_CONTINENT + " = '" + trip.getToContinent() + "' " +
                 " WHERE " + COL_TRIPS_ID + " = " + trip.getId());
     }
 

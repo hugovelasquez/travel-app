@@ -101,9 +101,12 @@ public class MyTripsFragment extends Fragment {
                     if (countriesTableEmpty) {
                         new CsvHelper(myDB).readCountryContinentCsvFile(getResources().openRawResource(R.raw.citycontinents));
                     }
+                    // TODO - add to the settings drawer
+                    new CsvHelper(myDB).readTripsCsvFile(getResources().openRawResource(R.raw.trips));
                 }
             });
         }
+
     }
 
     private void openTripDetailFragment() {

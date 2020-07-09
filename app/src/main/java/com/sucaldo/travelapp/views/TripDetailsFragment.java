@@ -74,7 +74,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
                 distance.setText(getString(R.string.km_display_format, NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance())));
-                continent.setText(trip.getContinent());
+                continent.setText(trip.getToContinent());
 
                 // Add information of stop number and next stop if trip is part of a multi-stop-trip
                 if (myDB.isTripMultiStop(trip.getGroupId())) {

@@ -20,11 +20,11 @@ public class Trip implements Comparable<Trip>{
     private Date startDate;
     private Date endDate;
     private long distance;
-    private String continent;
+    private String toContinent;
 
     // Constructor for adding trips to database
     public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description,
-                Date startDate, Date endDate, int groupId, long distance, String continent) {
+                Date startDate, Date endDate, int groupId, long distance, String toContinent) {
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
@@ -34,7 +34,7 @@ public class Trip implements Comparable<Trip>{
         this.endDate = endDate;
         this.groupId = groupId;
         this.distance = distance;
-        this.continent = continent;
+        this.toContinent = toContinent;
     }
 
     // Constructor for getting trip out of database
@@ -47,7 +47,7 @@ public class Trip implements Comparable<Trip>{
         this.id = data.getInt(0);
         this.groupId = data.getInt(8);
         this.distance = data.getLong(9);
-        this.continent = data.getString(10);
+        this.toContinent = data.getString(10);
         // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
@@ -56,12 +56,37 @@ public class Trip implements Comparable<Trip>{
         } catch (ParseException e) {
             this.startDate = new Date();
         }
-        try {
-            this.endDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(7));
-        } catch (ParseException e) {
-            this.endDate = new Date();
+        // TODO - what happens if end date is null in db
+        if (data.getString(7) != null) {
+            try {
+                this.endDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(7));
+            } catch (ParseException e) {
+                this.endDate = new Date();
+            }
         }
     }
+
+    // Constructor for reading trip from csv file
+    public Trip(int groupId, String fromCountry, String fromCity, String toCountry, String toCity,
+                String description, String startDate, String endDate) {
+        this.groupId = groupId;
+        this.fromCountry = fromCountry;
+        this.fromCity = fromCity;
+        this.toCountry = toCountry;
+        this.toCity = toCity;
+        this.description = description;
+        try {
+            this.startDate = new SimpleDateFormat(DateFormat.PRETTY, Locale.getDefault()).parse(startDate);
+        } catch (ParseException e) {
+            this.startDate = null;
+        }
+        try {
+            this.endDate = new SimpleDateFormat(DateFormat.PRETTY, Locale.getDefault()).parse(endDate);
+        } catch (ParseException e) {
+            this.endDate = null;
+        }
+    }
+
 
     public String getFromCountry() {
         return fromCountry;
@@ -135,12 +160,12 @@ public class Trip implements Comparable<Trip>{
         this.distance = distance;
     }
 
-    public String getContinent() {
-        return continent;
+    public String getToContinent() {
+        return toContinent;
     }
 
-    public void setContinent(String continent) {
-        this.continent = continent;
+    public void setToContinent(String toContinent) {
+        this.toContinent = toContinent;
     }
 
     public String getFormattedStartDate() {
@@ -148,6 +173,9 @@ public class Trip implements Comparable<Trip>{
     }
 
     public String getFormattedEndDate() {
+        if (endDate == null) {
+            return "";
+        }
         return formatDate(endDate, DateFormat.PRETTY);
     }
 
@@ -156,6 +184,9 @@ public class Trip implements Comparable<Trip>{
     }
 
     public String getPickerFormattedEndDate() {
+        if (endDate == null) {
+            return "";
+        }
         return formatDate(endDate, DateFormat.PICKER);
     }
 

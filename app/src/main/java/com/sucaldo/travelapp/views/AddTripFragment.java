@@ -28,6 +28,7 @@ import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.AddTripMode;
 import com.sucaldo.travelapp.model.CityLocation;
+import com.sucaldo.travelapp.model.DistanceCalculator;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.text.ParseException;
@@ -182,7 +183,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
             myDB.saveCityLocationIfNotInDb(new CityLocation(fromCountryString, fromCityString, fromLatitude, fromLongitude));
             myDB.saveCityLocationIfNotInDb(new CityLocation(toCountryString, toCityString, toLatitude, toLongitude));
-            long distance = getDistanceFromLatLongInKms(fromLatitude, fromLongitude, toLatitude, toLongitude);
+            // no instantiating of DistanceCalculator necessary due to static method
+            long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromLatitude, fromLongitude, toLatitude, toLongitude);
 
             switch (tripMode) {
                 case ADD_SIMPLE_TRIP_MODE:
@@ -201,22 +203,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private long getDistanceFromLatLongInKms(float lat1, float long1, float lat2, float long2) {
-        int radiusEarth = 6371;
-        double dLat = degToRadius(lat2 - lat1);
-        double dLong = degToRadius(long2 - long1);
-        double a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                        Math.cos(degToRadius(lat1)) * Math.cos(degToRadius(lat2)) *
-                                Math.sin(dLong / 2) * Math.sin(dLong / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = radiusEarth * c;
-        return Math.round(d);
-    }
-
-    private double degToRadius(float deg) {
-        return deg * (Math.PI / 180);
-    }
 
     private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString,
                              String toCityString, String descriptionString, int groupId, long distance) {
@@ -243,7 +229,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setDescription(descriptionString);
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
-        trip.setContinent(myDB.getContinentOfCountry(toCountryString));
+        trip.setToContinent(myDB.getContinentOfCountry(toCountryString));
         if (myDB.isTripMultiStop(trip.getGroupId())) {
             trip.setDistance(distance);
         } else {
