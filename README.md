@@ -6,7 +6,6 @@ Android App that stores and displays your travel history
 - Android Studio
 
 # To Do:
-1. Import trip list `csv` file 
 1. add one-way trip (change simple trip to return)
 1. allow end date to be empty for one-way and multi-stop
 1. Column chart - top 10 visited cities
@@ -17,6 +16,8 @@ Android App that stores and displays your travel history
 1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
 1. World Map
 1. Export triplist worldcities, citycontinents as `*.csv`
+1. Add a loading bar when reading csv files
+1. don't allow ' character in city name
 1. Add "home" option in settings
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
