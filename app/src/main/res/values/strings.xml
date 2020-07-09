@@ -14,6 +14,7 @@
     <string name="navbar_trip_details">Trip Details</string>
     <string name="navbar_edit_trip">Edit Trip</string>
     <string name="navbar_add_stop">Add Stop</string>
+    <string name="navbar_settings">Settings</string>
 
     <!-- fragment keys -->
     <string name="fragment_key_trip_id">tripId</string>
@@ -68,6 +69,7 @@
     <string name="dropdown_arrow_image_description">Dropdown arrow</string>
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while...</string>
+    <string name="import_trips">Import trips.csv</string>
 
 
 </resources>

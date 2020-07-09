@@ -6,15 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.db.CsvHelper;
-import com.sucaldo.travelapp.db.DatabaseHelper;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AddTripFragment()).commit();
                 getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
+                break;
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new SettingsFragment()).commit();
+                getSupportActionBar().setTitle(getString(R.string.navbar_settings));
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
