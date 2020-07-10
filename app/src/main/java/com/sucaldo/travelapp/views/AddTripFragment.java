@@ -79,11 +79,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         Button btnSave = rootView.findViewById(R.id.btn_save);
         Button btnCancel = rootView.findViewById(R.id.btn_cancel);
         radioGroup = rootView.findViewById(R.id.radio_group);
-        radioSimple = rootView.findViewById(R.id.radio_simple);
+        radioSimple = rootView.findViewById(R.id.radio_return);
 
         // Default case is simple trip
         radioSimple.setChecked(true);
-        tripMode = AddTripMode.ADD_SIMPLE_TRIP_MODE;
+        tripMode = AddTripMode.ADD_RETURN_TRIP_MODE;
 
         // Set dropdown of all countries
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
@@ -187,7 +187,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromLatitude, fromLongitude, toLatitude, toLongitude);
 
             switch (tripMode) {
-                case ADD_SIMPLE_TRIP_MODE:
+                case ADD_RETURN_TRIP_MODE:
                     saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
                             descriptionString, -1, radioSimple.isChecked() ? distance * 2 : distance);
                     break;
