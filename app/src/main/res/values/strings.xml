@@ -72,6 +72,7 @@
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while...</string>
     <string name="import_trips">Import trips.csv</string>
+    <string name="top_10_cities">Top 10 Cities</string>
 
 
 </resources>
