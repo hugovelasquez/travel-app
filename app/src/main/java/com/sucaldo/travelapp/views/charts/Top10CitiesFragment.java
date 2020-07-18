@@ -29,8 +29,8 @@ public class Top10CitiesFragment extends Fragment implements View.OnClickListene
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
 
-        AnyChartView anyChartView = rootView.findViewById(R.id.stats_top_10_cities);
-        new Top10CitiesChartHelper().initChart(anyChartView);
+        AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
+        new ChartHelper(myDB).initTop10CitiesChart(top10CitiesChart);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);

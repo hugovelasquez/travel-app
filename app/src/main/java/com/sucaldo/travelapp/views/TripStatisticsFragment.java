@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.anychart.AnyChartView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
-import com.sucaldo.travelapp.views.charts.Top10CitiesChartHelper;
+import com.sucaldo.travelapp.views.charts.ChartHelper;
 
 
 public class TripStatisticsFragment extends Fragment implements View.OnClickListener {
@@ -34,9 +34,8 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         ImageView expandTop10CitiesBtn = rootView.findViewById(R.id.expand_top_10_cities_icon);
         expandTop10CitiesBtn.setOnClickListener(this);
 
-        AnyChartView anyChartView = rootView.findViewById(R.id.stats_top_10_cities);
-        new Top10CitiesChartHelper().initChart(anyChartView);
-        anyChartView.setOnClickListener(this);
+        AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
+        new ChartHelper(myDB).initTop10CitiesChart(top10CitiesChart);
 
         return rootView;
     }

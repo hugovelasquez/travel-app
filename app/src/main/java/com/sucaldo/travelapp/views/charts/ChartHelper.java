@@ -10,13 +10,20 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
+import com.sucaldo.travelapp.db.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Top10CitiesChartHelper {
+public class ChartHelper {
 
-    public void initChart(AnyChartView anyChartView) {
+    private DatabaseHelper myDB;
+
+    public ChartHelper(DatabaseHelper myDB) {
+        this.myDB = myDB;
+    }
+
+    public void initTop10CitiesChart(AnyChartView anyChartView) {
 
         Cartesian cartesian = AnyChart.column();
 
