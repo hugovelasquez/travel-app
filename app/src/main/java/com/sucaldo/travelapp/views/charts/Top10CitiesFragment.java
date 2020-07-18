@@ -30,7 +30,7 @@ public class Top10CitiesFragment extends Fragment implements View.OnClickListene
         myDB = new DatabaseHelper(getContext());
 
         AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
-        new ChartHelper(myDB).initTop10CitiesChart(top10CitiesChart);
+        new ChartHelper(myDB, getContext()).initTop10CitiesChart(top10CitiesChart, true);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);

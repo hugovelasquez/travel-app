@@ -1,9 +1,10 @@
 package com.sucaldo.travelapp.views.charts;
 
+import android.content.Context;
+
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Column;
 import com.anychart.enums.Anchor;
@@ -11,32 +12,25 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChartHelper {
 
     private DatabaseHelper myDB;
+    private Context context;
 
-    public ChartHelper(DatabaseHelper myDB) {
+    public ChartHelper(DatabaseHelper myDB, Context context) {
         this.myDB = myDB;
+        this.context = context;
     }
 
-    public void initTop10CitiesChart(AnyChartView anyChartView) {
+    public void initTop10CitiesChart(AnyChartView anyChartView, boolean fullscreen) {
 
         Cartesian cartesian = AnyChart.column();
 
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Rouge", 80540));
-        data.add(new ValueDataEntry("Foundation", 94190));
-        data.add(new ValueDataEntry("Mascara", 102610));
-        data.add(new ValueDataEntry("Lip gloss", 110430));
-        data.add(new ValueDataEntry("Lipstick", 128000));
-        data.add(new ValueDataEntry("Nail polish", 143760));
-        data.add(new ValueDataEntry("Eyebrow pencil", 170670));
-        data.add(new ValueDataEntry("Eyeliner", 213210));
-        data.add(new ValueDataEntry("Eyeshadows", 249980));
+        List<DataEntry> data = myDB.getTop10Cities();
 
         Column column = cartesian.column(data);
 
@@ -46,20 +40,32 @@ public class ChartHelper {
                 .anchor(Anchor.CENTER_BOTTOM)
                 .offsetX(0d)
                 .offsetY(5d)
-                .format("${%Value}{groupsSeparator: }");
+                .format("{%Value}{groupsSeparator: }");
 
         cartesian.animation(true);
-        cartesian.title("Top 10 Cosmetic Products by Revenue");
+
+        if (!fullscreen) {
+            cartesian.title(context.getString(R.string.top_10_cities));
+        }
 
         cartesian.yScale().minimum(0d);
 
-        cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
 
-        cartesian.xAxis(0).title("Product");
-        cartesian.yAxis(0).title("Revenue");
+        cartesian.xAxis(0).title(context.getString(R.string.charts_top10_x_axis));
+        cartesian.yAxis(0).title(context.getString(R.string.charts_top10_y_axis));
+
+        if (fullscreen) {
+            cartesian.xAxis(0).title().fontSize(20);
+            cartesian.yAxis(0).title().fontSize(20);
+            cartesian.xAxis(0).staggerMode(true);
+            cartesian.xAxis(0).staggerLines(2);
+            cartesian.xAxis(0).labels().fontSize(15);
+            cartesian.yAxis(0).labels().fontSize(15);
+        }
 
         anyChartView.setChart(cartesian);
     }

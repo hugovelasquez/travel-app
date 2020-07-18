@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DateFormat;
 import com.sucaldo.travelapp.model.Trip;
@@ -358,6 +360,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             Collections.sort(countries);
             return countries;
+        }
+    }
+
+    /*
+     ********* STATISTICS **********************
+     */
+
+    public List<DataEntry> getTop10Cities() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery(
+                "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") " +
+                " AS total " +
+                " FROM " + TABLE_TRIPS +
+                " GROUP BY " + COL_TRIPS_TO_CITY +
+                " ORDER BY total DESC" +
+                " LIMIT 10", null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<DataEntry> top10Cities = new ArrayList<>();
+            while (data.moveToNext()) {
+                top10Cities.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
+            }
+            return top10Cities;
         }
     }
 

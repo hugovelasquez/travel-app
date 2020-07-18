@@ -35,7 +35,7 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         expandTop10CitiesBtn.setOnClickListener(this);
 
         AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
-        new ChartHelper(myDB).initTop10CitiesChart(top10CitiesChart);
+        new ChartHelper(myDB, getContext()).initTop10CitiesChart(top10CitiesChart, false);
 
         return rootView;
     }
