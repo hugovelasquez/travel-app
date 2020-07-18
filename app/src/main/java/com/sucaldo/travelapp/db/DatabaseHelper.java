@@ -35,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_TRIPS_GRP_ID = "GROUPID";
     private static final String COL_TRIPS_DIST = "DISTANCE";
     private static final String COL_TRIPS_CONTINENT = "CONTINENT";
+    private static final String COL_TRIPS_TYPE = "TYPE";
 
     private static final String TABLE_CITY_LOC = "city_loc";
     private static final String COL_CITY_LOC_ID = "ID";
@@ -60,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTableTrips = "CREATE TABLE " + TABLE_TRIPS + " (" + COL_TRIPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 " " + COL_TRIPS_FROM_COUNTRY + " TEXT, " + COL_TRIPS_FROM_CITY + " TEXT, " + COL_TRIPS_TO_COUNTRY + " TEXT, " + COL_TRIPS_TO_CITY + " TEXT," +
                 " " + COL_TRIPS_DESCRIPTION + " TEXT, " + COL_TRIPS_START_DATE + " TEXT, " + COL_TRIPS_END_DATE + " TEXT, " + COL_TRIPS_GRP_ID + " INTEGER," +
-                " " + COL_TRIPS_DIST + " INTEGER, " + COL_TRIPS_CONTINENT + " TEXT)";
+                " " + COL_TRIPS_DIST + " INTEGER, " + COL_TRIPS_CONTINENT + " TEXT, " + COL_TRIPS_TYPE + " TEXT)";
         db.execSQL(createTableTrips);
 
         String createTableCityLoc = "CREATE TABLE " + TABLE_CITY_LOC + " (" + COL_CITY_LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -96,6 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_TRIPS_TO_CITY, trip.getToCity());
         contentValues.put(COL_TRIPS_DESCRIPTION, trip.getDescription());
         contentValues.put(COL_TRIPS_START_DATE, trip.getStartDate().toString());
+        contentValues.put(COL_TRIPS_TYPE, trip.getType().toString());
         if (trip.getEndDate() != null) {
             contentValues.put(COL_TRIPS_END_DATE, trip.getEndDate().toString());
         }
@@ -123,21 +125,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 return ++lastGroupId;
             }
             return 0;
-        } finally {
-            closeCursor(data);
-        }
-    }
-
-    public boolean isTripMultiStop(int groupId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_TRIPS +
-                " WHERE " + COL_TRIPS_GRP_ID + " = " + groupId, null);
-        try {
-            while (data.moveToNext()) {
-                int rowCount = data.getInt(0);
-                return rowCount > 1;
-            }
-            return false;
         } finally {
             closeCursor(data);
         }
@@ -200,7 +187,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_TRIPS_END_DATE + " = '" + trip.getEndDate() + "'," +
                 COL_TRIPS_GRP_ID + " = '" + trip.getGroupId() + "'," +
                 COL_TRIPS_DIST + " = '" + trip.getDistance() + "', " +
-                COL_TRIPS_CONTINENT + " = '" + trip.getToContinent() + "' " +
+                COL_TRIPS_CONTINENT + " = '" + trip.getToContinent() + "', " +
+                COL_TRIPS_TYPE + " = '" + trip.getType() + "' " +
                 " WHERE " + COL_TRIPS_ID + " = " + trip.getId());
     }
 

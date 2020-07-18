@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentResultListener;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
+import com.sucaldo.travelapp.model.TripType;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -77,7 +78,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 continent.setText(trip.getToContinent());
 
                 // Add information of stop number and next stop if trip is part of a multi-stop-trip
-                if (myDB.isTripMultiStop(trip.getGroupId())) {
+                if (trip.getType().equals(TripType.MULTI_STOP)) {
                     List<Trip> multiStopTrips = myDB.getAllTripsOfMultiStopSortedByDate(trip.getGroupId());
                     int index = getMultiTripIndex(multiStopTrips, trip.getId());
                     String multiStopText = getString(R.string.multi_stop_number_text, index + 1);

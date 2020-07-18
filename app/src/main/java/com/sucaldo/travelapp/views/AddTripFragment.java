@@ -26,7 +26,7 @@ import androidx.fragment.app.FragmentResultListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
-import com.sucaldo.travelapp.model.AddTripMode;
+import com.sucaldo.travelapp.model.TripType;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DistanceCalculator;
 import com.sucaldo.travelapp.model.Trip;
@@ -46,15 +46,17 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private MainActivity activity;
     private DatabaseHelper myDB;
     private RadioGroup radioGroup;
-    private RadioButton radioSimple;
-    private AddTripMode tripMode;
+    private RadioButton radioReturn, radioOneWay, radioMultiStop;
+    private TripType tripType;
+    boolean editMode;
     private AutoCompleteTextView fromCountry, toCountry;
 
     private Trip trip;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Link xml layout file with this fragment
         View rootView = inflater.inflate(R.layout.add_trip_view, container, false);
 
@@ -79,11 +81,13 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         Button btnSave = rootView.findViewById(R.id.btn_save);
         Button btnCancel = rootView.findViewById(R.id.btn_cancel);
         radioGroup = rootView.findViewById(R.id.radio_group);
-        radioSimple = rootView.findViewById(R.id.radio_return);
+        radioReturn = rootView.findViewById(R.id.radio_return);
+        radioOneWay = rootView.findViewById(R.id.radio_one_way);
+        radioMultiStop = rootView.findViewById(R.id.radio_multi);
 
         // Default case is simple trip
-        radioSimple.setChecked(true);
-        tripMode = AddTripMode.ADD_RETURN_TRIP_MODE;
+        radioReturn.setChecked(true);
+        tripType = TripType.RETURN;
 
         // Set dropdown of all countries
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
@@ -96,7 +100,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                tripMode = AddTripMode.EDIT_MODE;
+                editMode = true;
                 String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
                 trip = myDB.getTripById(Integer.parseInt(tripIdString));
 
@@ -123,6 +127,9 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         btnCancel.setOnClickListener(this);
         fromLocIcon.setOnClickListener(this);
         toLocIcon.setOnClickListener(this);
+        radioReturn.setOnClickListener(this);
+        radioOneWay.setOnClickListener(this);
+        radioMultiStop.setOnClickListener(this);
 
         return rootView;
     }
@@ -150,6 +157,15 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.to_loc_icon:
                 getLocationOfCity(toCountry.getText().toString(), toCity.getText().toString(), toLat, toLong);
+                break;
+            case R.id.radio_return:
+                tripType = TripType.RETURN;
+                break;
+            case R.id.radio_one_way:
+                // TODO add one way
+                break;
+            case R.id.radio_multi:
+                tripType = TripType.MULTI_STOP;
                 break;
         }
     }
@@ -186,32 +202,42 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             // no instantiating of DistanceCalculator necessary due to static method
             long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromLatitude, fromLongitude, toLatitude, toLongitude);
 
-            switch (tripMode) {
-                case ADD_RETURN_TRIP_MODE:
-                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
-                            descriptionString, -1, radioSimple.isChecked() ? distance * 2 : distance);
-                    break;
-                case EDIT_MODE:
-                    updateTrip(fromCountryString, fromCityString, toCountryString, toCityString,
-                            descriptionString, distance);
-                    break;
-                case ADD_MULTI_TRIP_MODE:
-                    saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
-                            descriptionString, trip.getGroupId(), distance);
-                    break;
+            if (editMode) {
+                updateTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                        descriptionString, distance);
             }
+            else {
+                switch (tripType) {
+                    case RETURN:
+                        saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                                descriptionString, -1, distance * 2, TripType.RETURN);
+                        break;
+                    case MULTI_STOP:
+                        // See if it is the first stop of this multi-stop trip.
+                        // If it is, the group id has to be set to -1 to indicate a new trip cluster
+                        int groupId = trip == null ? -1 : trip.getGroupId();
+                        saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                                descriptionString, groupId, distance, TripType.MULTI_STOP);
+                        break;
+                }
+            }
+
         }
     }
 
 
     private void saveNewTrip(String fromCountryString, String fromCityString, String toCountryString,
-                             String toCityString, String descriptionString, int groupId, long distance) {
+                             String toCityString, String descriptionString, int groupId, long distance,
+                             TripType type) {
+
         Trip newTrip = new Trip(fromCountryString, fromCityString, toCountryString, toCityString,
-                descriptionString, startDate, endDate, groupId, distance, myDB.getContinentOfCountry(toCountryString));
+                descriptionString, startDate, endDate, groupId, distance,
+                myDB.getContinentOfCountry(toCountryString), type);
         if (myDB.addTrip(newTrip)) {
-            if (radioSimple.isChecked()) {
+            if (tripType.equals(TripType.RETURN)) {
                 showSimpleTripSavedPopUpMessage();
-            } else {
+            }
+            if (tripType.equals(TripType.MULTI_STOP)) {
                 showMultiTripSavedPopUpMessage();
             }
         } else {
@@ -230,10 +256,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setStartDate(startDate);
         trip.setEndDate(endDate);
         trip.setToContinent(myDB.getContinentOfCountry(toCountryString));
-        if (myDB.isTripMultiStop(trip.getGroupId())) {
-            trip.setDistance(distance);
-        } else {
+        if (trip.getType().equals(TripType.RETURN)) {
             trip.setDistance(distance * 2);
+        } else {
+            trip.setDistance(distance);
         }
 
         myDB.updateTrip(trip);
@@ -298,7 +324,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setupLayoutForNextStop() {
-        tripMode = AddTripMode.ADD_MULTI_TRIP_MODE;
+        tripType = TripType.MULTI_STOP;
         radioGroup.setVisibility(View.INVISIBLE);
         trip = myDB.getTripById(myDB.getLastTripId());
         fromCountry.setText(trip.getToCountry());

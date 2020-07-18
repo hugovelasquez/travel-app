@@ -21,10 +21,11 @@ public class Trip implements Comparable<Trip>{
     private Date endDate;
     private long distance;
     private String toContinent;
+    private TripType type;
 
     // Constructor for adding trips to database
     public Trip(String fromCountry, String fromCity, String toCountry, String toCity, String description,
-                Date startDate, Date endDate, int groupId, long distance, String toContinent) {
+                Date startDate, Date endDate, int groupId, long distance, String toContinent, TripType type) {
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
@@ -35,6 +36,7 @@ public class Trip implements Comparable<Trip>{
         this.groupId = groupId;
         this.distance = distance;
         this.toContinent = toContinent;
+        this.type = type;
     }
 
     // Constructor for getting trip out of database
@@ -48,6 +50,7 @@ public class Trip implements Comparable<Trip>{
         this.groupId = data.getInt(8);
         this.distance = data.getLong(9);
         this.toContinent = data.getString(10);
+        this.type = TripType.valueOf(data.getString(11));
         // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
         // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
         // so that app does not crash.
@@ -166,6 +169,10 @@ public class Trip implements Comparable<Trip>{
 
     public void setToContinent(String toContinent) {
         this.toContinent = toContinent;
+    }
+
+    public TripType getType() {
+        return type;
     }
 
     public String getFormattedStartDate() {
