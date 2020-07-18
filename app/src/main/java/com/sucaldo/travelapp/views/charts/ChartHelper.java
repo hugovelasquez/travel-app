@@ -92,8 +92,11 @@ public class ChartHelper {
         tagCloud.colorScale(ordinalColor);
         tagCloud.angles(new Double[] {-90d, 0d, 90d});
 
-        tagCloud.colorRange().enabled(true);
-        tagCloud.colorRange().colorLineSize(15d);
+        if (fullscreen) {
+            tagCloud.colorRange().labels().width(50);
+            tagCloud.colorRange().enabled(true);
+            tagCloud.colorRange().colorLineSize(15d);
+        }
 
         List<DataEntry> data = myDB.getVisitedCountries();
 
