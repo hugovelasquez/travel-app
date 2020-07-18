@@ -57,27 +57,28 @@ public class Trip implements Comparable<Trip>{
         try {
             this.startDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(6));
         } catch (ParseException e) {
-            this.startDate = new Date();
+            // start date will not be set if format is invalid
         }
-        // TODO - what happens if end date is null in db
+
         if (data.getString(7) != null) {
             try {
                 this.endDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(7));
             } catch (ParseException e) {
-                this.endDate = new Date();
+                // end date will not be set if format is invalid
             }
         }
     }
 
     // Constructor for reading trip from csv file
     public Trip(int groupId, String fromCountry, String fromCity, String toCountry, String toCity,
-                String description, String startDate, String endDate) {
+                String description, String startDate, String endDate, TripType type) {
         this.groupId = groupId;
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
         this.toCity = toCity;
         this.description = description;
+        this.type = type;
         try {
             this.startDate = new SimpleDateFormat(DateFormat.PRETTY, Locale.getDefault()).parse(startDate);
         } catch (ParseException e) {

@@ -103,6 +103,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 editMode = true;
                 String tripIdString = bundle.getString(getString(R.string.fragment_key_trip_id));
                 trip = myDB.getTripById(Integer.parseInt(tripIdString));
+                tripType = trip.getType();
 
                 activity.getSupportActionBar().setTitle(getString(R.string.navbar_edit_trip));
                 // RadioGroup not necessary
@@ -389,18 +390,21 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return false;
         }
-        try {
-            endDate = formatter.parse(endDateField.getText().toString());
+        if (!endDateField.getText().toString().equals("")) {
+            try {
+                endDate = formatter.parse(endDateField.getText().toString());
 
-        } catch (ParseException e) {
-            endDateField.setError(getString(R.string.text_date_format_error));
-            e.printStackTrace();
-            return false;
+            } catch (ParseException e) {
+                endDateField.setError(getString(R.string.text_date_format_error));
+                e.printStackTrace();
+                return false;
+            }
+            if (startDate.after(endDate)) {
+                endDateField.setError(getString(R.string.text_end_date_error));
+                return false;
+            }
         }
-        if (startDate.after(endDate)) {
-            endDateField.setError(getString(R.string.text_end_date_error));
-            return false;
-        }
+
         return true;
     }
 

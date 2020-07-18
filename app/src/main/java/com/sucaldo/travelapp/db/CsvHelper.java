@@ -6,6 +6,7 @@ import com.opencsv.CSVReader;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DistanceCalculator;
 import com.sucaldo.travelapp.model.Trip;
+import com.sucaldo.travelapp.model.TripType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,9 +59,7 @@ public class CsvHelper {
                 if(nextLine.length == 9) {
                     Log.d("CSV_trips", nextLine[3]);
                     Trip newTrip = new Trip(Integer.parseInt(nextLine[7]), nextLine[0], nextLine[1], nextLine[2], nextLine[3],
-                            nextLine[6], nextLine[4], nextLine[5]);
-                    boolean doubleDistance = nextLine[8].equals("1");
-                    //Germany;Hamburg;Germany;Gottingen;25.10.2008;26.10.2008;Fiesta cumple Orbi con la WG;3;1
+                            nextLine[6], nextLine[4], nextLine[5], TripType.valueOf(nextLine[8]));
                     String continent = myDB.getContinentOfCountry(newTrip.getToCountry());
                     newTrip.setToContinent(continent);
 
@@ -70,7 +69,7 @@ public class CsvHelper {
                     long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromCityLoc.getLatitude(), fromCityLoc.getLongitude(),
                             toCityLoc.getLatitude(), toCityLoc.getLongitude());
 
-                    if (doubleDistance){
+                    if (newTrip.getType().equals(TripType.RETURN)) {
                         distance = distance * 2;
                     }
                     newTrip.setDistance(distance);
