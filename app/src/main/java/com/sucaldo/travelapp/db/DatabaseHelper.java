@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.anychart.chart.common.dataentry.CategoryValueDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.sucaldo.travelapp.model.CityLocation;
@@ -387,6 +388,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 top10Cities.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
             }
             return top10Cities;
+        }
+    }
+
+    public List<DataEntry> getVisitedCountries() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery(
+                "SELECT " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT + ", COUNT(" + COL_TRIPS_TO_COUNTRY +")" +
+                        " FROM (" +
+                        " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT +
+                        " FROM " + TABLE_TRIPS +
+                        " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
+                        " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT +
+                        " ) AS countries" +
+                        " GROUP BY " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<DataEntry> visitedCountries = new ArrayList<>();
+            while (data.moveToNext()) {
+                visitedCountries.add(new CategoryValueDataEntry(
+                        data.getString(0), data.getString(1), data.getInt(2)));
+            }
+            return visitedCountries;
         }
     }
 

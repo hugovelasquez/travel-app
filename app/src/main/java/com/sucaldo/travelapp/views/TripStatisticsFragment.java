@@ -41,7 +41,7 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
 
         ChartHelper chartHelper = new ChartHelper(myDB, getContext());
         chartHelper.initTop10CitiesChart(top10CitiesChart, false);
-        chartHelper.initCountriesCloudChart(countriesCloudChart);
+        chartHelper.initCountriesCloudChart(countriesCloudChart, false);
 
         return rootView;
     }

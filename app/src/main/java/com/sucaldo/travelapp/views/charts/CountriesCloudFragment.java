@@ -30,7 +30,7 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         myDB = new DatabaseHelper(getContext());
 
         AnyChartView countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
-        new ChartHelper(myDB, getContext()).initCountriesCloudChart(countriesCloudChart);
+        new ChartHelper(myDB, getContext()).initCountriesCloudChart(countriesCloudChart, true);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);
