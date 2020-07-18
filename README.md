@@ -1,7 +1,7 @@
 # Travel app for Android
 Android App that stores trips and shows interesting statistics of your travel history
 
-# Getting started
+## Getting started
 The following files need to be added to `res/raw`:
 - trips.csv
 - citycontinents.csv
@@ -11,13 +11,14 @@ An image named add_trip.png needs to be added to`res/mipmap`
 
 Open project in Android Studio and run the app.
 
-# Technologies used
+## Technologies used
 - Java
 - Android Studio
 - SQLite
 
-# To Do:
-1. Tag cloud - All visited countries
+## To Do:
+1. csv - change "trip inside trip" to multi-stop trip
+1. top 10 bar chart - consider double city in multi-stop-trip (distinct)
 1. Area chart - Traveled kms per continent (Last trip of multi-stop trip: only kms count towards statistics)
 1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
 1. World Map
