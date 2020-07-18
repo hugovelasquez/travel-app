@@ -6,7 +6,6 @@ Android App that stores and displays your travel history
 - Android Studio
 
 # To Do:
-1. add one-way trip (change simple trip to return)
 1. allow end date to be empty for one-way and multi-stop
 1. Column chart - top 10 visited cities
 1. Pie chart - Distribution of total trips
@@ -23,3 +22,4 @@ Android App that stores and displays your travel history
 1. Check in multi stop trip that dates are sequential
 1. Add table cityloc as menu item
 1. Import csv files in app not R.raw (in settings)
+1. Add TextWatcher to from/to City/Country - set long and lat to blank if text is changed
