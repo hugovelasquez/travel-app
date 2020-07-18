@@ -305,7 +305,7 @@
             android:layout_height="400dp"
             android:layout_margin="@dimen/layout_margin"
             android:contentDescription="@string/add_edit_trip_image_description"
-            android:src="@mipmap/add_trip_photo_display">
+            android:src="@mipmap/add_trip">
 
         </ImageView>
 

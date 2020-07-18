@@ -1,5 +1,4 @@
 /build
 
-/src/main/res/raw/trips.csv
-/src/main/res/raw/citycontinents.csv
-/src/main/res/raw/worldcities.csv
+*.csv
+add_trip.PNG
