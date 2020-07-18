@@ -162,10 +162,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 tripType = TripType.RETURN;
                 break;
             case R.id.radio_one_way:
-                // TODO add one way
+                tripType = TripType.ONE_WAY;
+                endDateField.setError(null);
                 break;
             case R.id.radio_multi:
                 tripType = TripType.MULTI_STOP;
+                endDateField.setError(null);
                 break;
         }
     }
@@ -219,9 +221,12 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                         saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
                                 descriptionString, groupId, distance, TripType.MULTI_STOP);
                         break;
+                    case ONE_WAY:
+                        saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
+                                descriptionString, -1, distance, TripType.ONE_WAY);
+                        break;
                 }
             }
-
         }
     }
 
@@ -234,7 +239,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 descriptionString, startDate, endDate, groupId, distance,
                 myDB.getContinentOfCountry(toCountryString), type);
         if (myDB.addTrip(newTrip)) {
-            if (tripType.equals(TripType.RETURN)) {
+            if (tripType.equals(TripType.RETURN) || tripType.equals(TripType.ONE_WAY)) {
                 showSimpleTripSavedPopUpMessage();
             }
             if (tripType.equals(TripType.MULTI_STOP)) {
@@ -258,7 +263,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         trip.setToContinent(myDB.getContinentOfCountry(toCountryString));
         if (trip.getType().equals(TripType.RETURN)) {
             trip.setDistance(distance * 2);
-        } else {
+        }
+        if (trip.getType().equals(TripType.MULTI_STOP) || trip.getType().equals(TripType.ONE_WAY)) {
             trip.setDistance(distance);
         }
 
@@ -368,8 +374,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private boolean validateStartAndEndDate(EditText startDateField, EditText endDateField) {
         SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
 
-        // Return false if either start or end Date field are empty
-        if (!checkIfFieldInputIsEmpty(startDateField) | !checkIfFieldInputIsEmpty(endDateField)) {
+        // start date cannot be empty
+        // end date cannot be empty only if trip is of type RETURN
+        if (!checkIfFieldInputIsEmpty(startDateField) |
+                (tripType.equals(TripType.RETURN) && !checkIfFieldInputIsEmpty(endDateField))) {
             return false;
         }
 

@@ -1,5 +1,5 @@
 package com.sucaldo.travelapp.model;
 
 public enum TripType {
-    RETURN, MULTI_STOP
+    RETURN, MULTI_STOP, ONE_WAY
 }
