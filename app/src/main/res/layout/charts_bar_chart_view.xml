@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-   <include layout="@layout/charts_bar_chart_view"/>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="BAR CHART">
+   </TextView>
 
 </LinearLayout>
