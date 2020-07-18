@@ -1,9 +1,20 @@
 # Travel app for Android
-Android App that stores and displays your travel history
+Android App that stores trips and shows interesting statistics of your travel history
+
+# Getting started
+The following files need to be added to `res/raw`:
+- trips.csv
+- citycontinents.csv
+- worldcities.csv
+
+An image named add_trip.png needs to be added to`res/mipmap`
+
+Open project in Android Studio and run the app.
 
 # Technologies used
 - Java
 - Android Studio
+- SQLite
 
 # To Do:
 1. Column chart - top 10 visited cities
