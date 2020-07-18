@@ -31,12 +31,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/chart_style"
             android:layout_weight="2">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CHART 2"/>
+            <ImageView
+                android:id="@+id/expand_countries_cloud_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:src="@drawable/ic_baseline_open_in_new_24"/>
+
+            <com.anychart.AnyChartView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/stats_countries_cloud"
+                />
         </LinearLayout>
     </LinearLayout>
 

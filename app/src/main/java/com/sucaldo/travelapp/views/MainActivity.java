@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.views.charts.CountriesCloudFragment;
 import com.sucaldo.travelapp.views.charts.Top10CitiesFragment;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
@@ -111,10 +112,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.navbar_statistics));
     }
 
-    public void goTop10Cities() {
+    public void goToTop10CitiesChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new Top10CitiesFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.top_10_cities));
+    }
+
+    public void goToCountriesCloudChart() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new CountriesCloudFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.countries_cloud));
     }
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {

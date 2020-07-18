@@ -77,6 +77,7 @@
     <string name="top_10_cities">Top 10 Most Visited Cities</string>
     <string name="charts_top10_x_axis">City</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
+    <string name="countries_cloud">Visited Countries</string>
 
 
 </resources>

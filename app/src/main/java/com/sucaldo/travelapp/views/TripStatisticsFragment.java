@@ -28,14 +28,20 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         final View rootView = inflater.inflate(R.layout.trip_statistics_view, container, false);
 
         activity = (MainActivity) getActivity();
-
         myDB = new DatabaseHelper(getContext());
 
-        ImageView expandTop10CitiesBtn = rootView.findViewById(R.id.expand_top_10_cities_icon);
-        expandTop10CitiesBtn.setOnClickListener(this);
+        ImageView expandTop10CitiesIcon = rootView.findViewById(R.id.expand_top_10_cities_icon);
+        ImageView expandCountriesCloudIcon = rootView.findViewById(R.id.expand_countries_cloud_icon);
+
+        expandCountriesCloudIcon.setOnClickListener(this);
+        expandTop10CitiesIcon.setOnClickListener(this);
 
         AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
-        new ChartHelper(myDB, getContext()).initTop10CitiesChart(top10CitiesChart, false);
+        AnyChartView countriesCloudChart = rootView.findViewById(R.id.stats_countries_cloud);
+
+        ChartHelper chartHelper = new ChartHelper(myDB, getContext());
+        chartHelper.initTop10CitiesChart(top10CitiesChart, false);
+        chartHelper.initCountriesCloudChart(countriesCloudChart);
 
         return rootView;
     }
@@ -44,7 +50,10 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.expand_top_10_cities_icon:
-                activity.goTop10Cities();
+                activity.goToTop10CitiesChart();
+                break;
+            case R.id.expand_countries_cloud_icon:
+                activity.goToCountriesCloudChart();
                 break;
         }
     }
