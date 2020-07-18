@@ -176,6 +176,10 @@ public class Trip implements Comparable<Trip>{
         return type;
     }
 
+    public void setType(TripType type) {
+        this.type = type;
+    }
+
     public String getFormattedStartDate() {
         return formatDate(startDate, DateFormat.PRETTY);
     }

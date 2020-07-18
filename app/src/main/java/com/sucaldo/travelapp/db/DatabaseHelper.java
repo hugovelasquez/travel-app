@@ -373,6 +373,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") " +
                 " AS total " +
                 " FROM " + TABLE_TRIPS +
+                " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
                 " GROUP BY " + COL_TRIPS_TO_CITY +
                 " ORDER BY total DESC" +
                 " LIMIT 10", null);

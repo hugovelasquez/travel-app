@@ -317,6 +317,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.text_trip_completed), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Trip trip = myDB.getTripById(myDB.getLastTripId());
+                trip.setType(TripType.MULTI_STOP_LAST_STOP);
+                myDB.updateTrip(trip);
+
                 activity.goToMyTrips();
             }
         });
@@ -340,6 +344,9 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         fromLat.setText(toLat.getText());
         fromLong.setText(toLong.getText());
         toCountry.setText(trip.getToCountry());
+
+        startDate = null;
+        endDate = null;
 
         toCity.setText("");
         description.setText("");
