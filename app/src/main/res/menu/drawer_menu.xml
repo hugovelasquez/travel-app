@@ -13,6 +13,11 @@
             android:title="@string/navbar_add_trip" />
 
         <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_baseline_bar_chart_24"
+            android:title="@string/navbar_statistics" />
+
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/navbar_settings" />
