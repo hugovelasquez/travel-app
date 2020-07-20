@@ -78,6 +78,7 @@
     <string name="charts_top10_x_axis">City</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
     <string name="countries_cloud">Visited Countries</string>
+    <string name="delete_trips">Delete trips.csv</string>
 
 
 </resources>

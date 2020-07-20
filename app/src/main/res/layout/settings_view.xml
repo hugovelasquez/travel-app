@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_margin="@dimen/layout_margin">
 
     <Button
@@ -14,6 +14,14 @@
 
     </Button>
 
+    <Button
+        android:id="@+id/btn_delete_trips"
+        android:text="@string/delete_trips"
+        style="@style/button"
+        android:padding="15dp"
+        android:layout_width="wrap_content">
+
+    </Button>
 
 
 </LinearLayout>

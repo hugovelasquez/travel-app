@@ -22,7 +22,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         final View rootView = inflater.inflate(R.layout.settings_view, container, false);
 
         Button btnImportTrips = rootView.findViewById(R.id.btn_import_trips);
+        Button btnDeleteTrips = rootView.findViewById(R.id.btn_delete_trips);
         btnImportTrips.setOnClickListener(this);
+        btnDeleteTrips.setOnClickListener(this);
 
         return rootView;
     }
@@ -32,6 +34,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_import_trips:
                 importTripsFromCsvFile();
+                break;
+            case R.id.btn_delete_trips:
+                DatabaseHelper myDB = new DatabaseHelper(getContext());
+                myDB.deleteAllTripsInDb();
                 break;
         }
     }

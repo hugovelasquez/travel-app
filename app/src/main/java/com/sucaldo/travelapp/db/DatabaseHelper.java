@@ -24,7 +24,6 @@ import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Definition of variables
     private static final String DATABASE_NAME = "my_trips.db";
     private static final String TABLE_TRIPS = "trips";
     private static final String COL_TRIPS_ID = "ID";
@@ -57,7 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
-    // Create table if Database is initialized
     @Override
     public void onCreate(SQLiteDatabase db) {
         // SQLite does not have data type varchar() or Date
@@ -90,7 +88,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ********* TRIPS **********************
      */
 
-    // Method for adding a trip into database
     public Boolean addTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -165,7 +162,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Method for retrieving trip out of database
     public Trip getTripById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS +
@@ -177,7 +173,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    // Method for updating a trip in the database
     public void updateTrip(Trip trip) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_TRIPS + " SET " +
@@ -195,7 +190,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " WHERE " + COL_TRIPS_ID + " = " + trip.getId());
     }
 
-    // Method for deleting a field in database
     public void deleteTrip(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TRIPS + " WHERE " + COL_TRIPS_ID + " = " + id);
@@ -255,6 +249,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return trips;
         }
     }
+
+    public void deleteAllTripsInDb(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_TRIPS);
+    }
+
 
     /*
      ********* CITY LOCATION **********************
@@ -371,13 +371,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<DataEntry> getTop10Cities() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(
-                "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") " +
-                " AS total " +
-                " FROM " + TABLE_TRIPS +
-                " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
-                " GROUP BY " + COL_TRIPS_TO_CITY +
-                " ORDER BY total DESC" +
-                " LIMIT 10", null);
+                "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
+                        " FROM (" +
+                        " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
+                        " FROM " + TABLE_TRIPS +
+                        " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
+                        " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
+                        " ) AS cities" +
+                        " GROUP BY " + COL_TRIPS_TO_CITY +
+                        " ORDER BY total DESC" +
+                        " LIMIT 10", null);
 
         int numRows = data.getCount();
         if (numRows == 0) {
