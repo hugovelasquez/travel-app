@@ -17,7 +17,6 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Get rid of continent-value mess in kms area chart
 1. Define continent color palette
 1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
 1. Add total count of countries visited to tag cloud

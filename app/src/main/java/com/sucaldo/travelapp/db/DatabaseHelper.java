@@ -450,17 +450,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             fillMissingContinentsInMap(continentsAndKmsMap);
 
+            List<Integer> kmsPerContinentList = new ArrayList<>();
+            for(String continent : CONTINENTS) {
+                kmsPerContinentList.add(continentsAndKmsMap.get(continent));
+            }
+
             areaChartList.add(new ChartHelper.CustomDataEntry(
                     Integer.toString(year),
                     // In a Map you reference the key in the first column to get the value of the second column
-                    continentsAndKmsMap.get(CONTINENTS.get(0)),
-                    continentsAndKmsMap.get(CONTINENTS.get(1)),
-                    continentsAndKmsMap.get(CONTINENTS.get(2)),
-                    continentsAndKmsMap.get(CONTINENTS.get(3)),
-                    continentsAndKmsMap.get(CONTINENTS.get(4)),
-                    continentsAndKmsMap.get(CONTINENTS.get(5)),
-                    continentsAndKmsMap.get(CONTINENTS.get(6)),
-                    continentsAndKmsMap.get(CONTINENTS.get(7))
+                    kmsPerContinentList
             ));
         }
 

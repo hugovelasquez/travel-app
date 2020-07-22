@@ -151,21 +151,12 @@ public class ChartHelper {
         Set set = Set.instantiate();
         set.data(seriesData);
 
-        Map<String, String> valueMap = new HashMap<>();
-        valueMap.put("North America", "value");
-        valueMap.put("Middle East", "value2");
-        valueMap.put("South America", "value3");
-        valueMap.put("Africa", "value4");
-        valueMap.put("Asia", "value5");
-        valueMap.put("Central America & Caribbean", "value6");
-        valueMap.put("Oceania", "value7");
-        valueMap.put("Europe", "value8");
-
-        for(String continent : DatabaseHelper.CONTINENTS) {
-            Mapping seriesDataMap = set.mapAs("{ x: 'x', value: '" + valueMap.get(continent) + "' }");
+        for(int i = 0; i < DatabaseHelper.CONTINENTS.size(); i++) {
+            int valuePostfix = i + 1;
+            Mapping seriesDataMap = set.mapAs("{ x: 'x', value: '" + "value" + valuePostfix + "' }");
 
             Area series = areaChart.area(seriesDataMap);
-            series.name(continent);
+            series.name(DatabaseHelper.CONTINENTS.get(i));
             series.stroke("3 #fff");
             series.hovered().stroke("3 #fff");
             series.hovered().markers().enabled(true);
@@ -200,16 +191,13 @@ public class ChartHelper {
     }
 
     public static class CustomDataEntry extends ValueDataEntry {
-        public CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4, Number value5,
-                               Number value6, Number value7, Number value8) {
-            super(x, value);
-            setValue("value2", value2);
-            setValue("value3", value3);
-            setValue("value4", value4);
-            setValue("value5", value5);
-            setValue("value6", value6);
-            setValue("value7", value7);
-            setValue("value8", value8);
+        public CustomDataEntry(String x, List<Integer> values) {
+            super(x, 0);
+            int i = 1;
+            for (Integer value : values) {
+                String key = "value" + i++;
+                setValue(key, value);
+            }
         }
     }
 
