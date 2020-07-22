@@ -12,15 +12,19 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DateFormat;
 import com.sucaldo.travelapp.model.Trip;
+import com.sucaldo.travelapp.views.charts.ChartHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -35,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_TRIPS_START_DATE = "STARTDATE";
     private static final String COL_TRIPS_END_DATE = "ENDDATE";
     private static final String COL_TRIPS_GRP_ID = "GROUPID";
-    private static final String COL_TRIPS_DIST = "DISTANCE";
+    private static final String COL_TRIPS_DISTANCE = "DISTANCE";
     private static final String COL_TRIPS_CONTINENT = "CONTINENT";
     private static final String COL_TRIPS_TYPE = "TYPE";
 
@@ -51,6 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_COUNTRIES_CONTINENT = "CONTINENT";
     private static final String COL_COUNTRIES_COUNTRY = "COUNTRY";
 
+    public static final List<String> CONTINENTS = Arrays.asList(
+            "North America", "Middle East", "South America", "Africa", "Asia",
+            "Central America & Caribbean", "Oceania", "Europe");
+
     // Initialization of Database
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -62,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTableTrips = "CREATE TABLE " + TABLE_TRIPS + " (" + COL_TRIPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 " " + COL_TRIPS_FROM_COUNTRY + " TEXT, " + COL_TRIPS_FROM_CITY + " TEXT, " + COL_TRIPS_TO_COUNTRY + " TEXT, " + COL_TRIPS_TO_CITY + " TEXT," +
                 " " + COL_TRIPS_DESCRIPTION + " TEXT, " + COL_TRIPS_START_DATE + " TEXT, " + COL_TRIPS_END_DATE + " TEXT, " + COL_TRIPS_GRP_ID + " INTEGER," +
-                " " + COL_TRIPS_DIST + " INTEGER, " + COL_TRIPS_CONTINENT + " TEXT, " + COL_TRIPS_TYPE + " TEXT)";
+                " " + COL_TRIPS_DISTANCE + " INTEGER, " + COL_TRIPS_CONTINENT + " TEXT, " + COL_TRIPS_TYPE + " TEXT)";
         db.execSQL(createTableTrips);
 
         String createTableCityLoc = "CREATE TABLE " + TABLE_CITY_LOC + " (" + COL_CITY_LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -85,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-    ********* TRIPS **********************
+     ********* TRIPS **********************
      */
 
     public Boolean addTrip(Trip trip) {
@@ -101,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (trip.getEndDate() != null) {
             contentValues.put(COL_TRIPS_END_DATE, trip.getEndDate().toString());
         }
-        contentValues.put(COL_TRIPS_DIST, trip.getDistance());
+        contentValues.put(COL_TRIPS_DISTANCE, trip.getDistance());
         contentValues.put(COL_TRIPS_CONTINENT, trip.getToContinent());
         if (trip.getGroupId() == -1) {
             contentValues.put(COL_TRIPS_GRP_ID, getNextAvailableGroupId());
@@ -184,7 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_TRIPS_START_DATE + " = '" + trip.getStartDate() + "'," +
                 COL_TRIPS_END_DATE + " = '" + trip.getEndDate() + "'," +
                 COL_TRIPS_GRP_ID + " = '" + trip.getGroupId() + "'," +
-                COL_TRIPS_DIST + " = '" + trip.getDistance() + "', " +
+                COL_TRIPS_DISTANCE + " = '" + trip.getDistance() + "', " +
                 COL_TRIPS_CONTINENT + " = '" + trip.getToContinent() + "', " +
                 COL_TRIPS_TYPE + " = '" + trip.getType() + "' " +
                 " WHERE " + COL_TRIPS_ID + " = " + trip.getId());
@@ -195,9 +203,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_TRIPS + " WHERE " + COL_TRIPS_ID + " = " + id);
     }
 
-    // Method for selecting all distinct trip years in database
     public List<Integer> getAllYearsOfTrips() {
         SQLiteDatabase db = this.getWritableDatabase();
+        // SELECT DISTINCT(EXTRACT(YEAR FROM TIMESTAMP 'start date') not possible because date is stored as
+        // a string due to SQLite restrictions
         Cursor data = db.rawQuery("SELECT " + COL_TRIPS_START_DATE + " FROM " + TABLE_TRIPS, null);
         try {
             int numRows = data.getCount();
@@ -250,7 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteAllTripsInDb(){
+    public void deleteAllTripsInDb() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TRIPS);
     }
@@ -397,7 +406,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<DataEntry> getVisitedCountries() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(
-                "SELECT " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT + ", COUNT(" + COL_TRIPS_TO_COUNTRY +")" +
+                "SELECT " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT + ", COUNT(" + COL_TRIPS_TO_COUNTRY + ")" +
                         " FROM (" +
                         " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT +
                         " FROM " + TABLE_TRIPS +
@@ -418,6 +427,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return visitedCountries;
         }
     }
+
+    public List<DataEntry> getKmsPerContinentPerYear() {
+        List<Integer> allYears = getAllYearsOfTrips();
+
+        List<DataEntry> areaChartList = new ArrayList<>();
+
+        for (int year : allYears) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor data = db.rawQuery(
+                    "SELECT " + COL_TRIPS_CONTINENT + ", SUM(" + COL_TRIPS_DISTANCE + ")" +
+                            " FROM " + TABLE_TRIPS +
+                            " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'" +
+                            " GROUP BY " + COL_TRIPS_CONTINENT, null);
+            int numRows = data.getCount();
+            if (numRows == 0) {
+                continue;
+            }
+            Map<String, Integer> continentsAndKmsMap = new HashMap<>();
+            while (data.moveToNext()) {
+                continentsAndKmsMap.put(data.getString(0), data.getInt(1));
+            }
+            fillMissingContinentsInMap(continentsAndKmsMap);
+
+            areaChartList.add(new ChartHelper.CustomDataEntry(
+                    Integer.toString(year),
+                    // In a Map you reference the key in the first column to get the value of the second column
+                    continentsAndKmsMap.get(CONTINENTS.get(0)),
+                    continentsAndKmsMap.get(CONTINENTS.get(1)),
+                    continentsAndKmsMap.get(CONTINENTS.get(2)),
+                    continentsAndKmsMap.get(CONTINENTS.get(3)),
+                    continentsAndKmsMap.get(CONTINENTS.get(4)),
+                    continentsAndKmsMap.get(CONTINENTS.get(5)),
+                    continentsAndKmsMap.get(CONTINENTS.get(6)),
+                    continentsAndKmsMap.get(CONTINENTS.get(7))
+            ));
+        }
+
+        return areaChartList;
+    }
+
+    private void fillMissingContinentsInMap(Map<String, Integer> continentsAndKmsMap) {
+        for(String continent : CONTINENTS) {
+            if (!continentsAndKmsMap.containsKey(continent)) {
+                continentsAndKmsMap.put(continent, 0);
+            }
+        }
+    }
+
+  /*  public List<DataEntry> getKmsAndTripsPerYear() {
+        List<Integer> allYears = getAllYearsOfTrips();
+        List<DataEntry> bubbleChartList = new ArrayList<>();
+
+        for (int year : allYears) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor data = db.rawQuery(
+                    "SELECT SUM(" + COL_TRIPS_DISTANCE + "), COUNT(DISTINCT(" + COL_TRIPS_GRP_ID + "))" +
+                        " FROM " + TABLE_TRIPS +
+                        " WHERE " + COL_TRIPS_START_DATE + " ILIKE '%" + year + "'", null);
+            int numRows = data.getCount();
+            if (numRows == 0) {
+                continue;
+            }
+            while (data.moveToNext()) {
+                // TODO clean code below
+                int seriesId = 1;
+                String stringId = "10/10/1010";
+                bubbleChartList.add(new ChartHelper.CustomBubbleDataEntry(
+                        seriesId,
+                        year,
+                        data.getInt(1),
+                        stringId,
+                        data.getInt(0)
+                ));
+            }
+        }
+
+        return bubbleChartList;
+    }*/
 
     /*
      ********* GENERAL **********************

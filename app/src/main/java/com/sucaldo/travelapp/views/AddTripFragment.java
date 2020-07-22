@@ -319,6 +319,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int id) {
                 Trip trip = myDB.getTripById(myDB.getLastTripId());
                 trip.setType(TripType.MULTI_STOP_LAST_STOP);
+                trip.setToContinent(myDB.getContinentOfCountry(trip.getFromCountry()));
                 myDB.updateTrip(trip);
 
                 activity.goToMyTrips();

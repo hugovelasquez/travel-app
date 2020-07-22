@@ -72,13 +72,16 @@
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while...</string>
     <string name="import_trips">Import trips.csv</string>
+    <string name="delete_trips">Delete trips.csv</string>
 
     <!-- Statistics / charts -->
     <string name="top_10_cities">Top 10 Most Visited Cities</string>
     <string name="charts_top10_x_axis">City</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
     <string name="countries_cloud">Visited Countries</string>
-    <string name="delete_trips">Delete trips.csv</string>
+    <string name="kms_area_chart">"Travelled kms per year "</string>
+    <string name="kms_bubble_chart">"Trips and kms per year "</string>
+    <string name="kms_area_chart_y_axis"> kms</string>
 
 
 </resources>

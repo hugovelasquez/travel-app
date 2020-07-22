@@ -32,16 +32,24 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
 
         ImageView expandTop10CitiesIcon = rootView.findViewById(R.id.expand_top_10_cities_icon);
         ImageView expandCountriesCloudIcon = rootView.findViewById(R.id.expand_countries_cloud_icon);
+        ImageView expandKmsAreaChartIcon = rootView.findViewById(R.id.expand_kms_area_chart_icon);
+        ImageView expandKmsBubbleChartIcon = rootView.findViewById(R.id.expand_kms_bubble_chart_icon);
 
         expandCountriesCloudIcon.setOnClickListener(this);
         expandTop10CitiesIcon.setOnClickListener(this);
+        expandKmsAreaChartIcon.setOnClickListener(this);
+        expandKmsBubbleChartIcon.setOnClickListener(this);
 
         AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
         AnyChartView countriesCloudChart = rootView.findViewById(R.id.stats_countries_cloud);
+        AnyChartView kmsAreaChart = rootView.findViewById(R.id.stats_kms_area_chart);
+        AnyChartView kmsBubbleChart = rootView.findViewById(R.id.stats_kms_bubble_chart);
 
         ChartHelper chartHelper = new ChartHelper(myDB, getContext());
         chartHelper.initTop10CitiesChart(top10CitiesChart, false);
         chartHelper.initCountriesCloudChart(countriesCloudChart, false);
+        chartHelper.initKmsAreaChart(kmsAreaChart, false);
+        //TODO chartHelper Bubble Chart
 
         return rootView;
     }
@@ -54,6 +62,12 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.expand_countries_cloud_icon:
                 activity.goToCountriesCloudChart();
+                break;
+            case R.id.expand_kms_area_chart_icon:
+                activity.goToKmsAreaChart();
+                break;
+            case R.id.expand_kms_bubble_chart_icon:
+                activity.goToKmsBubbleChart();
                 break;
         }
     }

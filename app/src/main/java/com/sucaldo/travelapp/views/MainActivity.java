@@ -11,7 +11,8 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.views.charts.CountriesCloudFragment;
+import com.sucaldo.travelapp.views.charts.VisitedCountriesFragment;
+import com.sucaldo.travelapp.views.charts.KmsAreaChartFragment;
 import com.sucaldo.travelapp.views.charts.Top10CitiesFragment;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
@@ -120,8 +121,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void goToCountriesCloudChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new CountriesCloudFragment()).commit();
+                new VisitedCountriesFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.countries_cloud));
+    }
+
+    public void goToKmsAreaChart() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new KmsAreaChartFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.kms_area_chart));
+    }
+
+    public void goToKmsBubbleChart() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new KmsAreaChartFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.kms_bubble_chart));
     }
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {
