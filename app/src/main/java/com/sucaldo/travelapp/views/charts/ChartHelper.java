@@ -26,9 +26,7 @@ import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ChartHelper {
 
@@ -47,12 +45,12 @@ public class ChartHelper {
      ********* BAR CHART **********************
      */
 
-    public void initTop10CitiesChart(AnyChartView anyChartView, boolean fullscreen) {
+    public void initTop10PlacesChart(AnyChartView anyChartView, boolean fullscreen) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         Cartesian cartesian = AnyChart.column();
 
-        List<DataEntry> data = myDB.getTop10Cities();
+        List<DataEntry> data = myDB.getTop10Places();
 
         Column column = cartesian.column(data);
 
@@ -67,7 +65,7 @@ public class ChartHelper {
         cartesian.animation(true);
 
         if (!fullscreen) {
-            cartesian.title(context.getString(R.string.top_10_cities));
+            cartesian.title(context.getString(R.string.top_10_places));
         }
 
         cartesian.yScale().minimum(0d);

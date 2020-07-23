@@ -19,7 +19,6 @@ Open project in Android Studio and run the app.
 ## To Do:
 1. Define continent color palette
 1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
-1. Add total count of countries visited to tag cloud
 1. Add tag cloud of cities as option
 1. World Map
 1. World view - Times traveled around the world

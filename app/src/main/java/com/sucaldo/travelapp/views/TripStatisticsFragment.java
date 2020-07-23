@@ -30,23 +30,23 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
 
-        ImageView expandTop10CitiesIcon = rootView.findViewById(R.id.expand_top_10_cities_icon);
+        ImageView expandTop10PlacesIcon = rootView.findViewById(R.id.expand_top_10_places_icon);
         ImageView expandCountriesCloudIcon = rootView.findViewById(R.id.expand_countries_cloud_icon);
         ImageView expandKmsAreaChartIcon = rootView.findViewById(R.id.expand_kms_area_chart_icon);
         ImageView expandKmsBubbleChartIcon = rootView.findViewById(R.id.expand_kms_bubble_chart_icon);
 
         expandCountriesCloudIcon.setOnClickListener(this);
-        expandTop10CitiesIcon.setOnClickListener(this);
+        expandTop10PlacesIcon.setOnClickListener(this);
         expandKmsAreaChartIcon.setOnClickListener(this);
         expandKmsBubbleChartIcon.setOnClickListener(this);
 
-        AnyChartView top10CitiesChart = rootView.findViewById(R.id.stats_top_10_cities);
+        AnyChartView top10PlacesChart = rootView.findViewById(R.id.stats_top_10_places);
         AnyChartView countriesCloudChart = rootView.findViewById(R.id.stats_countries_cloud);
         AnyChartView kmsAreaChart = rootView.findViewById(R.id.stats_kms_area_chart);
         AnyChartView kmsBubbleChart = rootView.findViewById(R.id.stats_kms_bubble_chart);
 
         ChartHelper chartHelper = new ChartHelper(myDB, getContext());
-        chartHelper.initTop10CitiesChart(top10CitiesChart, false);
+        chartHelper.initTop10PlacesChart(top10PlacesChart, false);
         chartHelper.initCountriesCloudChart(countriesCloudChart, false);
         chartHelper.initKmsAreaChart(kmsAreaChart, false);
         //TODO chartHelper Bubble Chart
@@ -57,7 +57,7 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.expand_top_10_cities_icon:
+            case R.id.expand_top_10_places_icon:
                 activity.goToTop10CitiesChart();
                 break;
             case R.id.expand_countries_cloud_icon:

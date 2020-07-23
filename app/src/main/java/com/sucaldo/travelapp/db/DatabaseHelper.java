@@ -357,7 +357,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getCountries() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT DISTINCT " + COL_COUNTRIES_COUNTRY + " FROM " + TABLE_COUNTRIES, null);
+        Cursor data = db.rawQuery("SELECT DISTINCT " + COL_COUNTRIES_COUNTRY + " FROM " + TABLE_COUNTRIES,
+                                null);
 
         int numRows = data.getCount();
         if (numRows == 0) {
@@ -377,7 +378,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* STATISTICS **********************
      */
 
-    public List<DataEntry> getTop10Cities() {
+    public List<DataEntry> getTop10Places() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(
                 "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
@@ -401,6 +402,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             return top10Cities;
         }
+    }
+
+    public int getNumberOfVisitedPlaces() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_CITY + "))" +
+                " FROM " + TABLE_TRIPS, null);
+        while (data.moveToNext()) {
+            return data.getInt(0);
+        }
+        return -1;
     }
 
     public List<DataEntry> getVisitedCountries() {
@@ -428,6 +439,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public int getNumberOfVisitedCountries() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_COUNTRY + "))" +
+                                    " FROM " + TABLE_TRIPS, null);
+        while (data.moveToNext()) {
+            return data.getInt(0);
+        }
+        return -1;
+    }
+
     public List<DataEntry> getKmsPerContinentPerYear() {
         List<Integer> allYears = getAllYearsOfTrips();
 
@@ -452,12 +473,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             List<Integer> kmsPerContinentList = new ArrayList<>();
             for(String continent : CONTINENTS) {
+                // In a Map you reference the key in the first column to get the value of the second column
                 kmsPerContinentList.add(continentsAndKmsMap.get(continent));
             }
 
             areaChartList.add(new ChartHelper.CustomDataEntry(
                     Integer.toString(year),
-                    // In a Map you reference the key in the first column to get the value of the second column
                     kmsPerContinentList
             ));
         }

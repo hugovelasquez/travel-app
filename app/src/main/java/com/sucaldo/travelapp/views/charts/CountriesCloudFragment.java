@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,7 @@ import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.views.MainActivity;
 
 
-public class Top10CitiesFragment extends Fragment implements View.OnClickListener {
+public class CountriesCloudFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity activity;
     private DatabaseHelper myDB;
@@ -24,16 +25,21 @@ public class Top10CitiesFragment extends Fragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.charts_top_10_cities_view, container, false);
+        final View rootView = inflater.inflate(R.layout.charts_countries_cloud_view, container, false);
 
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
 
-        AnyChartView top10CitiesChart = rootView.findViewById(R.id.top_10_cities);
-        new ChartHelper(myDB, getContext()).initTop10CitiesChart(top10CitiesChart, true);
+        AnyChartView countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
+        new ChartHelper(myDB, getContext()).initCountriesCloudChart(countriesCloudChart, true);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);
+
+        TextView textView = rootView.findViewById(R.id.text_visited_countries);
+        int count = myDB.getNumberOfVisitedCountries();
+        String visitedCountries = getString(R.string.text_visited_countries, count);
+        textView.setText(visitedCountries);
 
         return rootView;
     }

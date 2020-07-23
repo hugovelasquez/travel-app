@@ -15,7 +15,7 @@
             android:layout_weight="2">
 
            <ImageView
-               android:id="@+id/expand_top_10_cities_icon"
+               android:id="@+id/expand_top_10_places_icon"
                android:layout_width="@dimen/icon_size"
                android:layout_height="@dimen/icon_size"
                android:src="@drawable/ic_baseline_open_in_new_24"/>
@@ -23,7 +23,7 @@
            <com.anychart.AnyChartView
                android:layout_height="match_parent"
                android:layout_width="match_parent"
-               android:id="@+id/stats_top_10_cities"
+               android:id="@+id/stats_top_10_places"
                />
 
         </LinearLayout>
