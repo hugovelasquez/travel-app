@@ -26,6 +26,7 @@ import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ChartHelper {
@@ -35,6 +36,10 @@ public class ChartHelper {
 
     private int axisLabelFontSize = 15;
     private int axisTitleFontSize = 20;
+
+    private String[] colorSchema = new String[] {
+        "#fa70b5", "#8e44ad", "#00c3ff", "#009175", "#34eb31", "#ffd000", "#ff0404", "#a8a8a8"
+    };
 
     public ChartHelper(DatabaseHelper myDB, Context context) {
         this.myDB = myDB;
@@ -104,21 +109,22 @@ public class ChartHelper {
         }
 
         OrdinalColor ordinalColor = OrdinalColor.instantiate();
-        ordinalColor.colors(new String[] {
-                "#ff3333", "#8e44ad", "#3498db", "#16a085", "#34eb31", "#f39c12", "#d35400", "#717d7e"
-        });
+        ordinalColor.colors(colorSchema.clone());
         tagCloud.colorScale(ordinalColor);
+
         tagCloud.angles(new Double[] {-90d, 0d, 90d});
 
         if (fullscreen) {
             tagCloud.colorRange().labels().width(50);
             tagCloud.colorRange().enabled(true);
             tagCloud.colorRange().colorLineSize(15d);
+
         }
 
         List<DataEntry> data = myDB.getVisitedCountries();
 
         tagCloud.data(data);
+        tagCloud.tooltip().format("Trips: {%value}");
 
         anyChartView.setChart(tagCloud);
     }

@@ -469,29 +469,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (data.moveToNext()) {
                 continentsAndKmsMap.put(data.getString(0), data.getInt(1));
             }
-            fillMissingContinentsInMap(continentsAndKmsMap);
-
-            List<Integer> kmsPerContinentList = new ArrayList<>();
-            for(String continent : CONTINENTS) {
-                // In a Map you reference the key in the first column to get the value of the second column
-                kmsPerContinentList.add(continentsAndKmsMap.get(continent));
-            }
 
             areaChartList.add(new ChartHelper.CustomDataEntry(
                     Integer.toString(year),
-                    kmsPerContinentList
+                    getKmsPerContinentList(continentsAndKmsMap)
             ));
         }
 
         return areaChartList;
     }
 
-    private void fillMissingContinentsInMap(Map<String, Integer> continentsAndKmsMap) {
+    private List<Integer> getKmsPerContinentList(Map<String, Integer> continentsAndKmsMap) {
+        List<Integer> kmsPerContinentList = new ArrayList<>();
         for(String continent : CONTINENTS) {
-            if (!continentsAndKmsMap.containsKey(continent)) {
-                continentsAndKmsMap.put(continent, 0);
+            if (continentsAndKmsMap.containsKey(continent)) {
+                kmsPerContinentList.add(continentsAndKmsMap.get(continent));
+            } else {
+                kmsPerContinentList.add(0);
             }
         }
+        return kmsPerContinentList;
     }
 
   /*  public List<DataEntry> getKmsAndTripsPerYear() {
