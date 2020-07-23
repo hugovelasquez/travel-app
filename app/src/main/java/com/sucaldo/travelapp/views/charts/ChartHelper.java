@@ -26,6 +26,7 @@ import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,7 +100,7 @@ public class ChartHelper {
      ********* CLOUD CHART **********************
      */
 
-    public void initCountriesCloudChart(AnyChartView anyChartView, boolean fullscreen) {
+    public TagCloud initCountriesCloudChart(AnyChartView anyChartView, boolean fullscreen) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         TagCloud tagCloud = AnyChart.tagCloud();
@@ -127,7 +128,20 @@ public class ChartHelper {
         tagCloud.tooltip().format("Trips: {%value}");
 
         anyChartView.setChart(tagCloud);
+
+        return tagCloud;
     }
+
+    public void updateChart(TagCloud tagCloud, boolean countries) {
+        List<DataEntry> data;
+        if (countries) {
+            data = myDB.getVisitedCountries();
+        } else {
+            data = myDB.getVisitedPlaces();
+        }
+        tagCloud.data(data);
+    }
+
 
     /*
      ********* AREA CHART **********************

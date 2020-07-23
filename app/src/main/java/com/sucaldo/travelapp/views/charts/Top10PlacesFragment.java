@@ -36,11 +36,6 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);
 
-        TextView textView = rootView.findViewById(R.id.text_visited_places);
-        int count = myDB.getNumberOfVisitedPlaces();
-        String visitedPlaces = getString(R.string.text_visited_places, count);
-        textView.setText(visitedPlaces);
-
         return rootView;
     }
 

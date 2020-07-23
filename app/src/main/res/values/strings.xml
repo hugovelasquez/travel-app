@@ -76,14 +76,16 @@
 
     <!-- Statistics / charts -->
     <string name="top_10_places">Top 10 Most Visited Places</string>
-    <string name="charts_top10_x_axis">Place</string>
+    <string name="charts_top10_x_axis">Top 10 Places</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
-    <string name="countries_cloud">Visited Countries</string>
-    <string name="kms_area_chart">"Travelled kms per year "</string>
+    <string name="countries_cloud">All Visited Countries</string>
+    <string name="kms_area_chart">"Travelled Kilometers per year "</string>
     <string name="kms_bubble_chart">"Trips and kms per year "</string>
-    <string name="kms_area_chart_y_axis"> kms</string>
+    <string name="kms_area_chart_y_axis"> Kms</string>
     <string name="text_visited_countries">You have visited %1$d countries so far!</string>
     <string name="text_visited_places">You have been to %1$d different places so far!</string>
+    <string name="text_radio_countries_cloud">Show countries</string>
+    <string name="text_radio_cities_cloud">Show places</string>
 
 
 </resources>

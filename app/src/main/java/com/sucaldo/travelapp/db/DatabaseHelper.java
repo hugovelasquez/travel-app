@@ -396,18 +396,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (numRows == 0) {
             return new ArrayList<>();
         } else {
-            List<DataEntry> top10Cities = new ArrayList<>();
+            List<DataEntry> top10Places = new ArrayList<>();
             while (data.moveToNext()) {
-                top10Cities.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
+                top10Places.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
             }
-            return top10Cities;
+            return top10Places;
         }
     }
 
     public int getNumberOfVisitedPlaces() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_CITY + "))" +
-                " FROM " + TABLE_TRIPS, null);
+                " FROM " + TABLE_TRIPS +
+                " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')", null);
         while (data.moveToNext()) {
             return data.getInt(0);
         }
@@ -424,7 +425,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
                         " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT +
                         " ) AS countries" +
-                        " GROUP BY " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT, null);
+                        " GROUP BY " + COL_TRIPS_TO_COUNTRY + ", " + COL_TRIPS_CONTINENT +
+                        " ORDER BY " + COL_TRIPS_CONTINENT, null);
 
         int numRows = data.getCount();
         if (numRows == 0) {
@@ -442,12 +444,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int getNumberOfVisitedCountries() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_COUNTRY + "))" +
-                                    " FROM " + TABLE_TRIPS, null);
+                                    " FROM " + TABLE_TRIPS +
+                                    " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')", null);
         while (data.moveToNext()) {
             return data.getInt(0);
         }
         return -1;
     }
+
+    public List<DataEntry> getVisitedPlaces() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery(
+                "SELECT " + COL_TRIPS_TO_CITY + ", " + COL_TRIPS_CONTINENT + ", COUNT(" + COL_TRIPS_TO_CITY + ")" +
+                        " FROM (" +
+                        " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY + ", " + COL_TRIPS_CONTINENT +
+                        " FROM " + TABLE_TRIPS +
+                        " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
+                        " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY + ", " + COL_TRIPS_CONTINENT +
+                        " ) AS cities" +
+                        " GROUP BY " + COL_TRIPS_TO_CITY + ", " + COL_TRIPS_CONTINENT +
+                        " ORDER BY " + COL_TRIPS_CONTINENT, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<DataEntry> visitedPlaces = new ArrayList<>();
+            while (data.moveToNext()) {
+                visitedPlaces.add(new CategoryValueDataEntry(
+                        data.getString(0), data.getString(1), data.getInt(2)));
+            }
+            return visitedPlaces;
+        }
+    }
+
 
     public List<DataEntry> getKmsPerContinentPerYear() {
         List<Integer> allYears = getAllYearsOfTrips();

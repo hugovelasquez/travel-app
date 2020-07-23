@@ -18,7 +18,6 @@ Open project in Android Studio and run the app.
 
 ## To Do:
 1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
-1. Add tag cloud of cities as option
 1. World Map
 1. World view - Times traveled around the world
 1. Refactoring
@@ -27,6 +26,7 @@ Open project in Android Studio and run the app.
 1. don't allow ' character in city name and commas in description
 1. adjust column width in my trips
 1. Add a loading bar when reading csv files
+1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. Add table cityloc as menu item
 1. Add "home" option in settings
 1. Add TextWatcher to from/to City/Country - set long and lat to blank if text is changed

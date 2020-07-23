@@ -13,10 +13,8 @@
         <include layout="@layout/return_icon_layout" />
 
         <TextView
-            android:id="@+id/text_visited_places"
-            style="@style/chart_explanation_text"
-            android:text="@string/text_visited_places">
-
+            android:id="@+id/text_explanation_top10_places"
+            style="@style/chart_explanation_text">
         </TextView>
 
     </LinearLayout>

@@ -13,17 +13,47 @@
         <include layout="@layout/return_icon_layout" />
 
         <TextView
-            android:id="@+id/text_visited_countries"
-            style="@style/chart_explanation_text"
-            android:text="@string/text_visited_countries">
-
+            android:id="@+id/text_explanation_cloud_chart"
+            style="@style/chart_explanation_text">
         </TextView>
+
+        <RadioGroup
+            android:id="@+id/radio_group_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_countries_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_countries_cloud" />
+
+            <RadioButton
+                android:id="@+id/radio_cities_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_cities_cloud" />
+
+        </RadioGroup>
 
     </LinearLayout>
 
-    <com.anychart.AnyChartView
-        android:id="@+id/countries_cloud"
+    <LinearLayout
+        android:id="@+id/cloud_tag_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.anychart.AnyChartView
+            android:id="@+id/countries_cloud"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        />
+
+    </LinearLayout>
 
 </LinearLayout>
