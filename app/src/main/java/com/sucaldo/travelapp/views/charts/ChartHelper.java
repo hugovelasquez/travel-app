@@ -9,6 +9,7 @@ import com.anychart.chart.common.dataentry.BubbleDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
+import com.anychart.charts.Scatter;
 import com.anychart.charts.TagCloud;
 import com.anychart.core.cartesian.series.Area;
 import com.anychart.core.cartesian.series.Column;
@@ -20,14 +21,13 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.Position;
 import com.anychart.enums.ScaleStackMode;
+import com.anychart.enums.ScatterScaleTypes;
 import com.anychart.enums.TooltipDisplayMode;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChartHelper {
@@ -71,7 +71,7 @@ public class ChartHelper {
         cartesian.animation(true);
 
         if (!fullscreen) {
-            cartesian.title(context.getString(R.string.top_10_places));
+            cartesian.title(context.getString(R.string.title_top_10_places));
         }
 
         cartesian.yScale().minimum(0d);
@@ -106,7 +106,7 @@ public class ChartHelper {
         TagCloud tagCloud = AnyChart.tagCloud();
 
         if (!fullscreen) {
-            tagCloud.title(context.getString(R.string.countries_cloud));
+            tagCloud.title(context.getString(R.string.title_countries_cloud));
         }
 
         OrdinalColor ordinalColor = OrdinalColor.instantiate();
@@ -119,13 +119,12 @@ public class ChartHelper {
             tagCloud.colorRange().labels().width(50);
             tagCloud.colorRange().enabled(true);
             tagCloud.colorRange().colorLineSize(15d);
-
         }
 
         List<DataEntry> data = myDB.getVisitedCountries();
 
-        tagCloud.data(data);
         tagCloud.tooltip().format("Trips: {%value}");
+        tagCloud.data(data);
 
         anyChartView.setChart(tagCloud);
 
@@ -153,7 +152,7 @@ public class ChartHelper {
         Cartesian areaChart = AnyChart.area();
 
         if (!fullscreen){
-            areaChart.title(context.getString(R.string.kms_area_chart));
+            areaChart.title(context.getString(R.string.title_kms_area_chart));
         }
 
         areaChart.animation(true);
@@ -189,7 +188,13 @@ public class ChartHelper {
             areaChart.legend().enabled(true);
             areaChart.legend().fontSize(13d);
             areaChart.legend().padding(0d, 0d, 20d, 0d);
+
+            areaChart.interactivity().hoverMode(HoverMode.BY_X);
         }
+
+        areaChart.tooltip()
+                .valuePostfix(context.getString(R.string.kms_area_chart_y_axis))
+                .displayMode(TooltipDisplayMode.UNION);
 
         areaChart.xAxis(0).title(false);
         areaChart.xAxis(0).ticks(false);
@@ -199,11 +204,6 @@ public class ChartHelper {
         areaChart.yAxis(0).title().fontSize(axisTitleFontSize);
         areaChart.yAxis(0).labels().fontSize(axisLabelFontSize);
         areaChart.yScale().ticks().interval(10000);
-
-        areaChart.interactivity().hoverMode(HoverMode.BY_X);
-        areaChart.tooltip()
-                .valuePostfix(context.getString(R.string.kms_area_chart_y_axis))
-                .displayMode(TooltipDisplayMode.UNION);
 
         anyChartView.setChart(areaChart);
     }
@@ -223,14 +223,52 @@ public class ChartHelper {
      ********* BUBBLE CHART **********************
      */
 
-    //TODO copy code for bubble chart here
+    public void initKmsBubbleChart(AnyChartView anyChartView, boolean fullscreen) {
+        APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
-    public static class CustomBubbleDataEntry extends BubbleDataEntry {
+        Scatter bubble = AnyChart.bubble();
 
-        CustomBubbleDataEntry(Integer training, Integer x, Integer value, String data, Integer size) {
-            super(x, value, size);
-            setValue("training", training);
-            setValue("data", data);
+        bubble.animation(true);
+
+        bubble.xAxis(0).labels().fontSize(axisLabelFontSize);
+        List<Integer> allYears = myDB.getAllYearsOfTrips();
+        bubble.xScale().minimum(allYears.get(0) - 1);
+        bubble.xScale().maximum(allYears.get(allYears.size() - 1) + 1);
+
+        bubble.yAxis(0)
+                .title(context.getString(R.string.kms_bubble_chart_y_axis));
+        bubble.yAxis(0).labels().fontSize(axisLabelFontSize);
+        bubble.yAxis(0).title().fontSize(axisTitleFontSize);
+        bubble.yGrid(true);
+
+        List<DataEntry> data = myDB.getKmsAndTripsPerYear();
+        bubble.bubble(data).name("Details").selected().fill("#31eb97", 0.5);
+        bubble.padding(20d, 20d, 10d, 20d);
+
+        if (!fullscreen){
+            bubble.title(context.getString(R.string.title_kms_bubble_chart));
+            bubble.minBubbleSize(2d)
+                    .maxBubbleSize(20d);
         }
+
+        if (fullscreen){
+            bubble.minBubbleSize(10d)
+                    .maxBubbleSize(50d);
+        }
+
+        bubble.tooltip()
+                .useHtml(true)
+                .fontColor("#fff")
+                .format("function() {\n" +
+                        "        return 'Year: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
+                        "          this.getData('x') + '</span></strong><br/>' +\n" +
+                        "          'Trips: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
+                        "          this.getData('value') + '</span></strong><br/>' +\n" +
+                        "          'Distance: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
+                        "          this.getData('size') + ' kms.</span></strong>';\n" +
+                        "      }");
+
+
+        anyChartView.setChart(bubble);
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.views.charts.CountriesCloudFragment;
 import com.sucaldo.travelapp.views.charts.KmsAreaChartFragment;
+import com.sucaldo.travelapp.views.charts.KmsBubbleChartFragment;
 import com.sucaldo.travelapp.views.charts.Top10PlacesFragment;
 
 // implements "Navigation...Listener" needed for defining the drawer menu listeners
@@ -116,25 +117,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void goToTop10CitiesChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new Top10PlacesFragment()).commit();
-        getSupportActionBar().setTitle(getString(R.string.top_10_places));
+        getSupportActionBar().setTitle(getString(R.string.title_top_10_places));
     }
 
     public void goToCountriesCloudChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new CountriesCloudFragment()).commit();
-        getSupportActionBar().setTitle(getString(R.string.countries_cloud));
+        getSupportActionBar().setTitle(getString(R.string.title_countries_cloud));
     }
 
     public void goToKmsAreaChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsAreaChartFragment()).commit();
-        getSupportActionBar().setTitle(getString(R.string.kms_area_chart));
+        getSupportActionBar().setTitle(getString(R.string.title_kms_area_chart));
     }
 
     public void goToKmsBubbleChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new KmsAreaChartFragment()).commit();
-        getSupportActionBar().setTitle(getString(R.string.kms_bubble_chart));
+                new KmsBubbleChartFragment()).commit();
+        getSupportActionBar().setTitle(getString(R.string.title_kms_bubble_chart));
     }
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {

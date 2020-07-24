@@ -49,7 +49,8 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         chartHelper.initTop10PlacesChart(top10PlacesChart, false);
         chartHelper.initCountriesCloudChart(countriesCloudChart, false);
         chartHelper.initKmsAreaChart(kmsAreaChart, false);
-        //TODO chartHelper Bubble Chart
+        chartHelper.initKmsBubbleChart(kmsBubbleChart, false);
+
 
         return rootView;
     }

@@ -17,9 +17,8 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Bubble chart - Trips and kms per year (Last trip of multi-stop trip: only kms count towards statistics)
-1. World Map
 1. World view - Times traveled around the world
+1. World Map
 1. Refactoring
 1. Export triplist worldcities, citycontinents as `*.csv`
 1. Import csv files in app not R.raw (in settings)

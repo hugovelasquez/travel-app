@@ -30,8 +30,7 @@ public class KmsBubbleChartFragment extends Fragment implements View.OnClickList
         myDB = new DatabaseHelper(getContext());
 
         AnyChartView kmsBubbleChart = rootView.findViewById(R.id.kms_bubble_chart);
-        // TODO reference to ChartHelper code
-        //new ChartHelper(myDB, getContext()).initCountriesCloudChart(countriesCloudChart, true);
+        new ChartHelper(myDB, getContext()).initKmsBubbleChart(kmsBubbleChart, true);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);

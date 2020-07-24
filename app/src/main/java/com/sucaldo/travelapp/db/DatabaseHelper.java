@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.anychart.chart.common.dataentry.BubbleDataEntry;
 import com.anychart.chart.common.dataentry.CategoryValueDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
@@ -16,6 +17,7 @@ import com.sucaldo.travelapp.views.charts.ChartHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -521,7 +523,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return kmsPerContinentList;
     }
 
-  /*  public List<DataEntry> getKmsAndTripsPerYear() {
+
+  public List<DataEntry> getKmsAndTripsPerYear() {
         List<Integer> allYears = getAllYearsOfTrips();
         List<DataEntry> bubbleChartList = new ArrayList<>();
 
@@ -530,31 +533,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor data = db.rawQuery(
                     "SELECT SUM(" + COL_TRIPS_DISTANCE + "), COUNT(DISTINCT(" + COL_TRIPS_GRP_ID + "))" +
                         " FROM " + TABLE_TRIPS +
-                        " WHERE " + COL_TRIPS_START_DATE + " ILIKE '%" + year + "'", null);
+                        " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'", null);
             int numRows = data.getCount();
             if (numRows == 0) {
                 continue;
             }
+
             while (data.moveToNext()) {
-                // TODO clean code below
-                int seriesId = 1;
-                String stringId = "10/10/1010";
-                bubbleChartList.add(new ChartHelper.CustomBubbleDataEntry(
-                        seriesId,
+                bubbleChartList.add(new BubbleDataEntry(
                         year,
                         data.getInt(1),
-                        stringId,
                         data.getInt(0)
                 ));
             }
         }
 
         return bubbleChartList;
-    }*/
+    }
 
     /*
      ********* GENERAL **********************
      */
+
 
     private boolean isTableEmpty(String table) {
         SQLiteDatabase db = this.getWritableDatabase();
