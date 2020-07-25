@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/text_explanation_cloud_chart"
-            style="@style/chart_explanation_text">
+            style="@style/subtitle_text">
         </TextView>
 
         <RadioGroup

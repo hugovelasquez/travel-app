@@ -17,7 +17,6 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. World view - Times traveled around the world
 1. World Map
 1. Refactoring
 1. Export triplist worldcities, citycontinents as `*.csv`

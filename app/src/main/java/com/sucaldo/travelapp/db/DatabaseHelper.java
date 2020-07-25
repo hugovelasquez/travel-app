@@ -551,6 +551,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return bubbleChartList;
     }
 
+    public int getTotalKms() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT SUM(" + COL_TRIPS_DISTANCE + ")" +
+                " FROM " + TABLE_TRIPS, null);
+        while (data.moveToNext()) {
+            return data.getInt(0);
+        }
+        return -1;
+    }
+
     /*
      ********* GENERAL **********************
      */

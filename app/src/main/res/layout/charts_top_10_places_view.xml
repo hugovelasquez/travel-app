@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/text_explanation_top10_places"
-            style="@style/chart_explanation_text">
+            style="@style/subtitle_text">
         </TextView>
 
     </LinearLayout>

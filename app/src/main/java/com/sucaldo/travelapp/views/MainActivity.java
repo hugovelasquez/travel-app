@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new TripStatisticsFragment()).commit();
                 getSupportActionBar().setTitle(getString(R.string.navbar_statistics));
                 break;
+            case R.id.nav_world_map:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WorldMapFragment()).commit();
+                getSupportActionBar().setTitle(getString(R.string.navbar_world_map));
+                break;
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SettingsFragment()).commit();

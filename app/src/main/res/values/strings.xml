@@ -16,6 +16,7 @@
     <string name="navbar_add_stop">Add Stop</string>
     <string name="navbar_settings">Settings</string>
     <string name="navbar_statistics">Statistics</string>
+    <string name="navbar_world_map">World Map</string>
 
     <!-- fragment keys -->
     <string name="fragment_key_trip_id">tripId</string>
@@ -73,6 +74,7 @@
     <string name="wait_message">This might take a while...</string>
     <string name="import_trips">Import trips.csv</string>
     <string name="delete_trips">Delete trips.csv</string>
+    <string name="text_world_map_travel">You have travelled %1$.2f times around the world!</string>
 
     <!-- Statistics / charts -->
     <string name="title_top_10_places">Top 10 Most Visited Places</string>

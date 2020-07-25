@@ -54,7 +54,7 @@
         <item name="android:layout_margin">30dp</item>
     </style>
 
-    <style name="chart_explanation_text">
+    <style name="subtitle_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">30dp</item>
