@@ -190,6 +190,9 @@ public class ChartHelper {
             areaChart.legend().padding(0d, 0d, 20d, 0d);
 
             areaChart.interactivity().hoverMode(HoverMode.BY_X);
+            areaChart.xAxis(0).labels().fontSize(axisLabelFontSize);
+            areaChart.yAxis(0).title().fontSize(axisTitleFontSize);
+            areaChart.yAxis(0).labels().fontSize(axisLabelFontSize);
         }
 
         areaChart.tooltip()
@@ -198,11 +201,9 @@ public class ChartHelper {
 
         areaChart.xAxis(0).title(false);
         areaChart.xAxis(0).ticks(false);
-        areaChart.xAxis(0).labels().fontSize(axisLabelFontSize);
 
         areaChart.yAxis(0).title(context.getString(R.string.kms_area_chart_y_axis));
-        areaChart.yAxis(0).title().fontSize(axisTitleFontSize);
-        areaChart.yAxis(0).labels().fontSize(axisLabelFontSize);
+
         areaChart.yScale().ticks().interval(10000);
 
         anyChartView.setChart(areaChart);
@@ -230,15 +231,12 @@ public class ChartHelper {
 
         bubble.animation(true);
 
-        bubble.xAxis(0).labels().fontSize(axisLabelFontSize);
         List<Integer> allYears = myDB.getAllYearsOfTrips();
         bubble.xScale().minimum(allYears.get(0) - 1);
         bubble.xScale().maximum(allYears.get(allYears.size() - 1) + 1);
 
         bubble.yAxis(0)
                 .title(context.getString(R.string.kms_bubble_chart_y_axis));
-        bubble.yAxis(0).labels().fontSize(axisLabelFontSize);
-        bubble.yAxis(0).title().fontSize(axisTitleFontSize);
         bubble.yGrid(true);
 
         List<DataEntry> data = myDB.getKmsAndTripsPerYear();
@@ -254,6 +252,9 @@ public class ChartHelper {
         if (fullscreen){
             bubble.minBubbleSize(10d)
                     .maxBubbleSize(50d);
+            bubble.yAxis(0).labels().fontSize(axisLabelFontSize);
+            bubble.yAxis(0).title().fontSize(axisTitleFontSize);
+            bubble.xAxis(0).labels().fontSize(axisLabelFontSize);
         }
 
         bubble.tooltip()

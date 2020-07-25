@@ -1,12 +1,17 @@
 package com.sucaldo.travelapp.views;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +21,15 @@ import androidx.fragment.app.Fragment;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 
-public class WorldMapFragment extends Fragment implements View.OnClickListener {
+public class WorldMapFragment extends Fragment {
 
     private final int WORLD_CIRCUMFERENCE = 40075;
+    private final float CANVAS_WIDTH = 1900;
+    private final float CANVAS_HEIGHT = 842;
+    private final float CALIBRATION_FACTOR_LAT = 30;
+    private final float CALIBRATION_FACTOR_LONG = 7;
+
+    private Bitmap worldBitmap;
 
     @Nullable
     @Override
@@ -32,14 +43,65 @@ public class WorldMapFragment extends Fragment implements View.OnClickListener {
         TextView timesAroundWorldText = rootView.findViewById(R.id.world_map_travel);
         timesAroundWorldText.setText(getString(R.string.text_world_map_travel, timesAroundWorld));
 
+        ImageView worldMap = rootView.findViewById(R.id.map);
+
+        Canvas worldMapCanvas = getWorldMapAsCanvasAndSetBitmap();
+
+        // Hamburg
+        drawLocationCircleOnWorldCanvas(worldMapCanvas, 53.55f, 10);
+        // New York
+        drawLocationCircleOnWorldCanvas(worldMapCanvas, 40.6943f, -73.9249f);
+        // Buenos Aires
+        drawLocationCircleOnWorldCanvas(worldMapCanvas, -34.6025f, -58.3975f);
+        // Sydney
+        drawLocationCircleOnWorldCanvas(worldMapCanvas, -33.92f, 151.1852f);
+        drawLocationCircleOnWorldCanvas(worldMapCanvas, 0, 0);
+
+        worldMap.setImageDrawable(new BitmapDrawable(getResources(), worldBitmap));
+
         return rootView;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    private Canvas getWorldMapAsCanvasAndSetBitmap() {
+        Bitmap myBitmap = BitmapFactory.decodeResource(getContext().getResources(),
+                R.mipmap.world_map);
+        worldBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
+        Canvas tempCanvas = new Canvas(worldBitmap);
+        tempCanvas.drawBitmap(myBitmap, 0, 0, null);
 
-        }
+        return tempCanvas;
     }
+
+    private void drawLocationCircleOnWorldCanvas(Canvas worldMap, float latitude, float longitude) {
+        float latitudePosition = getLatitudePosition(latitude);
+        float longitudePosition = getLongitudePosition(longitude);
+
+        Paint myPaint = new Paint();
+        myPaint.setColor(getContext().getColor(R.color.teal));
+        worldMap.drawCircle(longitudePosition, latitudePosition,10, myPaint);
+    }
+
+    private float getLatitudePosition(float latitude) {
+        float pixelsLatitude = latitude * CANVAS_HEIGHT / 180;
+        if (latitude > 0) {
+            pixelsLatitude = (CANVAS_HEIGHT /2) - pixelsLatitude - CALIBRATION_FACTOR_LAT;
+        }
+        if (latitude < 0) {
+            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT;
+        }
+        if (latitude == 0) {
+            pixelsLatitude = CANVAS_HEIGHT /2;
+        }
+        return pixelsLatitude;
+    }
+
+    private float getLongitudePosition(float longitude) {
+        float pixelsLongitude = longitude * CANVAS_WIDTH / 360 + (CANVAS_WIDTH / 2);
+        if(longitude > 0) {
+            pixelsLongitude = pixelsLongitude - CALIBRATION_FACTOR_LONG;
+        }
+        return pixelsLongitude;
+    }
+
 
 }

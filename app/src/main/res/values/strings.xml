@@ -74,7 +74,7 @@
     <string name="wait_message">This might take a while...</string>
     <string name="import_trips">Import trips.csv</string>
     <string name="delete_trips">Delete trips.csv</string>
-    <string name="text_world_map_travel">You have travelled %1$.2f times around the world!</string>
+    <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
 
     <!-- Statistics / charts -->
     <string name="title_top_10_places">Top 10 Most Visited Places</string>
