@@ -2,6 +2,7 @@ package com.sucaldo.travelapp.model;
 
 // Class to display the grouping of trips by year in the list view
 public class YearListItem {
+
     private int year;
     // booleans default value is always false
     private boolean expanded;

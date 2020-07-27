@@ -4,7 +4,6 @@ package com.sucaldo.travelapp.views;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -20,13 +19,19 @@ import androidx.fragment.app.Fragment;
 
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.CityLocation;
+
+import java.util.List;
 
 public class WorldMapFragment extends Fragment {
 
     private final int WORLD_CIRCUMFERENCE = 40075;
+    // Width and Height optimized for a tablet with resolution 2048 x 1536 xhdpi
     private final float CANVAS_WIDTH = 1900;
     private final float CANVAS_HEIGHT = 842;
-    private final float CALIBRATION_FACTOR_LAT = 30;
+    // Calibration factors defined manually by trial and error
+    private final float CALIBRATION_FACTOR_LAT1 = 30;
+    private final float CALIBRATION_FACTOR_LAT2 = 9;
     private final float CALIBRATION_FACTOR_LONG = 7;
 
     private Bitmap worldBitmap;
@@ -47,15 +52,10 @@ public class WorldMapFragment extends Fragment {
 
         Canvas worldMapCanvas = getWorldMapAsCanvasAndSetBitmap();
 
-        // Hamburg
-        drawLocationCircleOnWorldCanvas(worldMapCanvas, 53.55f, 10);
-        // New York
-        drawLocationCircleOnWorldCanvas(worldMapCanvas, 40.6943f, -73.9249f);
-        // Buenos Aires
-        drawLocationCircleOnWorldCanvas(worldMapCanvas, -34.6025f, -58.3975f);
-        // Sydney
-        drawLocationCircleOnWorldCanvas(worldMapCanvas, -33.92f, 151.1852f);
-        drawLocationCircleOnWorldCanvas(worldMapCanvas, 0, 0);
+        List<CityLocation> circleLocations = myDB.getLatitudeAndLongitudeOfAllVisitedCities();
+        for (CityLocation circleLocation : circleLocations) {
+            drawLocationCircleOnWorldCanvas(worldMapCanvas, circleLocation.getLatitude(), circleLocation.getLongitude());
+        }
 
         worldMap.setImageDrawable(new BitmapDrawable(getResources(), worldBitmap));
 
@@ -83,11 +83,18 @@ public class WorldMapFragment extends Fragment {
 
     private float getLatitudePosition(float latitude) {
         float pixelsLatitude = latitude * CANVAS_HEIGHT / 180;
-        if (latitude > 0) {
-            pixelsLatitude = (CANVAS_HEIGHT /2) - pixelsLatitude - CALIBRATION_FACTOR_LAT;
+
+        if (latitude > 0 && latitude < 35) {
+            pixelsLatitude = (CANVAS_HEIGHT / 2) - pixelsLatitude - CALIBRATION_FACTOR_LAT2;
         }
-        if (latitude < 0) {
-            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT;
+        if (latitude >= 35) {
+            pixelsLatitude = (CANVAS_HEIGHT / 2) - pixelsLatitude - CALIBRATION_FACTOR_LAT1;
+        }
+        if (latitude < 0 && latitude > -35) {
+            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT2;
+        }
+        if (latitude <= -35) {
+            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT1;
         }
         if (latitude == 0) {
             pixelsLatitude = CANVAS_HEIGHT /2;

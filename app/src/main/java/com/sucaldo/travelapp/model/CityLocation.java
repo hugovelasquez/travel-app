@@ -18,8 +18,10 @@ public class CityLocation {
 
     // Constructor for getting location out of database
     public CityLocation(Cursor data) {
-        this.latitude = data.getFloat(0);
-        this.longitude = data.getFloat(1);
+        this.city = data.getString(0);
+        this.country = data.getString(1);
+        this.latitude = data.getFloat(2);
+        this.longitude = data.getFloat(3);
     }
 
 
