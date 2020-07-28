@@ -13,27 +13,31 @@
         <TextView
             android:id="@+id/start_date"
             style="@style/list_adapter_header"
+            android:layout_weight="8"
             android:text="@string/header_start_date" />
 
         <TextView
             android:id="@+id/end_date"
             style="@style/list_adapter_header"
+            android:layout_weight="6"
             android:text="@string/header_end_date" />
 
         <TextView
             android:id="@+id/from_city"
             style="@style/list_adapter_header"
+            android:layout_weight="11"
             android:text="@string/text_from" />
 
         <TextView
             android:id="@+id/to_city"
             style="@style/list_adapter_header"
+            android:layout_weight="11"
             android:text="@string/text_to" />
 
         <TextView
             android:id="@+id/description"
             style="@style/list_adapter_header"
-            android:layout_weight="13"
+            android:layout_weight="18"
             android:text="@string/text_trip_description" />
 
     </LinearLayout>

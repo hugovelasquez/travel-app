@@ -24,7 +24,7 @@
     <string name="fragment_request_key_edit">requestKeyEdit</string>
 
     <!-- character limits -->
-    <string name="char_limit_description">25</string>
+    <string name="char_limit_description">35</string>
     <string name="char_limit_country_or_city">20</string>
     <string name="char_limit_lat_long">9</string>
 
@@ -75,6 +75,7 @@
     <string name="import_trips">Import trips.csv</string>
     <string name="delete_trips">Delete trips.csv</string>
     <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
+    <string name="text_input_error">Remove commas and apostrophes</string>
 
     <!-- Statistics / charts -->
     <string name="title_top_10_places">Top 10 Most Visited Places</string>

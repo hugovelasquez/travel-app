@@ -154,10 +154,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 activity.goToMyTrips();
                 break;
             case R.id.from_loc_icon:
-                getLocationOfCity(fromCountry.getText().toString(), fromCity.getText().toString(), fromLat, fromLong);
+                if (validateInputTextCharacters(fromCity)) {
+                    getLocationOfCity(fromCountry.getText().toString(), fromCity.getText().toString(), fromLat, fromLong);
+                }
                 break;
             case R.id.to_loc_icon:
-                getLocationOfCity(toCountry.getText().toString(), toCity.getText().toString(), toLat, toLong);
+                if (validateInputTextCharacters(toCity)) {
+                    getLocationOfCity(toCountry.getText().toString(), toCity.getText().toString(), toLat, toLong);
+                }
                 break;
             case R.id.radio_return:
                 tripType = TripType.RETURN;
@@ -362,24 +366,36 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
 
     private boolean isTripValid() {
-        boolean fromCountryValid = checkIfFieldInputIsEmpty(fromCountry);
-        boolean fromCityValid = checkIfFieldInputIsEmpty(fromCity);
-        boolean toCountryValid = checkIfFieldInputIsEmpty(toCountry);
-        boolean toCityValid = checkIfFieldInputIsEmpty(toCity);
-        boolean fromLatValid = checkIfFieldInputIsEmpty(fromLat);
-        boolean toLatValid = checkIfFieldInputIsEmpty(toLat);
-        boolean fromLongValid = checkIfFieldInputIsEmpty(fromLong);
-        boolean toLongValid = checkIfFieldInputIsEmpty(toLong);
+        boolean fromCountryValid = validateFieldNotEmpty(fromCountry);
+        boolean fromCityValid = validateFieldNotEmpty(fromCity);
+        boolean toCountryValid = validateFieldNotEmpty(toCountry);
+        boolean toCityValid = validateFieldNotEmpty(toCity);
+        boolean fromLatValid = validateFieldNotEmpty(fromLat);
+        boolean toLatValid = validateFieldNotEmpty(toLat);
+        boolean fromLongValid = validateFieldNotEmpty(fromLong);
+        boolean toLongValid = validateFieldNotEmpty(toLong);
+        boolean inputTextFromCityValid = validateInputTextCharacters(fromCity);
+        boolean inputTextToCityValid = validateInputTextCharacters(toCity);
+        boolean inputTextDescriptionValid = validateInputTextCharacters(description);
         boolean startAndEndDateValid = validateStartAndEndDate(startDateField, endDateField);
         // return true only if all are true
         return fromCountryValid && fromCityValid && toCountryValid && toCityValid && startAndEndDateValid
-                && fromLatValid && fromLongValid && toLatValid && toLongValid;
+                && fromLatValid && fromLongValid && toLatValid && toLongValid && inputTextFromCityValid
+                && inputTextToCityValid && inputTextDescriptionValid;
     }
 
 
-    private boolean checkIfFieldInputIsEmpty(EditText editText) {
+    private boolean validateFieldNotEmpty(EditText editText) {
         if (editText.getText().toString().isEmpty()) {
             editText.setError(getString(R.string.text_empty_field_error));
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateInputTextCharacters(EditText editText) {
+        if (editText.getText().toString().contains(",") | editText.getText().toString().contains("'")) {
+            editText.setError(getString(R.string.text_input_error));
             return false;
         }
         return true;
@@ -391,8 +407,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         // start date cannot be empty
         // end date cannot be empty only if trip is of type RETURN
-        if (!checkIfFieldInputIsEmpty(startDateField) |
-                (tripType.equals(TripType.RETURN) && !checkIfFieldInputIsEmpty(endDateField))) {
+        if (!validateFieldNotEmpty(startDateField) |
+                (tripType.equals(TripType.RETURN) && !validateFieldNotEmpty(endDateField))) {
             return false;
         }
 

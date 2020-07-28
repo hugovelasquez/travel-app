@@ -19,8 +19,6 @@ Open project in Android Studio and run the app.
 ## To Do:
 1. Export triplist worldcities, citycontinents as `*.csv`
 1. Import csv files in app not R.raw (in settings)
-1. don't allow ' character in city name and commas in description
-1. adjust column width in my trips
 1. Add a loading bar when reading csv files
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. Add table cityloc as menu item

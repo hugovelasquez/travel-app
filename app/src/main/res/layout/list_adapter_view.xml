@@ -14,24 +14,29 @@
 
     <TextView
         android:id="@+id/start_date"
-        style="@style/list_adapter" />
+        style="@style/list_adapter"
+        android:layout_weight="8"/>
 
     <TextView
         android:id="@+id/end_date"
-        style="@style/list_adapter" />
+        style="@style/list_adapter"
+        android:layout_weight="6"/>
 
     <TextView
         android:id="@+id/from_city"
-        style="@style/list_adapter" />
+        style="@style/list_adapter"
+        android:layout_weight="11"/>
 
     <TextView
         android:id="@+id/to_city"
-        style="@style/list_adapter" />
+        style="@style/list_adapter"
+        android:layout_weight="11"/>
 
     <TextView
         android:id="@+id/description"
         style="@style/list_adapter"
-        android:layout_weight="13" />
+        android:layout_weight="18"
+        />
 
 
 </LinearLayout>
