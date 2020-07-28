@@ -17,7 +17,6 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Refactoring
 1. Export triplist worldcities, citycontinents as `*.csv`
 1. Import csv files in app not R.raw (in settings)
 1. don't allow ' character in city name and commas in description
@@ -29,3 +28,4 @@ Open project in Android Studio and run the app.
 1. Add TextWatcher to from/to City/Country - set long and lat to blank if text is changed
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
+1. Final Refactoring

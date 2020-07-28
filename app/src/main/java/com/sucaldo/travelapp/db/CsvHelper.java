@@ -61,7 +61,7 @@ public class CsvHelper {
                     Trip newTrip = new Trip(Integer.parseInt(nextLine[7]), nextLine[0], nextLine[1], nextLine[2], nextLine[3],
                             nextLine[6], nextLine[4], nextLine[5], TripType.valueOf(nextLine[8]));
 
-                    String continent = "";
+                    String continent;
 
                     if(newTrip.getType().equals(TripType.MULTI_STOP_LAST_STOP)) {
                         continent = myDB.getContinentOfCountry(newTrip.getFromCountry());

@@ -14,14 +14,13 @@
 
         <TextView
             android:id="@+id/text_explanation_cloud_chart"
-            style="@style/subtitle_text">
-        </TextView>
+            style="@style/subtitle_text"></TextView>
 
         <RadioGroup
             android:id="@+id/radio_group_chart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <RadioButton
@@ -51,8 +50,7 @@
         <com.anychart.AnyChartView
             android:id="@+id/countries_cloud"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

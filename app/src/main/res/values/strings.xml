@@ -71,7 +71,7 @@
     <string name="add_edit_trip_image_description">Add or edit your trip</string>
     <string name="dropdown_arrow_image_description">Dropdown arrow</string>
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
-    <string name="wait_message">This might take a while...</string>
+    <string name="wait_message">This might take a while</string>
     <string name="import_trips">Import trips.csv</string>
     <string name="delete_trips">Delete trips.csv</string>
     <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
@@ -89,6 +89,8 @@
     <string name="text_radio_countries_cloud">Show countries</string>
     <string name="text_radio_cities_cloud">Show places</string>
     <string name="kms_bubble_chart_y_axis">Number of trips</string>
-
+    <string name="icon_description_go_back">Icon for going back</string>
+    <string name="icon_description_world_map">Map of the world</string>
+    <string name="icon_description_open_chart">Icon for opening chart</string>
 
 </resources>

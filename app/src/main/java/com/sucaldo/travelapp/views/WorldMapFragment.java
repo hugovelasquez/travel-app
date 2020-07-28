@@ -43,7 +43,7 @@ public class WorldMapFragment extends Fragment {
 
         DatabaseHelper myDB = new DatabaseHelper(getContext());
         int totalKms = myDB.getTotalKms();
-        float timesAroundWorld = (float) totalKms/WORLD_CIRCUMFERENCE;
+        float timesAroundWorld = (float) totalKms / WORLD_CIRCUMFERENCE;
 
         TextView timesAroundWorldText = rootView.findViewById(R.id.world_map_travel);
         timesAroundWorldText.setText(getString(R.string.text_world_map_travel, timesAroundWorld));
@@ -62,6 +62,7 @@ public class WorldMapFragment extends Fragment {
         return rootView;
     }
 
+
     private Canvas getWorldMapAsCanvasAndSetBitmap() {
         Bitmap myBitmap = BitmapFactory.decodeResource(getContext().getResources(),
                 R.mipmap.world_map);
@@ -72,14 +73,16 @@ public class WorldMapFragment extends Fragment {
         return tempCanvas;
     }
 
+
     private void drawLocationCircleOnWorldCanvas(Canvas worldMap, float latitude, float longitude) {
         float latitudePosition = getLatitudePosition(latitude);
         float longitudePosition = getLongitudePosition(longitude);
 
         Paint myPaint = new Paint();
         myPaint.setColor(getContext().getColor(R.color.teal));
-        worldMap.drawCircle(longitudePosition, latitudePosition,10, myPaint);
+        worldMap.drawCircle(longitudePosition, latitudePosition, 10, myPaint);
     }
+
 
     private float getLatitudePosition(float latitude) {
         float pixelsLatitude = latitude * CANVAS_HEIGHT / 180;
@@ -91,20 +94,21 @@ public class WorldMapFragment extends Fragment {
             pixelsLatitude = (CANVAS_HEIGHT / 2) - pixelsLatitude - CALIBRATION_FACTOR_LAT1;
         }
         if (latitude < 0 && latitude > -35) {
-            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT2;
+            pixelsLatitude = (CANVAS_HEIGHT / 2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT2;
         }
         if (latitude <= -35) {
-            pixelsLatitude = (CANVAS_HEIGHT /2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT1;
+            pixelsLatitude = (CANVAS_HEIGHT / 2) + (Math.abs(pixelsLatitude)) + CALIBRATION_FACTOR_LAT1;
         }
         if (latitude == 0) {
-            pixelsLatitude = CANVAS_HEIGHT /2;
+            pixelsLatitude = CANVAS_HEIGHT / 2;
         }
         return pixelsLatitude;
     }
 
+
     private float getLongitudePosition(float longitude) {
         float pixelsLongitude = longitude * CANVAS_WIDTH / 360 + (CANVAS_WIDTH / 2);
-        if(longitude > 0) {
+        if (longitude > 0) {
             pixelsLongitude = pixelsLongitude - CALIBRATION_FACTOR_LONG;
         }
         return pixelsLongitude;

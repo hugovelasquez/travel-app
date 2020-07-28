@@ -19,7 +19,6 @@ import com.sucaldo.travelapp.views.MainActivity;
 public class KmsAreaChartFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity activity;
-    private DatabaseHelper myDB;
 
     @Nullable
     @Override
@@ -27,7 +26,7 @@ public class KmsAreaChartFragment extends Fragment implements View.OnClickListen
         final View rootView = inflater.inflate(R.layout.charts_kms_area_chart_view, container, false);
 
         activity = (MainActivity) getActivity();
-        myDB = new DatabaseHelper(getContext());
+        DatabaseHelper myDB = new DatabaseHelper(getContext());
 
         AnyChartView kmsAreaChart = rootView.findViewById(R.id.kms_area_chart);
         new ChartHelper(myDB, getContext()).initKmsAreaChart(kmsAreaChart, true);
@@ -40,10 +39,8 @@ public class KmsAreaChartFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.return_to_stats_icon:
-                activity.goToStatistics();
-                break;
+        if (v.getId() == R.id.return_to_stats_icon) {
+            activity.goToStatistics();
         }
     }
 

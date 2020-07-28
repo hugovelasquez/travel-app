@@ -5,7 +5,6 @@ import android.content.Context;
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.BubbleDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
@@ -21,7 +20,6 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.Position;
 import com.anychart.enums.ScaleStackMode;
-import com.anychart.enums.ScatterScaleTypes;
 import com.anychart.enums.TooltipDisplayMode;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.scales.OrdinalColor;
@@ -35,11 +33,11 @@ public class ChartHelper {
     private DatabaseHelper myDB;
     private Context context;
 
-    private int axisLabelFontSize = 15;
-    private int axisTitleFontSize = 20;
+    private final int AXIS_LABEL_FONT_SIZE = 15;
+    private final int AXIS_TITLE_FONT_SIZE = 20;
 
-    private String[] colorSchema = new String[] {
-        "#fa70b5", "#8e44ad", "#00c3ff", "#009175", "#34eb31", "#ffd000", "#ff0404", "#a8a8a8"
+    private final String[] COLOR_SCHEMA = new String[]{
+            "#fa70b5", "#8e44ad", "#00c3ff", "#009175", "#34eb31", "#ffd000", "#ff0404", "#a8a8a8"
     };
 
     public ChartHelper(DatabaseHelper myDB, Context context) {
@@ -85,12 +83,12 @@ public class ChartHelper {
         cartesian.yAxis(0).title(context.getString(R.string.charts_top10_y_axis));
 
         if (fullscreen) {
-            cartesian.xAxis(0).title().fontSize(axisTitleFontSize);
-            cartesian.yAxis(0).title().fontSize(axisTitleFontSize);
+            cartesian.xAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
+            cartesian.yAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
             cartesian.xAxis(0).staggerMode(true);
             cartesian.xAxis(0).staggerLines(2);
-            cartesian.xAxis(0).labels().fontSize(axisLabelFontSize);
-            cartesian.yAxis(0).labels().fontSize(axisLabelFontSize);
+            cartesian.xAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
+            cartesian.yAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
         }
 
         anyChartView.setChart(cartesian);
@@ -110,10 +108,10 @@ public class ChartHelper {
         }
 
         OrdinalColor ordinalColor = OrdinalColor.instantiate();
-        ordinalColor.colors(colorSchema.clone());
+        ordinalColor.colors(COLOR_SCHEMA.clone());
         tagCloud.colorScale(ordinalColor);
 
-        tagCloud.angles(new Double[] {-90d, 0d, 90d});
+        tagCloud.angles(new Double[]{-90d, 0d, 90d});
 
         if (fullscreen) {
             tagCloud.colorRange().labels().width(50);
@@ -146,12 +144,12 @@ public class ChartHelper {
      ********* AREA CHART **********************
      */
 
-    public void initKmsAreaChart (AnyChartView anyChartView, boolean fullscreen) {
+    public void initKmsAreaChart(AnyChartView anyChartView, boolean fullscreen) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         Cartesian areaChart = AnyChart.area();
 
-        if (!fullscreen){
+        if (!fullscreen) {
             areaChart.title(context.getString(R.string.title_kms_area_chart));
         }
 
@@ -168,7 +166,7 @@ public class ChartHelper {
         Set set = Set.instantiate();
         set.data(seriesData);
 
-        for(int i = 0; i < DatabaseHelper.CONTINENTS.size(); i++) {
+        for (int i = 0; i < DatabaseHelper.CONTINENTS.size(); i++) {
             int valuePostfix = i + 1;
             Mapping seriesDataMap = set.mapAs("{ x: 'x', value: '" + "value" + valuePostfix + "' }");
 
@@ -190,9 +188,9 @@ public class ChartHelper {
             areaChart.legend().padding(0d, 0d, 20d, 0d);
 
             areaChart.interactivity().hoverMode(HoverMode.BY_X);
-            areaChart.xAxis(0).labels().fontSize(axisLabelFontSize);
-            areaChart.yAxis(0).title().fontSize(axisTitleFontSize);
-            areaChart.yAxis(0).labels().fontSize(axisLabelFontSize);
+            areaChart.xAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
+            areaChart.yAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
+            areaChart.yAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
         }
 
         areaChart.tooltip()
@@ -243,18 +241,18 @@ public class ChartHelper {
         bubble.bubble(data).name("Details").selected().fill("#31eb97", 0.5);
         bubble.padding(20d, 20d, 10d, 20d);
 
-        if (!fullscreen){
+        if (!fullscreen) {
             bubble.title(context.getString(R.string.title_kms_bubble_chart));
             bubble.minBubbleSize(2d)
                     .maxBubbleSize(20d);
         }
 
-        if (fullscreen){
+        if (fullscreen) {
             bubble.minBubbleSize(10d)
                     .maxBubbleSize(50d);
-            bubble.yAxis(0).labels().fontSize(axisLabelFontSize);
-            bubble.yAxis(0).title().fontSize(axisTitleFontSize);
-            bubble.xAxis(0).labels().fontSize(axisLabelFontSize);
+            bubble.yAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
+            bubble.yAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
+            bubble.xAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
         }
 
         bubble.tooltip()

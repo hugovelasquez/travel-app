@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
     // For displaying purposes only (close drawer if user presses back button)
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     public void goToMyTrips() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new MyTripsFragment()).commit();
@@ -107,11 +109,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_my_trips);
     }
 
+
     public void goToAddTrip() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new AddTripFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
     }
+
 
     public void goToStatistics() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -119,11 +123,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.navbar_statistics));
     }
 
+
     public void goToTop10CitiesChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new Top10PlacesFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_top_10_places));
     }
+
 
     public void goToCountriesCloudChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -131,17 +137,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.title_countries_cloud));
     }
 
+
     public void goToKmsAreaChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsAreaChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_area_chart));
     }
 
+
     public void goToKmsBubbleChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsBubbleChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_bubble_chart));
     }
+
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {
         Bundle result = new Bundle();

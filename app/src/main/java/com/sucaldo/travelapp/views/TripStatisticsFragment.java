@@ -19,7 +19,6 @@ import com.sucaldo.travelapp.views.charts.ChartHelper;
 public class TripStatisticsFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity activity;
-    private DatabaseHelper myDB;
 
 
     @Nullable
@@ -28,7 +27,7 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         final View rootView = inflater.inflate(R.layout.trip_statistics_view, container, false);
 
         activity = (MainActivity) getActivity();
-        myDB = new DatabaseHelper(getContext());
+        DatabaseHelper myDB = new DatabaseHelper(getContext());
 
         ImageView expandTop10PlacesIcon = rootView.findViewById(R.id.expand_top_10_places_icon);
         ImageView expandCountriesCloudIcon = rootView.findViewById(R.id.expand_countries_cloud_icon);

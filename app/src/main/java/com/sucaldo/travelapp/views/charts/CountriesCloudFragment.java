@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -23,8 +22,6 @@ import com.sucaldo.travelapp.views.MainActivity;
 public class CountriesCloudFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity activity;
-    private DatabaseHelper myDB;
-    private AnyChartView countriesCloudChart;
     private TextView textView;
     private int countCountries, countPlaces;
 
@@ -37,7 +34,7 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         final View rootView = inflater.inflate(R.layout.charts_countries_cloud_view, container, false);
 
         activity = (MainActivity) getActivity();
-        myDB = new DatabaseHelper(getContext());
+        DatabaseHelper myDB = new DatabaseHelper(getContext());
         chartHelper = new ChartHelper(myDB, getContext());
 
         countCountries = myDB.getNumberOfVisitedCountries();
@@ -49,7 +46,7 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         radioCitiesCloud.setOnClickListener(this);
 
         textView = rootView.findViewById(R.id.text_explanation_cloud_chart);
-        countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
+        AnyChartView countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
         tagCloud = chartHelper.initCountriesCloudChart(countriesCloudChart, true);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);

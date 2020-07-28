@@ -124,12 +124,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // GroupIds are used for differentiation of multi-stop trips
+    // GroupIds are used for differentiation of trips
     private int getNextAvailableGroupId() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT IFNULL(MAX(" + COL_TRIPS_GRP_ID + " ),0) FROM " + TABLE_TRIPS, null);
         try {
-            while (data.moveToNext()) {
+            if (data.moveToNext()) {
                 int lastGroupId = data.getInt(0);
                 return ++lastGroupId;
             }
@@ -162,7 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
         try {
-            while (data.moveToNext()) {
+            if (data.moveToNext()) {
                 return data.getInt(0);
             }
             return 0;
@@ -176,7 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS +
                 " WHERE " + COL_TRIPS_ID + " = '" + id + "'", null);
 
-        while (data.moveToNext()) {
+        if (data.moveToNext()) {
             return new Trip(data);
         }
         return null;
@@ -270,7 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* CITY LOCATION **********************
      */
 
-    public boolean addCityLocItem(String country, String city, Float latitude, Float longitude) {
+    public void addCityLocItem(String country, String city, Float latitude, Float longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_CITY_LOC_COUNTRY, country);
@@ -278,10 +278,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_CITY_LOC_LAT, latitude);
         contentValues.put(COL_CITY_LOC_LONG, longitude);
 
-        //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
-        long result = db.insert(TABLE_CITY_LOC, null, contentValues);
-
-        return result != -1;
+        db.insert(TABLE_CITY_LOC, null, contentValues);
     }
 
     public boolean isCityLocTableEmpty() {
@@ -290,12 +287,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public CityLocation getLatitudeAndLongitudeOfCity(String country, String city) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", "+ COL_CITY_LOC_COUNTRY +
+        Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
                 ", " + COL_CITY_LOC_LAT + " , " + COL_CITY_LOC_LONG +
                 " FROM " + TABLE_CITY_LOC +
                 " WHERE " + COL_CITY_LOC_COUNTRY + " = '" + country + "' AND " + COL_CITY_LOC_CITY + " = '" + city + "'", null);
 
-        while (data.moveToNext()) {
+        if (data.moveToNext()) {
             return new CityLocation(data);
         }
         return null;
@@ -313,7 +310,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY +
                 " = '" + cityLocation.getCountry() + "' AND " + COL_CITY_LOC_CITY + " = '" + cityLocation.getCity() + "'", null);
         try {
-            while (data.moveToNext()) {
+            if (data.moveToNext()) {
                 int rowCount = data.getInt(0);
                 return rowCount >= 1;
             }
@@ -327,17 +324,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* COUNTRY AND CONTINENTS **********************
      */
 
-    public boolean addCountryContinentItem(String country, String continent) {
+    public void addCountryContinentItem(String country, String continent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_COUNTRIES_COUNTRY, country);
         contentValues.put(COL_COUNTRIES_CONTINENT, continent);
 
-        //Check
-        // if data has been allocated correctly. result shows a -1 if process did not work correctly.
-        long result = db.insert(TABLE_COUNTRIES, null, contentValues);
-
-        return result != -1;
+        db.insert(TABLE_COUNTRIES, null, contentValues);
     }
 
     public String getContinentOfCountry(String country) {
@@ -345,7 +338,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT " + COL_COUNTRIES_CONTINENT + " FROM " + TABLE_COUNTRIES +
                 " WHERE " + COL_COUNTRIES_COUNTRY + " = '" + country + "'", null);
         try {
-            while (data.moveToNext()) {
+            if (data.moveToNext()) {
                 return data.getString(0);
             }
             return null;
@@ -364,16 +357,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
 
         int numRows = data.getCount();
-        if (numRows == 0) {
-            // empty list will be returned
-            return new ArrayList<>();
-        } else {
-            List<String> countries = new ArrayList<>();
-            while (data.moveToNext()) {
-                countries.add(data.getString(0));
+        try {
+            if (numRows == 0) {
+                // empty list will be returned
+                return new ArrayList<>();
+            } else {
+                List<String> countries = new ArrayList<>();
+                while (data.moveToNext()) {
+                    countries.add(data.getString(0));
+                }
+                Collections.sort(countries);
+                return countries;
             }
-            Collections.sort(countries);
-            return countries;
+        } finally {
+            closeCursor(data);
         }
     }
 
@@ -396,14 +393,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " LIMIT 10", null);
 
         int numRows = data.getCount();
-        if (numRows == 0) {
-            return new ArrayList<>();
-        } else {
-            List<DataEntry> top10Places = new ArrayList<>();
-            while (data.moveToNext()) {
-                top10Places.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
+        try {
+            if (numRows == 0) {
+                return new ArrayList<>();
+            } else {
+                List<DataEntry> top10Places = new ArrayList<>();
+                while (data.moveToNext()) {
+                    top10Places.add(new ValueDataEntry(data.getString(0), data.getInt(1)));
+                }
+                return top10Places;
             }
-            return top10Places;
+        } finally {
+            closeCursor(data);
         }
     }
 
@@ -412,10 +413,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_CITY + "))" +
                 " FROM " + TABLE_TRIPS +
                 " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')", null);
-        while (data.moveToNext()) {
-            return data.getInt(0);
+        try {
+            if (data.moveToNext()) {
+                return data.getInt(0);
+            }
+            return -1;
+        } finally {
+            closeCursor(data);
         }
-        return -1;
     }
 
     public List<DataEntry> getVisitedCountries() {
@@ -432,15 +437,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " ORDER BY " + COL_TRIPS_CONTINENT, null);
 
         int numRows = data.getCount();
-        if (numRows == 0) {
-            return new ArrayList<>();
-        } else {
-            List<DataEntry> visitedCountries = new ArrayList<>();
-            while (data.moveToNext()) {
-                visitedCountries.add(new CategoryValueDataEntry(
-                        data.getString(0), data.getString(1), data.getInt(2)));
+        try {
+            if (numRows == 0) {
+                return new ArrayList<>();
+            } else {
+                List<DataEntry> visitedCountries = new ArrayList<>();
+                while (data.moveToNext()) {
+                    visitedCountries.add(new CategoryValueDataEntry(
+                            data.getString(0), data.getString(1), data.getInt(2)));
+                }
+                return visitedCountries;
             }
-            return visitedCountries;
+        } finally {
+            closeCursor(data);
         }
     }
 
@@ -449,10 +458,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT COUNT(DISTINCT(" + COL_TRIPS_TO_COUNTRY + "))" +
                 " FROM " + TABLE_TRIPS +
                 " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')", null);
-        while (data.moveToNext()) {
-            return data.getInt(0);
+        try {
+            if (data.moveToNext()) {
+                return data.getInt(0);
+            }
+            return -1;
+        } finally {
+            closeCursor(data);
         }
-        return -1;
     }
 
     public List<DataEntry> getVisitedPlaces() {
@@ -469,15 +482,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " ORDER BY " + COL_TRIPS_CONTINENT, null);
 
         int numRows = data.getCount();
-        if (numRows == 0) {
-            return new ArrayList<>();
-        } else {
-            List<DataEntry> visitedPlaces = new ArrayList<>();
-            while (data.moveToNext()) {
-                visitedPlaces.add(new CategoryValueDataEntry(
-                        data.getString(0), data.getString(1), data.getInt(2)));
+        try {
+            if (numRows == 0) {
+                return new ArrayList<>();
+            } else {
+                List<DataEntry> visitedPlaces = new ArrayList<>();
+                while (data.moveToNext()) {
+                    visitedPlaces.add(new CategoryValueDataEntry(
+                            data.getString(0), data.getString(1), data.getInt(2)));
+                }
+                return visitedPlaces;
             }
-            return visitedPlaces;
+        } finally {
+            closeCursor(data);
         }
     }
 
@@ -495,21 +512,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'" +
                             " GROUP BY " + COL_TRIPS_CONTINENT, null);
             int numRows = data.getCount();
-            if (numRows == 0) {
-                continue;
-            }
-            Map<String, Integer> continentsAndKmsMap = new HashMap<>();
-            while (data.moveToNext()) {
-                continentsAndKmsMap.put(data.getString(0), data.getInt(1));
-            }
+            try {
+                if (numRows == 0) {
+                    continue;
+                }
+                Map<String, Integer> continentsAndKmsMap = new HashMap<>();
+                while (data.moveToNext()) {
+                    continentsAndKmsMap.put(data.getString(0), data.getInt(1));
+                }
 
-            areaChartList.add(new ChartHelper.CustomDataEntry(
-                    Integer.toString(year),
-                    getKmsPerContinentList(continentsAndKmsMap)
-            ));
+                areaChartList.add(new ChartHelper.CustomDataEntry(
+                        Integer.toString(year),
+                        getKmsPerContinentList(continentsAndKmsMap)
+                ));
+            } finally {
+                closeCursor(data);
+            }
         }
-
         return areaChartList;
+
     }
 
     private List<Integer> getKmsPerContinentList(Map<String, Integer> continentsAndKmsMap) {
@@ -536,16 +557,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             " FROM " + TABLE_TRIPS +
                             " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'", null);
             int numRows = data.getCount();
-            if (numRows == 0) {
-                continue;
-            }
+            try {
+                if (numRows == 0) {
+                    continue;
+                }
 
-            while (data.moveToNext()) {
-                bubbleChartList.add(new BubbleDataEntry(
-                        year,
-                        data.getInt(1),
-                        data.getInt(0)
-                ));
+                while (data.moveToNext()) {
+                    bubbleChartList.add(new BubbleDataEntry(
+                            year,
+                            data.getInt(1),
+                            data.getInt(0)
+                    ));
+                }
+            } finally {
+                closeCursor(data);
             }
         }
 
@@ -556,10 +581,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT SUM(" + COL_TRIPS_DISTANCE + ")" +
                 " FROM " + TABLE_TRIPS, null);
-        while (data.moveToNext()) {
-            return data.getInt(0);
+        try {
+            if (data.moveToNext()) {
+                return data.getInt(0);
+            }
+            return -1;
+        } finally {
+            closeCursor(data);
         }
-        return -1;
     }
 
     public List<CityLocation> getLatitudeAndLongitudeOfAllVisitedCities() {
@@ -572,7 +601,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " FROM " + TABLE_TRIPS +
                         " INNER JOIN " + TABLE_CITY_LOC +
                         " ON " + TABLE_TRIPS + "." + COL_TRIPS_TO_CITY + " = " + TABLE_CITY_LOC + "." + COL_CITY_LOC_CITY +
-                        " AND " + TABLE_TRIPS +"." + COL_TRIPS_TO_COUNTRY + " = " + TABLE_CITY_LOC +"." + COL_CITY_LOC_COUNTRY +
+                        " AND " + TABLE_TRIPS + "." + COL_TRIPS_TO_COUNTRY + " = " + TABLE_CITY_LOC + "." + COL_CITY_LOC_COUNTRY +
                         " ORDER BY " + TABLE_TRIPS + "." + COL_TRIPS_TO_CITY, null);
 
         int numRows = data.getCount();
@@ -596,7 +625,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + table, null);
         try {
-            while (data.moveToNext()) {
+            if (data.moveToNext()) {
                 int rowCount = data.getInt(0);
                 // to consider all possible return values of count (0, -1, etc.)
                 return rowCount < 1;

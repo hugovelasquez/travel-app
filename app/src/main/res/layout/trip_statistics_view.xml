@@ -8,23 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             style="@style/chart_style"
             android:layout_weight="2">
 
-           <ImageView
-               android:id="@+id/expand_top_10_places_icon"
-               android:layout_width="@dimen/icon_size"
-               android:layout_height="@dimen/icon_size"
-               android:src="@drawable/ic_baseline_open_in_new_24"/>
+            <ImageView
+                android:id="@+id/expand_top_10_places_icon"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:src="@drawable/ic_baseline_open_in_new_24"
+                android:contentDescription="@string/icon_description_open_chart" />
 
-           <com.anychart.AnyChartView
-               android:layout_height="match_parent"
-               android:layout_width="match_parent"
-               android:id="@+id/stats_top_10_places"
-               />
+            <com.anychart.AnyChartView
+                android:id="@+id/stats_top_10_places"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -36,21 +37,24 @@
                 android:id="@+id/expand_countries_cloud_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:src="@drawable/ic_baseline_open_in_new_24"/>
+                android:src="@drawable/ic_baseline_open_in_new_24"
+                android:contentDescription="@string/icon_description_open_chart" />
 
             <com.anychart.AnyChartView
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
                 android:id="@+id/stats_countries_cloud"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             style="@style/chart_style"
@@ -60,13 +64,13 @@
                 android:id="@+id/expand_kms_area_chart_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:src="@drawable/ic_baseline_open_in_new_24"/>
+                android:src="@drawable/ic_baseline_open_in_new_24"
+                android:contentDescription="@string/icon_description_open_chart" />
 
             <com.anychart.AnyChartView
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
                 android:id="@+id/stats_kms_area_chart"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -78,13 +82,13 @@
                 android:id="@+id/expand_kms_bubble_chart_icon"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:src="@drawable/ic_baseline_open_in_new_24"/>
+                android:src="@drawable/ic_baseline_open_in_new_24"
+                android:contentDescription="@string/icon_description_open_chart" />
 
             <com.anychart.AnyChartView
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
                 android:id="@+id/stats_kms_bubble_chart"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
 

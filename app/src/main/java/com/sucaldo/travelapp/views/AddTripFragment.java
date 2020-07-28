@@ -208,8 +208,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             if (editMode) {
                 updateTrip(fromCountryString, fromCityString, toCountryString, toCityString,
                         descriptionString, distance);
-            }
-            else {
+            } else {
                 switch (tripType) {
                     case RETURN:
                         saveNewTrip(fromCountryString, fromCityString, toCountryString, toCityString,
@@ -275,6 +274,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         Toast.makeText(getContext(), R.string.text_trip_updated, Toast.LENGTH_SHORT).show();
     }
 
+
     private void showSimpleTripSavedPopUpMessage() {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setCanceledOnTouchOutside(false);
@@ -304,6 +304,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.show();
     }
 
+
     private void showMultiTripSavedPopUpMessage() {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setCanceledOnTouchOutside(false);
@@ -328,12 +329,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         alertDialog.show();
     }
 
+
     private void showTripSavedErrorPopUpMessage() {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle(getString(R.string.text_alert_dialog_trip_not_saved_title));
         alertDialog.setMessage(getString(R.string.text_alert_dialog_trip_not_saved_message));
         alertDialog.show();
     }
+
 
     private void setupLayoutForNextStop() {
         tripType = TripType.MULTI_STOP;
@@ -357,6 +360,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         activity.getSupportActionBar().setTitle(getString(R.string.navbar_add_stop));
     }
 
+
     private boolean isTripValid() {
         boolean fromCountryValid = checkIfFieldInputIsEmpty(fromCountry);
         boolean fromCityValid = checkIfFieldInputIsEmpty(fromCity);
@@ -372,6 +376,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 && fromLatValid && fromLongValid && toLatValid && toLongValid;
     }
 
+
     private boolean checkIfFieldInputIsEmpty(EditText editText) {
         if (editText.getText().toString().isEmpty()) {
             editText.setError(getString(R.string.text_empty_field_error));
@@ -379,6 +384,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         }
         return true;
     }
+
 
     private boolean validateStartAndEndDate(EditText startDateField, EditText endDateField) {
         SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
@@ -415,6 +421,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         return true;
     }
+
 
     private DatePickerDialog getPicker(final EditText dateInput) {
         final Calendar calendar = Calendar.getInstance();

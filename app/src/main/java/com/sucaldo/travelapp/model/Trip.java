@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Trip implements Comparable<Trip>{
+public class Trip implements Comparable<Trip> {
 
     private int id;
     private int groupId;

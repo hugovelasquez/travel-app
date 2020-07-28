@@ -50,8 +50,7 @@ public class MyTripsFragment extends Fragment {
         }
 
         // List of type Object because it can get inputs from two different classes Trip or Integer
-        final List<Object> tripsAndYears = new ArrayList<>();
-        tripsAndYears.addAll(yearItems);
+        final List<Object> tripsAndYears = new ArrayList<Object>(yearItems);
 
         setAdapterOfListView(tripsAndYears);
 
@@ -84,7 +83,7 @@ public class MyTripsFragment extends Fragment {
         return rootView;
     }
 
-    private void readCsvFiles(){
+    private void readCsvFiles() {
         final DatabaseHelper myDB = new DatabaseHelper(getContext());
         final boolean cityLocTableEmpty = myDB.isCityLocTableEmpty();
         final boolean countriesTableEmpty = myDB.isCountriesTableEmpty();
