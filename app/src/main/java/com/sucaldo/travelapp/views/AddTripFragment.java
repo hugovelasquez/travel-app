@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +65,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
 
+        // Definition of variables
         startDateField = rootView.findViewById(R.id.trip_start_date);
         endDateField = rootView.findViewById(R.id.trip_end_date);
         ImageView startDateIcon = rootView.findViewById(R.id.start_date_icon);
@@ -85,7 +88,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         radioOneWay = rootView.findViewById(R.id.radio_one_way);
         radioMultiStop = rootView.findViewById(R.id.radio_multi);
 
-        // Default case is simple trip
+        // Default case is return trip
         radioReturn.setChecked(true);
         tripType = TripType.RETURN;
 
@@ -95,7 +98,14 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         fromCountry.setAdapter(adapter);
         toCountry.setAdapter(adapter);
 
-        // Method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present
+        // Define TextWatchers (--> set latitude and longitude automatically to blank in case user edits the location again)
+        setTextWatcher(fromCountry, fromLat, fromLong);
+        setTextWatcher(fromCity, fromLat, fromLong);
+        setTextWatcher(toCountry, toLat, toLong);
+        setTextWatcher(toCity, toLat, toLong);
+
+
+        // This method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present.
         // This is the case when selecting a trip in the trips view to edit its content.
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
             @Override
@@ -177,6 +187,23 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void setTextWatcher(EditText location, final EditText latitude, final EditText longitude) {
+        location.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                latitude.setText("");
+                longitude.setText("");
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+
     private void getLocationOfCity(String country, String city, TextInputEditText latitude, TextInputEditText longitude) {
         latitude.setError(null);
         longitude.setError(null);
@@ -190,6 +217,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             longitude.setText(String.format(Locale.getDefault(), "%.4f", cityLocation.getLongitude()));
         }
     }
+
 
     private void saveTrip() {
         if (isTripValid()) {

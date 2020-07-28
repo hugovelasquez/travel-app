@@ -23,7 +23,6 @@ Open project in Android Studio and run the app.
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. Add table cityloc as menu item
 1. Add "home" option in settings
-1. Add TextWatcher to from/to City/Country - set long and lat to blank if text is changed
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
 1. Final Refactoring
