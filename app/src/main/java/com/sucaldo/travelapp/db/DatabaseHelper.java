@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     ********* TRIPS **********************
+     ********* TABLE TRIPS **********************
      */
 
     public Boolean addTrip(Trip trip) {
@@ -267,7 +267,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /*
-     ********* CITY LOCATION **********************
+     ********* TABLE CITY_LOC  **********************
      */
 
     public void addCityLocItem(String country, String city, Float latitude, Float longitude) {
@@ -320,8 +320,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public List<CityLocation> getStoredCityCoordinates(String country, String city) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String cityQuery = city.equals("") ?  "%" : city;
+        String countryQuery = country.equals("") ?  "%" : country;
+
+        Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
+                        ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG +
+                        " FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY + " LIKE '" + countryQuery + "' " +
+                        " AND " + COL_CITY_LOC_CITY + " LIKE '" + cityQuery + "'", null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<CityLocation> cityCoordinates = new ArrayList<>();
+            while (data.moveToNext()) {
+                cityCoordinates.add(new CityLocation(data));
+            }
+            return cityCoordinates;
+        }
+    }
+
     /*
-     ********* COUNTRY AND CONTINENTS **********************
+     ********* TABLE COUNTRIES **********************
      */
 
     public void addCountryContinentItem(String country, String continent) {
@@ -378,7 +401,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* STATISTICS **********************
      */
 
-    public List<DataEntry> getTop10Places() {
+    public List<DataEntry> getTop10VisitedPlaces() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(
                 "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
@@ -577,7 +600,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return bubbleChartList;
     }
 
-    public int getTotalKms() {
+    public int getTotalTravelledKms() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT SUM(" + COL_TRIPS_DISTANCE + ")" +
                 " FROM " + TABLE_TRIPS, null);
@@ -591,7 +614,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<CityLocation> getLatitudeAndLongitudeOfAllVisitedCities() {
+    public List<CityLocation> getLatitudeAndLongitudeOfVisitedCities() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(
                 "SELECT DISTINCT(" + TABLE_TRIPS + "." + COL_TRIPS_TO_CITY + ")" +

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/coord_country"
+        style="@style/list_adapter"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/coord_city"
+        style="@style/list_adapter"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/coord_latitude"
+        style="@style/list_adapter"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/coord_longitude"
+        style="@style/list_adapter"
+        android:layout_weight="1"/>
+
+
+</LinearLayout>
+

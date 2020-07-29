@@ -54,7 +54,7 @@ public class ChartHelper {
 
         Cartesian cartesian = AnyChart.column();
 
-        List<DataEntry> data = myDB.getTop10Places();
+        List<DataEntry> data = myDB.getTop10VisitedPlaces();
 
         Column column = cartesian.column(data);
 

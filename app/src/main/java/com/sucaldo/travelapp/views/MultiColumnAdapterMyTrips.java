@@ -19,27 +19,27 @@ import com.sucaldo.travelapp.model.YearListItem;
 import java.util.List;
 import java.util.Locale;
 
-public class MultiColumnAdapter extends ArrayAdapter<Object> {
+public class MultiColumnAdapterMyTrips extends ArrayAdapter<Object> {
 
     private LayoutInflater mInflater;
     // List of type Object because it can get inputs from two different classes Trip or Integer
     private List<Object> tripsAndYears;
     private int mViewResourceId;
 
-    public MultiColumnAdapter(Context context, int textViewResourceId, List<Object> tripsAndYears) {
+    public MultiColumnAdapterMyTrips(Context context, int textViewResourceId, List<Object> tripsAndYears) {
         super(context, textViewResourceId, tripsAndYears);
         this.tripsAndYears = tripsAndYears;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mViewResourceId = textViewResourceId;
 
-        Log.d("TAG", "in MultiColumnListAdapter.class");
+        Log.d("TAG", "in MultiColumnAdapterMyTrips.class");
     }
 
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parents) {
         convertView = mInflater.inflate(mViewResourceId, null);
 
-        // Link to all textView IDs in list_adapter_view.xml
+        // Link to all textView IDs in list adapter view
         TextView startDate = convertView.findViewById(R.id.start_date);
         TextView endDate = convertView.findViewById(R.id.end_date);
         TextView fromCity = convertView.findViewById(R.id.from_city);

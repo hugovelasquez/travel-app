@@ -42,7 +42,7 @@ public class WorldMapFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.world_map_view, container, false);
 
         DatabaseHelper myDB = new DatabaseHelper(getContext());
-        int totalKms = myDB.getTotalKms();
+        int totalKms = myDB.getTotalTravelledKms();
         float timesAroundWorld = (float) totalKms / WORLD_CIRCUMFERENCE;
 
         TextView timesAroundWorldText = rootView.findViewById(R.id.world_map_travel);
@@ -52,7 +52,7 @@ public class WorldMapFragment extends Fragment {
 
         Canvas worldMapCanvas = getWorldMapAsCanvasAndSetBitmap();
 
-        List<CityLocation> circleLocations = myDB.getLatitudeAndLongitudeOfAllVisitedCities();
+        List<CityLocation> circleLocations = myDB.getLatitudeAndLongitudeOfVisitedCities();
         for (CityLocation circleLocation : circleLocations) {
             drawLocationCircleOnWorldCanvas(worldMapCanvas, circleLocation.getLatitude(), circleLocation.getLongitude());
         }

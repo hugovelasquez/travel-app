@@ -36,7 +36,7 @@ public class CsvHelper {
         }
     }
 
-    public void readCountryContinentCsvFile(InputStream inputStream) {
+    public void readCountriesContinentsCsvFile(InputStream inputStream) {
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;

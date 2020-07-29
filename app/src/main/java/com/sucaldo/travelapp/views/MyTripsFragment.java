@@ -41,7 +41,7 @@ public class MyTripsFragment extends Fragment {
         // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
         activity.navigationView.getMenu().getItem(0).setChecked(true);
 
-        listView = rootView.findViewById(R.id.listView);
+        listView = rootView.findViewById(R.id.listView_my_trips);
 
         List<Integer> years = myDB.getAllYearsOfTrips();
         List<YearListItem> yearItems = new ArrayList<>();
@@ -49,7 +49,7 @@ public class MyTripsFragment extends Fragment {
             yearItems.add(new YearListItem(year));
         }
 
-        // List of type Object because it can get inputs from two different classes Trip or Integer
+        // List of type Object because it can get inputs from two different classes: Trip and Integer
         final List<Object> tripsAndYears = new ArrayList<Object>(yearItems);
 
         setAdapterOfListView(tripsAndYears);
@@ -98,7 +98,7 @@ public class MyTripsFragment extends Fragment {
                         new CsvHelper(myDB).readWorldCitiesCsvFile(getResources().openRawResource(R.raw.worldcities));
                     }
                     if (countriesTableEmpty) {
-                        new CsvHelper(myDB).readCountryContinentCsvFile(getResources().openRawResource(R.raw.citycontinents));
+                        new CsvHelper(myDB).readCountriesContinentsCsvFile(getResources().openRawResource(R.raw.countriescontinents));
                     }
                 }
             });
@@ -137,7 +137,7 @@ public class MyTripsFragment extends Fragment {
     }
 
     private void setAdapterOfListView(List<Object> tripsAndYears) {
-        MultiColumnAdapter listAdapter = new MultiColumnAdapter(getContext(), R.layout.list_adapter_view, tripsAndYears);
+        MultiColumnAdapterMyTrips listAdapter = new MultiColumnAdapterMyTrips(getContext(), R.layout.list_adapter_my_trips_view, tripsAndYears);
         listView.setAdapter(listAdapter);
     }
 }

@@ -4,14 +4,14 @@ import android.database.Cursor;
 
 public class CityLocation {
 
-    private String country;
     private String city;
+    private String country;
     private float latitude;
     private float longitude;
 
     public CityLocation(String country, String city, float latitude, float longitude) {
-        this.country = country;
         this.city = city;
+        this.country = country;
         this.latitude = latitude;
         this.longitude = longitude;
     }

@@ -16,7 +16,6 @@ import com.sucaldo.travelapp.views.charts.KmsAreaChartFragment;
 import com.sucaldo.travelapp.views.charts.KmsBubbleChartFragment;
 import com.sucaldo.travelapp.views.charts.Top10PlacesFragment;
 
-// implements "Navigation...Listener" needed for defining the drawer menu listeners
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -56,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    // Definition of listeners for each option in drawer menu.
-    // When option is selected, replace the xml object fragment_container with
+    // When an option is selected, replace the xml object fragment_container with
     // the layout within the corresponding fragment class
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -81,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new WorldMapFragment()).commit();
                 getSupportActionBar().setTitle(getString(R.string.navbar_world_map));
                 break;
+            case R.id.nav_city_coordinates:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CityCoordinatesFragment()).commit();
+                getSupportActionBar().setTitle(getString(R.string.navbar_city_coordinates));
+                break;
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SettingsFragment()).commit();
@@ -101,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     public void goToMyTrips() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new MyTripsFragment()).commit();
@@ -109,13 +111,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_my_trips);
     }
 
-
     public void goToAddTrip() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new AddTripFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.navbar_add_trip));
     }
-
 
     public void goToStatistics() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -123,13 +123,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.navbar_statistics));
     }
 
-
     public void goToTop10CitiesChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new Top10PlacesFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_top_10_places));
     }
-
 
     public void goToCountriesCloudChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -137,20 +135,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.title_countries_cloud));
     }
 
-
     public void goToKmsAreaChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsAreaChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_area_chart));
     }
 
-
     public void goToKmsBubbleChart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsBubbleChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_bubble_chart));
     }
-
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {
         Bundle result = new Bundle();
