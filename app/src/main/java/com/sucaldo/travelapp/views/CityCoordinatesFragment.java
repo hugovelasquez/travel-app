@@ -69,10 +69,11 @@ public class CityCoordinatesFragment extends Fragment implements View.OnClickLis
         } else {
             List<CityLocation> storedCityCoordinates = myDB.getStoredCityCoordinates(searchCountry.getText().toString(),
                     searchCity.getText().toString());
-            // Multi column adapter requires a list of type Object
+
             if (storedCityCoordinates.size() == 0) {
-                Toast.makeText(getContext(),getString(R.string.text_search_location_error),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.text_search_location_error), Toast.LENGTH_LONG).show();
             }
+            // Multi column adapter requires a list of type Object
             List<Object> cityCoordinates = new ArrayList<Object>(storedCityCoordinates);
             setAdapterOfListView(cityCoordinates);
         }

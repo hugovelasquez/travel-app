@@ -98,5 +98,7 @@
     <string name="text_search">search</string>
     <string name="text_search_entry_error">Country AND city cannot be empty</string>
     <string name="text_search_location_error">Location does not exist in DB</string>
+    <string name="text_id">ID</string>
+    <string name="text_toast_coord_saved">New coordinated saved</string>
 
 </resources>

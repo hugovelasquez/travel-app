@@ -28,7 +28,7 @@ public class CsvHelper {
             while ((nextLine = reader.readNext()) != null) {
                 if(nextLine.length == 4) {
                     Log.d("CSV_CityLoc", nextLine[0] + nextLine[1] + nextLine[2] + nextLine[3]);
-                    myDB.addCityLocItem(nextLine[3], nextLine[0], Float.parseFloat(nextLine[1]), Float.parseFloat(nextLine[2]));
+                    myDB.addCityLocation(nextLine[3], nextLine[0], Float.parseFloat(nextLine[1]), Float.parseFloat(nextLine[2]));
                 }
             }
         } catch (IOException e) {

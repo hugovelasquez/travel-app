@@ -270,7 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* TABLE CITY_LOC  **********************
      */
 
-    public void addCityLocItem(String country, String city, Float latitude, Float longitude) {
+    public void addCityLocation(String country, String city, Float latitude, Float longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_CITY_LOC_COUNTRY, country);
@@ -288,9 +288,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public CityLocation getLatitudeAndLongitudeOfCity(String country, String city) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
-                ", " + COL_CITY_LOC_LAT + " , " + COL_CITY_LOC_LONG +
+                ", " + COL_CITY_LOC_LAT + " , " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
                 " FROM " + TABLE_CITY_LOC +
-                " WHERE " + COL_CITY_LOC_COUNTRY + " = '" + country + "' AND " + COL_CITY_LOC_CITY + " = '" + city + "'", null);
+                " WHERE " + COL_CITY_LOC_COUNTRY + " = '" + country + "' AND " + COL_CITY_LOC_CITY +
+                " = '" + city + "'", null);
 
         if (data.moveToNext()) {
             return new CityLocation(data);
@@ -302,7 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (isCityLocationInDb(cityLocation)) {
             return;
         }
-        addCityLocItem(cityLocation.getCountry(), cityLocation.getCity(), cityLocation.getLatitude(), cityLocation.getLongitude());
+        addCityLocation(cityLocation.getCountry(), cityLocation.getCity(), cityLocation.getLatitude(), cityLocation.getLongitude());
     }
 
     private boolean isCityLocationInDb(CityLocation cityLocation) {
@@ -327,7 +328,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String countryQuery = country.equals("") ?  "%" : country;
 
         Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
-                        ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG +
+                        ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
                         " FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY + " LIKE '" + countryQuery + "' " +
                         " AND " + COL_CITY_LOC_CITY + " LIKE '" + cityQuery + "'", null);
 
@@ -341,6 +342,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             return cityCoordinates;
         }
+    }
+
+    public void updateCityLocation(CityLocation cityLocation) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_CITY_LOC + " SET " +
+                COL_CITY_LOC_COUNTRY + " = '" + cityLocation.getCountry() + "'," +
+                COL_CITY_LOC_CITY + " = '" + cityLocation.getCity() + "'," +
+                COL_CITY_LOC_LAT + " = " + cityLocation.getLatitude() + "," +
+                COL_CITY_LOC_LONG + " = " + cityLocation.getLongitude() + " " +
+                " WHERE " + COL_CITY_LOC_ID + " = " + cityLocation.getId());
     }
 
     /*

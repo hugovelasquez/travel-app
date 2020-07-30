@@ -63,23 +63,33 @@
 
         <TextView
             style="@style/list_adapter_header"
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:text="@string/text_id" />
+
+        <TextView
+            style="@style/list_adapter_header"
+            android:layout_weight="4"
             android:text="@string/text_country" />
 
         <TextView
             style="@style/list_adapter_header"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:text="@string/text_city" />
 
         <TextView
             style="@style/list_adapter_header"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="@string/text_latitude" />
 
         <TextView
             style="@style/list_adapter_header"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="@string/text_longitude" />
+
+        <TextView
+            style="@style/list_adapter_header"
+            android:layout_width="20dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

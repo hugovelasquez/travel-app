@@ -8,7 +8,9 @@ public class CityLocation {
     private String country;
     private float latitude;
     private float longitude;
+    private int id;
 
+    // Constructor for storing location in db
     public CityLocation(String country, String city, float latitude, float longitude) {
         this.city = city;
         this.country = country;
@@ -16,12 +18,13 @@ public class CityLocation {
         this.longitude = longitude;
     }
 
-    // Constructor for getting location out of database
+    // Constructor for getting location out of db
     public CityLocation(Cursor data) {
         this.city = data.getString(0);
         this.country = data.getString(1);
         this.latitude = data.getFloat(2);
         this.longitude = data.getFloat(3);
+        this.id = data.getInt(4);
     }
 
 
@@ -41,4 +44,19 @@ public class CityLocation {
         return longitude;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 }
