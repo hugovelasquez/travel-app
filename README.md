@@ -17,7 +17,6 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Add table cityloc as menu item - recalculate new distance automatically
 1. Export triplist, worldcities, citiescontinents as `*.csv`
 1. Import csv files in app (in settings), not via R.raw
 1. Add a loading bar when reading csv files

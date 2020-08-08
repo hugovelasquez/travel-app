@@ -208,7 +208,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         latitude.setError(null);
         longitude.setError(null);
 
-        CityLocation cityLocation = myDB.getLatitudeAndLongitudeOfCity(country, city);
+        CityLocation cityLocation = myDB.getLocationOfCity(country, city);
         if (cityLocation == null) {
             latitude.setError(getString(R.string.text_location_error));
             longitude.setError(getString(R.string.text_location_error));

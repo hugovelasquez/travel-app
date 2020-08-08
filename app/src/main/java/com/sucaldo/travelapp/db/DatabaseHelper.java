@@ -118,13 +118,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(COL_TRIPS_GRP_ID, trip.getGroupId());
         }
 
-        //Check if data has been allocated correctly. result shows a -1 if process did not work correctly.
+        // return = -1 if error
         long result = db.insert(TABLE_TRIPS, null, contentValues);
-
         return result != -1;
     }
 
-    // GroupIds are used for differentiation of trips
+    // Group Ids are used for differentiation of trips
     private int getNextAvailableGroupId() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT IFNULL(MAX(" + COL_TRIPS_GRP_ID + " ),0) FROM " + TABLE_TRIPS, null);
@@ -265,6 +264,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_TRIPS);
     }
 
+    public List<Trip> getTripsThatContainSpecificLocation(String country, String city) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS +
+                " WHERE (" + COL_TRIPS_FROM_COUNTRY + " = '" + country + "' AND " + COL_TRIPS_FROM_CITY + " " +
+                " = '" + city + "') OR (" + COL_TRIPS_TO_COUNTRY + " = '" + country + "' AND " + COL_TRIPS_TO_CITY +
+                " = '" + city + "')", null);
+
+        int numRows = data.getCount();
+        try {
+            if (numRows == 0) {
+                return new ArrayList<>();
+            } else {
+                List<Trip> trips = new ArrayList<>();
+                while (data.moveToNext()) {
+                    trips.add(new Trip(data));
+                }
+                return trips;
+            }
+        } finally {
+            closeCursor(data);
+        }
+    }
+
 
     /*
      ********* TABLE CITY_LOC  **********************
@@ -285,18 +307,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isTableEmpty(TABLE_CITY_LOC);
     }
 
-    public CityLocation getLatitudeAndLongitudeOfCity(String country, String city) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
-                ", " + COL_CITY_LOC_LAT + " , " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
-                " FROM " + TABLE_CITY_LOC +
-                " WHERE " + COL_CITY_LOC_COUNTRY + " = '" + country + "' AND " + COL_CITY_LOC_CITY +
-                " = '" + city + "'", null);
-
-        if (data.moveToNext()) {
-            return new CityLocation(data);
+    public CityLocation getLocationOfCity(String country, String city) {
+        List<CityLocation> cityLocations = getStoredCityCoordinates(country, city);
+        if (cityLocations.isEmpty()) {
+            return null;
         }
-        return null;
+        return cityLocations.get(0);
     }
 
     public void saveCityLocationIfNotInDb(CityLocation cityLocation) {
@@ -324,13 +340,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<CityLocation> getStoredCityCoordinates(String country, String city) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String cityQuery = city.equals("") ?  "%" : city;
-        String countryQuery = country.equals("") ?  "%" : country;
+        String cityQuery = city.equals("") ? "%" : city;
+        String countryQuery = country.equals("") ? "%" : country;
 
         Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
-                        ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
-                        " FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY + " LIKE '" + countryQuery + "' " +
-                        " AND " + COL_CITY_LOC_CITY + " LIKE '" + cityQuery + "'", null);
+                ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
+                " FROM " + TABLE_CITY_LOC + " WHERE " + COL_CITY_LOC_COUNTRY + " LIKE '" + countryQuery + "' " +
+                " AND " + COL_CITY_LOC_CITY + " LIKE '" + cityQuery + "'", null);
 
         int numRows = data.getCount();
         if (numRows == 0) {

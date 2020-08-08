@@ -71,8 +71,8 @@ public class CsvHelper {
                     newTrip.setToContinent(continent);
 
 
-                    CityLocation fromCityLoc = myDB.getLatitudeAndLongitudeOfCity(newTrip.getFromCountry(), newTrip.getFromCity());
-                    CityLocation toCityLoc = myDB.getLatitudeAndLongitudeOfCity(newTrip.getToCountry(), newTrip.getToCity());
+                    CityLocation fromCityLoc = myDB.getLocationOfCity(newTrip.getFromCountry(), newTrip.getFromCity());
+                    CityLocation toCityLoc = myDB.getLocationOfCity(newTrip.getToCountry(), newTrip.getToCity());
 
                     long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromCityLoc.getLatitude(), fromCityLoc.getLongitude(),
                             toCityLoc.getLatitude(), toCityLoc.getLongitude());

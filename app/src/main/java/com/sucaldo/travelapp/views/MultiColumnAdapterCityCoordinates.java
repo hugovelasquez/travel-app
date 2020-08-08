@@ -1,31 +1,24 @@
 package com.sucaldo.travelapp.views;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.CityLocation;
+import com.sucaldo.travelapp.model.DistanceCalculator;
 import com.sucaldo.travelapp.model.Trip;
-import com.sucaldo.travelapp.model.YearListItem;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
-import java.util.Locale;
 
 public class MultiColumnAdapterCityCoordinates extends ArrayAdapter<Object> {
 
@@ -71,11 +64,26 @@ public class MultiColumnAdapterCityCoordinates extends ArrayAdapter<Object> {
                 storedCoordinates.setLongitude(Float.parseFloat(coordLongitude.getText().toString()));
 
                 myDB.updateCityLocation(storedCoordinates);
-                Toast.makeText(getContext(), R.string.text_toast_coord_saved, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.text_toast_coord_saved, Toast.LENGTH_LONG).show();
+
+                List<Trip> tripsToRecalculate = myDB.getTripsThatContainSpecificLocation(storedCoordinates.getCountry(),
+                        storedCoordinates.getCity());
+                updateTripsDistance(tripsToRecalculate);
             }
         });
 
         return convertView;
+    }
+
+    private void updateTripsDistance(List<Trip> trips) {
+        for (Trip trip : trips) {
+            CityLocation fromCityLoc = myDB.getLocationOfCity(trip.getFromCountry(), trip.getFromCity());
+            CityLocation toCityLoc = myDB.getLocationOfCity(trip.getToCountry(), trip.getToCity());
+            long distance = DistanceCalculator.getDistanceFromLatLongInKms(fromCityLoc.getLatitude(),
+                    fromCityLoc.getLongitude(), toCityLoc.getLatitude(), toCityLoc.getLongitude());
+            trip.setDistance(distance);
+            myDB.updateTrip(trip);
+        }
     }
 
 }
