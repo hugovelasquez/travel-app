@@ -100,5 +100,9 @@
     <string name="text_search_location_error">Location does not exist in DB</string>
     <string name="text_id">ID</string>
     <string name="text_toast_coord_saved">New coordinated saved. Recalculating distance.</string>
+    <string name="text_import">IMPORT</string>
+    <string name="text_export">EXPORT</string>
+    <string name="export_all_data">Export all data</string>
+    <string name="export_path">csv files will be stored under: %1$s</string>
 
 </resources>

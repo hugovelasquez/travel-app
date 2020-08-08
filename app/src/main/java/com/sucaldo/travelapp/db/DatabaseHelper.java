@@ -287,6 +287,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public List<Trip> getAllTrips() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<Trip> trips = new ArrayList<>();
+            while (data.moveToNext()) {
+                trips.add(new Trip(data));
+            }
+            return trips;
+        }
+    }
+
 
     /*
      ********* TABLE CITY_LOC  **********************
@@ -368,6 +384,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_CITY_LOC_LAT + " = " + cityLocation.getLatitude() + "," +
                 COL_CITY_LOC_LONG + " = " + cityLocation.getLongitude() + " " +
                 " WHERE " + COL_CITY_LOC_ID + " = " + cityLocation.getId());
+    }
+
+    public List<CityLocation> getAllCityLocations() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + COL_CITY_LOC_CITY + ", " + COL_CITY_LOC_COUNTRY +
+                ", " + COL_CITY_LOC_LAT + ", " + COL_CITY_LOC_LONG + ", " + COL_CITY_LOC_ID +
+                " FROM " + TABLE_CITY_LOC, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<CityLocation> cityLocations = new ArrayList<>();
+            while (data.moveToNext()) {
+                cityLocations.add(new CityLocation(data));
+            }
+            return cityLocations;
+        }
     }
 
     /*

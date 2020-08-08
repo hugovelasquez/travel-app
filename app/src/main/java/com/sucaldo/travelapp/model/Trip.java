@@ -125,6 +125,9 @@ public class Trip implements Comparable<Trip> {
     }
 
     public String getDescription() {
+        if (description == null) {
+            return "";
+        }
         return description;
     }
 
@@ -142,6 +145,13 @@ public class Trip implements Comparable<Trip> {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public String getEndDateAsString() {
+        if (endDate == null) {
+            return "";
+        }
+        return endDate.toString();
     }
 
     public void setEndDate(Date endDate) {

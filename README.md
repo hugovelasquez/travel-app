@@ -17,9 +17,10 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Export triplist, worldcities, citiescontinents as `*.csv`
 1. Import csv files in app (in settings), not via R.raw
-1. Add a loading bar when reading csv files
+1. Remove old csvReader methods
+1. Add a loading bar when importing and exporting csv files (loading bar, success, and failure message)
+1. Refactoring -> reorder columns in db
 1. Bar Chart: add dropdown option (select overall, last 2, 5, or 10 years)
 1. Bar Chart: stack per period (2008-2012: color 1, 20013-2017: color 2, etc.)
 1. Bubble Chart: include visited countries in tooltip
@@ -28,4 +29,5 @@ Open project in Android Studio and run the app.
 1. Add "home" option in settings
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
+1. Rename package structure (get rid of .com.example.)
 1. Final Refactoring
