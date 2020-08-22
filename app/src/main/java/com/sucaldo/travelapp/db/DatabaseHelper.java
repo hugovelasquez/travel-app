@@ -682,6 +682,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         ", " + TABLE_TRIPS + "." + COL_TRIPS_TO_COUNTRY +
                         ", " + TABLE_CITY_LOC + "." + COL_CITY_LOC_LAT +
                         ", " + TABLE_CITY_LOC + "." + COL_CITY_LOC_LONG +
+                        ", " + TABLE_CITY_LOC + "." + COL_CITY_LOC_ID +
                         " FROM " + TABLE_TRIPS +
                         " INNER JOIN " + TABLE_CITY_LOC +
                         " ON " + TABLE_TRIPS + "." + COL_TRIPS_TO_CITY + " = " + TABLE_CITY_LOC + "." + COL_CITY_LOC_CITY +
