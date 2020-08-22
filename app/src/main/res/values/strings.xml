@@ -31,7 +31,6 @@
 
     <!-- Statistics / charts -->
     <string name="title_top_10_places">Top 10 Most Visited Places</string>
-    <string name="charts_top10_x_axis">Top 10 Places</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
     <string name="title_countries_cloud">All Visited Countries</string>
     <string name="title_kms_area_chart">"Travelled Distance per Year "</string>
@@ -45,6 +44,10 @@
     <string name="icon_description_go_back">Icon for going back</string>
     <string name="icon_description_world_map">Map of the world</string>
     <string name="icon_description_open_chart">Icon for opening chart</string>
+    <string name="text_radio_top10_all">Overall</string>
+    <string name="text_radio_top10_2yrs">Last 2 years</string>
+    <string name="text_radio_top10_5yrs">Last 5 years</string>
+    <string name="text_radio_top10_10yrs">Last 10 years</string>
 
     <!-- views -->
     <string name="text_from">From</string>

@@ -16,6 +16,44 @@
             android:id="@+id/text_explanation_top10_places"
             style="@style/subtitle_text"></TextView>
 
+        <RadioGroup
+            android:id="@+id/radio_group_top10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_top10_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_top10_all" />
+
+            <RadioButton
+                android:id="@+id/radio_top10_2yrs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_top10_2yrs" />
+
+            <RadioButton
+                android:id="@+id/radio_top10_5yrs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_top10_5yrs" />
+
+            <RadioButton
+                android:id="@+id/radio_top10_10yrs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_radio_top10_10yrs" />
+
+        </RadioGroup>
+
+
     </LinearLayout>
 
     <com.anychart.AnyChartView

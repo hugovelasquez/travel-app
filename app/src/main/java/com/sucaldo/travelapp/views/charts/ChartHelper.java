@@ -26,6 +26,7 @@ import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ChartHelper {
@@ -49,14 +50,14 @@ public class ChartHelper {
      ********* BAR CHART **********************
      */
 
-    public void initTop10PlacesChart(AnyChartView anyChartView, boolean fullscreen) {
+    public Cartesian initTop10PlacesChart(AnyChartView anyChartView, boolean fullscreen) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
-        Cartesian cartesian = AnyChart.column();
+        Cartesian barChart = AnyChart.column();
 
-        List<DataEntry> data = myDB.getTop10VisitedPlaces();
+        List<DataEntry> data = myDB.getTop10VisitedPlaces(Collections.<String>emptyList());
 
-        Column column = cartesian.column(data);
+        Column column = barChart.column(data);
 
         column.tooltip()
                 .titleFormat("{%X}")
@@ -66,32 +67,38 @@ public class ChartHelper {
                 .offsetY(5d)
                 .format("{%Value}{groupsSeparator: }");
 
-        cartesian.animation(true);
+        barChart.animation(true);
 
         if (!fullscreen) {
-            cartesian.title(context.getString(R.string.title_top_10_places));
+            barChart.title(context.getString(R.string.title_top_10_places));
         }
 
-        cartesian.yScale().minimum(0d);
+        barChart.yScale().minimum(0d);
+        barChart.yScale().ticks().interval(2);
 
-        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
+        barChart.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
 
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+        barChart.tooltip().positionMode(TooltipPositionMode.POINT);
+        barChart.interactivity().hoverMode(HoverMode.BY_X);
 
-        cartesian.xAxis(0).title(context.getString(R.string.charts_top10_x_axis));
-        cartesian.yAxis(0).title(context.getString(R.string.charts_top10_y_axis));
+        barChart.yAxis(0).title(context.getString(R.string.charts_top10_y_axis));
 
         if (fullscreen) {
-            cartesian.xAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
-            cartesian.yAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
-            cartesian.xAxis(0).staggerMode(true);
-            cartesian.xAxis(0).staggerLines(2);
-            cartesian.xAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
-            cartesian.yAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
+            barChart.xAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
+            barChart.yAxis(0).title().fontSize(AXIS_TITLE_FONT_SIZE);
+            barChart.xAxis(0).staggerMode(true);
+            barChart.xAxis(0).staggerLines(2);
+            barChart.xAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
+            barChart.yAxis(0).labels().fontSize(AXIS_LABEL_FONT_SIZE);
         }
 
-        anyChartView.setChart(cartesian);
+        anyChartView.setChart(barChart);
+        return barChart;
+    }
+
+    public void updateChart(Cartesian barChart, List<String> years) {
+        List<DataEntry> data = myDB.getTop10VisitedPlaces(years);
+        barChart.data(data);
     }
 
     /*

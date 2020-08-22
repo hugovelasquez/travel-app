@@ -462,14 +462,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* STATISTICS **********************
      */
 
-    public List<DataEntry> getTop10VisitedPlaces() {
+    public List<DataEntry> getTop10VisitedPlaces(List<String> years) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery(
-                "SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
+
+        String yearQuery = buildYearQuery(years);
+        Cursor data = db.rawQuery("SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
                         " FROM (" +
                         " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
                         " FROM " + TABLE_TRIPS +
                         " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
+                        yearQuery +
                         " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
                         " ) AS cities" +
                         " GROUP BY " + COL_TRIPS_TO_CITY +
@@ -490,6 +492,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             closeCursor(data);
         }
+    }
+
+    // SQlite does not support type Date, this is a workaround for filtering by trip year
+    private String buildYearQuery(List<String> years) {
+        if (years.isEmpty()) {
+            return "";
+        }
+        String query = " AND ((" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(0) + "')";
+        for (int i = 1; i < years.size(); i++) {
+            query+= " OR (" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(i) + "')";
+        }
+        query += ")";
+        return query;
     }
 
     public int getNumberOfVisitedPlaces() {
