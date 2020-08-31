@@ -5,6 +5,7 @@ import android.content.Context;
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.BubbleDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
@@ -28,6 +29,7 @@ import com.sucaldo.travelapp.R;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class ChartHelper {
 
@@ -78,7 +80,7 @@ public class ChartHelper {
 
         barChart.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
 
-        barChart.tooltip().positionMode(TooltipPositionMode.POINT);
+        barChart.tooltip().positionMode(TooltipPositionMode.POINT).fontSize(15);
         barChart.interactivity().hoverMode(HoverMode.BY_X);
 
         barChart.yAxis(0).title(context.getString(R.string.charts_top10_y_axis));
@@ -202,6 +204,7 @@ public class ChartHelper {
 
         areaChart.tooltip()
                 .valuePostfix(context.getString(R.string.kms_area_chart_y_axis))
+                .fontSize(15)
                 .displayMode(TooltipDisplayMode.UNION);
 
         areaChart.xAxis(0).title(false);
@@ -266,15 +269,30 @@ public class ChartHelper {
                 .useHtml(true)
                 .fontColor("#fff")
                 .format("function() {\n" +
-                        "        return 'Year: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
+                        "        return '<div style=\"width: 175px; font-size: 15px\"> " +
+                        "           Year: <span style=\"color: #d2d2d2; font-size: 15px\">' +\n" +
                         "          this.getData('x') + '</span></strong><br/>' +\n" +
-                        "          'Trips: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
+                        "          'Trips: <span style=\"color: #d2d2d2; font-size: 15px\">' +\n" +
                         "          this.getData('value') + '</span></strong><br/>' +\n" +
-                        "          'Distance: <span style=\"color: #d2d2d2; font-size: 13px\">' +\n" +
-                        "          this.getData('size') + ' kms.</span></strong>';\n" +
+                        "          'Distance: <span style=\"color: #d2d2d2; font-size: 15px\">' +\n" +
+                        "          this.getData('size') + ' kms.</span></strong><br/>' +\n" +
+                        "          'Countries: <span style=\"color: #d2d2d2; font-size: 15px\">' +\n" +
+                        "          this.getData('countries') + '</span></strong><br/> </div>';\n" +
                         "      }");
 
 
         anyChartView.setChart(bubble);
+    }
+
+    public static class CustomBubbleDataEntry extends BubbleDataEntry {
+
+        public CustomBubbleDataEntry(Integer x, Integer value, Integer size, List<String> countries) {
+            super(x, value, size);
+            StringJoiner joiner = new StringJoiner(", ");
+            for (String country : countries) {
+                joiner.add(country);
+            }
+            setValue("countries", joiner.toString());
+        }
     }
 }

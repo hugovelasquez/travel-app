@@ -35,7 +35,7 @@
     <string name="title_countries_cloud">All Visited Countries</string>
     <string name="title_kms_area_chart">"Travelled Distance per Year "</string>
     <string name="title_kms_bubble_chart">"Trips made per Year "</string>
-    <string name="kms_area_chart_y_axis"> Kms</string>
+    <string name="kms_area_chart_y_axis">  kms</string>
     <string name="text_visited_countries">You have visited %1$d countries so far!</string>
     <string name="text_visited_places">You have been to %1$d different places so far!</string>
     <string name="text_radio_countries_cloud">Show countries</string>

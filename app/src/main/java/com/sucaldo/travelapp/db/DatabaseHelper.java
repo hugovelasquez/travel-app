@@ -467,16 +467,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String yearQuery = buildYearQuery(years);
         Cursor data = db.rawQuery("SELECT " + COL_TRIPS_TO_CITY + ", COUNT(" + COL_TRIPS_TO_CITY + ") AS total" +
-                        " FROM (" +
-                        " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
-                        " FROM " + TABLE_TRIPS +
-                        " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
-                        yearQuery +
-                        " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
-                        " ) AS cities" +
-                        " GROUP BY " + COL_TRIPS_TO_CITY +
-                        " ORDER BY total DESC" +
-                        " LIMIT 10", null);
+                " FROM (" +
+                " SELECT " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
+                " FROM " + TABLE_TRIPS +
+                " WHERE " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')" +
+                yearQuery +
+                " GROUP BY " + COL_TRIPS_GRP_ID + ", " + COL_TRIPS_TO_CITY +
+                " ) AS cities" +
+                " GROUP BY " + COL_TRIPS_TO_CITY +
+                " ORDER BY total DESC" +
+                " LIMIT 10", null);
 
         int numRows = data.getCount();
         try {
@@ -501,7 +501,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         String query = " AND ((" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(0) + "')";
         for (int i = 1; i < years.size(); i++) {
-            query+= " OR (" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(i) + "')";
+            query += " OR (" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(i) + "')";
         }
         query += ")";
         return query;
@@ -655,6 +655,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "SELECT SUM(" + COL_TRIPS_DISTANCE + "), COUNT(DISTINCT(" + COL_TRIPS_GRP_ID + "))" +
                             " FROM " + TABLE_TRIPS +
                             " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'", null);
+            Cursor data2 = db.rawQuery(
+                    "SELECT DISTINCT(" + COL_TRIPS_TO_COUNTRY + ")" +
+                            " FROM " + TABLE_TRIPS +
+                            " WHERE " + COL_TRIPS_START_DATE + " LIKE '%" + year + "'", null);
+
+            int numRows2 = data2.getCount();
+            List<String> countries = new ArrayList<>();
+            try {
+                if (numRows2 == 0) {
+                    continue;
+                }
+                while (data2.moveToNext()) {
+                    countries.add(data2.getString(0));
+                }
+            } finally {
+                closeCursor(data2);
+            }
+
             int numRows = data.getCount();
             try {
                 if (numRows == 0) {
@@ -662,10 +680,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
                 while (data.moveToNext()) {
-                    bubbleChartList.add(new BubbleDataEntry(
+                    bubbleChartList.add(new ChartHelper.CustomBubbleDataEntry(
                             year,
                             data.getInt(1),
-                            data.getInt(0)
+                            data.getInt(0),
+                            countries
                     ));
                 }
             } finally {
