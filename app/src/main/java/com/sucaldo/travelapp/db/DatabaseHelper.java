@@ -459,7 +459,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
-     ********* STATISTICS **********************
+     ********* STATISTICS / CHARTS **********************
      */
 
     public List<DataEntry> getTop10VisitedPlaces(List<String> years) {
@@ -542,8 +542,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } else {
                 List<DataEntry> visitedCountries = new ArrayList<>();
                 while (data.moveToNext()) {
-                    visitedCountries.add(new CategoryValueDataEntry(
+                    visitedCountries.add(new ChartHelper.CustomCategoryValueDataEntry(
                             data.getString(0), data.getString(1), data.getInt(2)));
+                }
+
+                for (DataEntry dataEntry : visitedCountries) {
+                    ChartHelper.CustomCategoryValueDataEntry customEntry = (ChartHelper.CustomCategoryValueDataEntry) dataEntry;
+                    String visitedCountry = (String) customEntry.getValue("x");
+                    Cursor data2 = db.rawQuery(
+                            "SELECT * FROM " + TABLE_TRIPS + " WHERE "
+                                    + COL_TRIPS_TO_COUNTRY + " = '" + visitedCountry + "' " +
+                                    " AND " + COL_TRIPS_TYPE + " NOT IN ('MULTI_STOP_LAST_STOP')", null);
+                    List<Trip> trips = new ArrayList<>();
+                    while (data2.moveToNext()) {
+                        trips.add(new Trip(data2));
+                    }
+
+                    customEntry.setTripsInfo(trips);
+                    closeCursor(data2);
                 }
                 return visitedCountries;
             }

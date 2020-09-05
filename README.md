@@ -21,7 +21,6 @@ Open project in Android Studio and run the app.
 1. Remove old csvReader methods
 1. Add a loading bar when importing and exporting csv files (loading bar, success, and failure message)
 1. Refactoring -> reorder columns in db
-1. Tag Cloud: show corresponding trips when clicking on country or city
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. Add "home" option in settings
 1. When returning to TripListView -> have year extended

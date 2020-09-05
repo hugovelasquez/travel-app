@@ -6,6 +6,7 @@ import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.BubbleDataEntry;
+import com.anychart.chart.common.dataentry.CategoryValueDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
@@ -26,9 +27,13 @@ import com.anychart.enums.TooltipPositionMode;
 import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.model.Trip;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.StringJoiner;
 
 public class ChartHelper {
@@ -130,22 +135,69 @@ public class ChartHelper {
 
         List<DataEntry> data = myDB.getVisitedCountries();
 
-        tagCloud.tooltip().format("Trips: {%value}");
+        tagCloud.tooltip().useHtml(true);
+        tagCloud.tooltip().format(TAG_CLOUD_COUNTRIES_TOOLTIP);
         tagCloud.data(data);
 
         anyChartView.setChart(tagCloud);
 
+
         return tagCloud;
     }
+
+    private final String TAG_CLOUD_COUNTRIES_TOOLTIP = "function() {return '" +
+            "<p style=\"color: #d2d2d2; font-size: 15px\"> Trips:' + this.getData('value') + '</p>" +
+            " <table style=\"color: #d2d2d2; font-size: 15px\">" +
+            "' + this.getData('html') + '</table>';}";
 
     public void updateChart(TagCloud tagCloud, boolean countries) {
         List<DataEntry> data;
         if (countries) {
             data = myDB.getVisitedCountries();
+            tagCloud.tooltip().format(TAG_CLOUD_COUNTRIES_TOOLTIP);
         } else {
             data = myDB.getVisitedPlaces();
+            tagCloud.tooltip().format("Trips: {%value}");
         }
         tagCloud.data(data);
+    }
+
+    public static class CustomCategoryValueDataEntry extends CategoryValueDataEntry {
+
+        public CustomCategoryValueDataEntry(String x, String category, Integer value) {
+            super(x, category, value);
+        }
+
+        public void setTripsInfo(List<Trip> trips) {
+            String html = "";
+            List<Trip> selectedTrips;
+            // A max of 15 trips can fit into tooltip
+            if (trips.size() < 15) {
+                selectedTrips = trips;
+            } else {
+                selectedTrips = selectRandomTrips(trips);
+            }
+            for (Trip trip : selectedTrips) {
+                html += "<tr> <td>" + trip.getFormattedStartDate() + "</td>" +
+                        "<td> <b>" + trip.getToCity() + "</b> </td>" +
+                        "<td>" + trip.getDescription() + "</td> </tr>";
+            }
+            setValue("html", html);
+        }
+    }
+
+    private static List<Trip> selectRandomTrips(List<Trip> trips) {
+        java.util.Set<Trip> randomTrips = new HashSet<>();
+        while(randomTrips.size() < 15) {
+            Random r = new Random();
+            int low = 0;
+            int high = trips.size() - 1;
+            int result = r.nextInt(high-low) + low;
+            randomTrips.add(trips.get(result));
+        }
+        List<Trip> selectedTrips = new ArrayList<>(randomTrips);
+        Collections.sort(selectedTrips);
+        return selectedTrips;
     }
 
 

@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     // For displaying purposes only (close drawer if user presses back button)
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
