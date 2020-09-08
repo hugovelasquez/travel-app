@@ -19,10 +19,12 @@
     <string name="navbar_world_map">World Map</string>
     <string name="navbar_city_coordinates">City Coordinates</string>
 
-    <!-- fragment keys -->
+    <!-- fragment keys / preference keys -->
     <string name="fragment_key_trip_id">tripId</string>
     <string name="fragment_request_key_view">requestKeyView</string>
     <string name="fragment_request_key_edit">requestKeyEdit</string>
+    <string name="home_country_key">HOME COUNTRY</string>
+    <string name="home_city_key">HOME CITY</string>
 
     <!-- character limits -->
     <string name="char_limit_description">35</string>
@@ -107,5 +109,10 @@
     <string name="text_export">EXPORT</string>
     <string name="export_all_data">Export all data</string>
     <string name="export_path">csv files will be stored under: %1$s</string>
+    <string name="text_set_home">SET HOME LOCATION</string>
+    <string name="preferences_id">app_preferefences_id</string>
+    <string name="text_toast_home_saved">Home Location saved</string>
+    <string name="text_table_cityloc_empty">"Import app data first "</string>
+
 
 </resources>

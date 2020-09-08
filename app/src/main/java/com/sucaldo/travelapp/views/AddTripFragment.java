@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentResultListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.AppPreferences;
 import com.sucaldo.travelapp.model.TripType;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.DistanceCalculator;
@@ -64,6 +65,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
 
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
+        AppPreferences appPreferences = new AppPreferences(activity, myDB);
 
         // Definition of variables
         startDateField = rootView.findViewById(R.id.trip_start_date);
@@ -87,6 +89,15 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         radioReturn = rootView.findViewById(R.id.radio_return);
         radioOneWay = rootView.findViewById(R.id.radio_one_way);
         radioMultiStop = rootView.findViewById(R.id.radio_multi);
+
+        // Set home location
+        if (appPreferences.isHomeLocationPresent()) {
+            CityLocation homeLocation = appPreferences.getSavedHomeLocation();
+            fromCountry.setText(homeLocation.getCountry());
+            fromCity.setText(homeLocation.getCity());
+            fromLat.setText(String.format(Locale.getDefault(), "%.4f", homeLocation.getLatitude()));
+            fromLong.setText(String.format(Locale.getDefault(), "%.4f", homeLocation.getLongitude()));
+        }
 
         // Default case is return trip
         radioReturn.setChecked(true);

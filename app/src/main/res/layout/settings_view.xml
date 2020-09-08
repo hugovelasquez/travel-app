@@ -5,15 +5,6 @@
     android:layout_margin="@dimen/layout_margin"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- placeholder for home setting -->
-
-    </LinearLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +27,54 @@
         android:padding="15dp"
         android:text="@string/delete_trips">
     </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/text_view_label"
+        android:textSize="25sp"
+        android:text="@string/text_set_home"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/input_home_country"
+            style="@style/label_text"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="@string/text_country"
+            android:maxLength="@string/char_limit_country_or_city" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/input_home_city"
+            style="@style/label_text"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/text_city"
+            android:maxLength="@string/char_limit_country_or_city" />
+
+        <Button
+            android:id="@+id/btn_save_home"
+            style="@style/button"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0dp"
+            android:padding="10dp"
+            android:text="@string/text_save">
+
+        </Button>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
