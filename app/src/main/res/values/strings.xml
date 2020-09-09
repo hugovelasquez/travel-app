@@ -25,13 +25,14 @@
     <string name="fragment_request_key_edit">requestKeyEdit</string>
     <string name="home_country_key">HOME COUNTRY</string>
     <string name="home_city_key">HOME CITY</string>
+    <string name="preferences_id">app_preferences_id</string>
 
     <!-- character limits -->
     <string name="char_limit_description">35</string>
     <string name="char_limit_country_or_city">20</string>
     <string name="char_limit_lat_long">9</string>
 
-    <!-- Statistics / charts -->
+    <!-- statistics / charts -->
     <string name="title_top_10_places">Top 10 Most Visited Places</string>
     <string name="charts_top10_y_axis">Number of Visits</string>
     <string name="title_countries_cloud">All Visited Countries</string>
@@ -95,8 +96,8 @@
     <string name="dropdown_arrow_image_description">Dropdown arrow</string>
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while</string>
-    <string name="import_trips">Import trips.csv</string>
-    <string name="delete_trips">Delete trips.csv</string>
+    <string name="import_trips">Import Trips History</string>
+    <string name="delete_trips">Delete Trips History</string>
     <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
     <string name="text_input_error">Remove commas and apostrophes</string>
     <string name="text_location">Location</string>
@@ -110,9 +111,11 @@
     <string name="export_all_data">Export all data</string>
     <string name="export_path">csv files will be stored under: %1$s</string>
     <string name="text_set_home">SET HOME LOCATION</string>
-    <string name="preferences_id">app_preferefences_id</string>
     <string name="text_toast_home_saved">Home Location saved</string>
-    <string name="text_table_cityloc_empty">"Import app data first "</string>
+    <string name="text_tables_empty_error">"Import Geo Data and Trips History first "</string>
+    <string name="import_geo_data">Import Geo Data</string>
+    <string name="toast_trip_history_to_db">Trips history added to database</string>
+    <string name="toast_export_all_data">All data exported as csv-files</string>
 
 
 </resources>

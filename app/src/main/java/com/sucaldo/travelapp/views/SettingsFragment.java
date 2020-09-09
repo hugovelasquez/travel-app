@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,10 +51,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         homeCountry = rootView.findViewById(R.id.input_home_country);
         homeCity = rootView.findViewById(R.id.input_home_city);
         Button btnImportTrips = rootView.findViewById(R.id.btn_import_trips);
+        Button btnImportGeoData = rootView.findViewById(R.id.btn_import_geo_data);
         Button btnDeleteTrips = rootView.findViewById(R.id.btn_delete_trips);
         Button btnExportAll = rootView.findViewById(R.id.btn_export_all);
         Button btnSaveHome = rootView.findViewById(R.id.btn_save_home);
         btnImportTrips.setOnClickListener(this);
+        btnImportGeoData.setOnClickListener(this);
         btnDeleteTrips.setOnClickListener(this);
         btnExportAll.setOnClickListener(this);
         btnSaveHome.setOnClickListener(this);
@@ -61,11 +66,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         exportPathText.setText(getString(R.string.export_path, exportPath));
 
         if (myDB.isCityLocTableEmpty()) {
-            homeCountry.setError(getString(R.string.text_table_cityloc_empty));
-            homeCity.setError(getString(R.string.text_table_cityloc_empty));
-        } else {
-            setDropdownOfCountries();
+            homeCountry.setError(getString(R.string.text_tables_empty_error));
         }
+
+        setTextWatcher(homeCountry);
 
         if (appPreferences.isHomeLocationPresent()) {
             CityLocation homeLocation = appPreferences.getSavedHomeLocation();
@@ -82,6 +86,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_import_trips:
                 importTripsFromCsvFile();
                 break;
+            case R.id.btn_import_geo_data:
+                importGeoDataFromCsvFiles();
+                break;
             case R.id.btn_delete_trips:
                 myDB.deleteAllTripsInDb();
                 break;
@@ -90,13 +97,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_save_home:
                 storeHomeLocation();
-                //homeCountry.setError(null);
-                //homeCity.setError(null);
                 break;
         }
     }
 
     private void importTripsFromCsvFile() {
+        Toast.makeText(getContext(), getString(R.string.toast_trip_history_to_db), Toast.LENGTH_LONG).show();
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -106,12 +113,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void exportAllDataAsCsvFiles() {
+        Toast.makeText(getContext(), getString(R.string.toast_export_all_data), Toast.LENGTH_LONG).show();
+
         if (isExternalStorageAvailable() && !isExternalStorageReadOnly()) {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
                     csvHelper.writeTripsToCsv(exportPath);
                     csvHelper.writeCityLocationsToCsv(exportPath);
+                    csvHelper.writeCountriesContinentsToCsv(exportPath);
                 }
             });
         } else {
@@ -150,9 +160,49 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void importGeoDataFromCsvFiles() {
+        final boolean cityLocTableEmpty = myDB.isCityLocTableEmpty();
+        final boolean countriesTableEmpty = myDB.isCountriesTableEmpty();
+        if (cityLocTableEmpty || countriesTableEmpty) {
+            Toast.makeText(getContext(), getString(R.string.toast_geographic_information_to_db), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.wait_message), Toast.LENGTH_LONG).show();
+
+            // Read csv data in the background
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (cityLocTableEmpty) {
+                        new CsvHelper(myDB).readCityLocationsCsvFile(getResources().openRawResource(R.raw.city_locations));
+                    }
+                    if (countriesTableEmpty) {
+                        new CsvHelper(myDB).readCountriesContinentsCsvFile(getResources().openRawResource(R.raw.countries_continents));
+                    }
+                }
+            });
+        }
+    }
+
     private void setDropdownOfCountries() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, myDB.getCountries());
         homeCountry.setAdapter(adapter);
     }
+
+    // After importing geo data, TextWatcher is the only way to set the country dropdown menu without
+    // having to leave the settings fragment to "refresh"
+    private void setTextWatcher(EditText country) {
+        country.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                setDropdownOfCountries();
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
 }

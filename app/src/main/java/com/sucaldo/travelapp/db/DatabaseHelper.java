@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.anychart.chart.common.dataentry.BubbleDataEntry;
 import com.anychart.chart.common.dataentry.CategoryValueDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.sucaldo.travelapp.model.CityLocation;
+import com.sucaldo.travelapp.model.CountriesContinents;
 import com.sucaldo.travelapp.model.DateFormat;
 import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.views.charts.ChartHelper;
@@ -30,6 +30,7 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "my_trips.db";
+
     private static final String TABLE_TRIPS = "trips";
     private static final String COL_TRIPS_ID = "ID";
     private static final String COL_TRIPS_FROM_COUNTRY = "FROMCOUNTRY";
@@ -408,11 +409,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      ********* TABLE COUNTRIES **********************
      */
 
-    public void addCountryContinentItem(String country, String continent) {
+    public void addCountryContinentItem(String continent, String country) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_COUNTRIES_COUNTRY, country);
         contentValues.put(COL_COUNTRIES_CONTINENT, continent);
+        contentValues.put(COL_COUNTRIES_COUNTRY, country);
 
         db.insert(TABLE_COUNTRIES, null, contentValues);
     }
@@ -455,6 +456,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             closeCursor(data);
+        }
+    }
+
+    public List<CountriesContinents> getAllCountriesContinents() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_COUNTRIES, null);
+
+        int numRows = data.getCount();
+        if (numRows == 0) {
+            return new ArrayList<>();
+        } else {
+            List<CountriesContinents> countriesContinents = new ArrayList<>();
+            while (data.moveToNext()) {
+                countriesContinents.add(new CountriesContinents(data));
+            }
+            return countriesContinents;
         }
     }
 

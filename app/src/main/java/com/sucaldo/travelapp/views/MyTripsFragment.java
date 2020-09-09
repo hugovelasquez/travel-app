@@ -1,20 +1,17 @@
 package com.sucaldo.travelapp.views;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.db.CsvHelper;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.model.YearListItem;
@@ -35,8 +32,6 @@ public class MyTripsFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         myDB = new DatabaseHelper(getContext());
-
-        readCsvFiles();
 
         // Set drawer item as selected - necessary because we uncheck it when leaving the fragment for trip details
         activity.navigationView.getMenu().getItem(0).setChecked(true);
@@ -81,29 +76,6 @@ public class MyTripsFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    private void readCsvFiles() {
-        final DatabaseHelper myDB = new DatabaseHelper(getContext());
-        final boolean cityLocTableEmpty = myDB.isCityLocTableEmpty();
-        final boolean countriesTableEmpty = myDB.isCountriesTableEmpty();
-        if (cityLocTableEmpty || countriesTableEmpty) {
-            Toast.makeText(getContext(), getString(R.string.toast_geographic_information_to_db), Toast.LENGTH_LONG).show();
-            Toast.makeText(getContext(), getString(R.string.wait_message), Toast.LENGTH_LONG).show();
-            // Read csv data in the background
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (cityLocTableEmpty) {
-                        new CsvHelper(myDB).readWorldCitiesCsvFile(getResources().openRawResource(R.raw.worldcities));
-                    }
-                    if (countriesTableEmpty) {
-                        new CsvHelper(myDB).readCountriesContinentsCsvFile(getResources().openRawResource(R.raw.countriescontinents));
-                    }
-                }
-            });
-        }
-
     }
 
     private void openTripDetailFragment() {

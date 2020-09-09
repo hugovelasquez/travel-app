@@ -52,8 +52,7 @@ public class Trip implements Comparable<Trip> {
         this.toContinent = data.getString(10);
         this.type = TripType.valueOf(data.getString(11));
         // Dates are stored as Strings in the database (Reminder: SQLite does not recognize type Date).
-        // Try to parse the string from the database. If it does not work, as a "back-up plan" set current date
-        // so that app does not crash.
+        // Try to parse the string from the database.
         try {
             this.startDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(data.getString(6));
         } catch (ParseException e) {
@@ -71,21 +70,24 @@ public class Trip implements Comparable<Trip> {
 
     // Constructor for reading trip from csv file
     public Trip(int groupId, String fromCountry, String fromCity, String toCountry, String toCity,
-                String description, String startDate, String endDate, TripType type) {
+                String description, String startDate, String endDate, long distance, String toContinent,
+                TripType type) {
         this.groupId = groupId;
         this.fromCountry = fromCountry;
         this.fromCity = fromCity;
         this.toCountry = toCountry;
         this.toCity = toCity;
         this.description = description;
+        this.distance = distance;
+        this.toContinent = toContinent;
         this.type = type;
         try {
-            this.startDate = new SimpleDateFormat(DateFormat.PRETTY, Locale.getDefault()).parse(startDate);
+            this.startDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(startDate);
         } catch (ParseException e) {
             this.startDate = null;
         }
         try {
-            this.endDate = new SimpleDateFormat(DateFormat.PRETTY, Locale.getDefault()).parse(endDate);
+            this.endDate = new SimpleDateFormat(DateFormat.DB, Locale.getDefault()).parse(endDate);
         } catch (ParseException e) {
             this.endDate = null;
         }

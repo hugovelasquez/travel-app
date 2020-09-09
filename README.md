@@ -2,14 +2,24 @@
 Android App that stores trips and shows interesting statistics of your travel history
 
 ## Getting started
-The following files need to be added to `res/raw`:
-- trips.csv
-- countriescontinents.csv
-- worldcities.csv
+1. Open project in Android Studio
+1. Get hold of the following files:
+    - countries_continents.csv: contains a list with all countries in the world and in which continent
+    - city_location.csv: contains a list of thousands of cities around the world with their latitude and longitude
+    - If applicable, trips.csv: contains the history of trips you have added over time
+1. Copy files into the Android Studio folder `res/raw`
+1. Add an optional image named add_trip.png to folder `res/mipmap`
+1. Install app on device
+1. Go to Settings and click "import geo data"
+1. If applicable, click "import trips history"
+1. Go to Add Trip and start adding trips
 
-An image named add_trip.png needs to be added to`res/mipmap`
-
-Open project in Android Studio and run the app.
+## Exporting data
+1. Go to settings and click "export all data"
+1. Look for the following files in the shown device location:
+    - trips.csv: contains the history of trips you have added over time
+    - countries_continents.csv: contains a list with all countries in the world and in which continent
+    - city_location.csv: contains a list of thousands of cities around the world with their latitude and longitude
 
 ## Technologies used
 - Java
@@ -17,13 +27,11 @@ Open project in Android Studio and run the app.
 - SQLite
 
 ## To Do:
-1. Add import button "geographical information" in settings
-1. Adjust csvReader method import trips.csv
-1. Describe in detail where to store csv files (raw) to be imported
 1. Add a loading bar when importing and exporting csv files (loading bar, success, and failure message)
-1. Refactoring -> reorder columns in db
+1. If tables empty, launch Settings instead of MyTrips
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
 1. Rename package structure (get rid of .com.example.)
-1. Final Refactoring
+1. Final Refactoring (don't forget to reorder columns in db and to delete button "Delete trips.csv" from settings)
+

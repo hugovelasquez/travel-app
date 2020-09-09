@@ -12,21 +12,37 @@
         android:textSize="25sp"
         android:text="@string/text_import"/>
 
-    <Button
-        android:id="@+id/btn_import_trips"
-        style="@style/button"
-        android:layout_width="wrap_content"
-        android:padding="15dp"
-        android:text="@string/import_trips">
-    </Button>
+    <LinearLayout
+        android:layout_marginStart="@dimen/label_indentation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_delete_trips"
-        style="@style/button"
-        android:layout_width="wrap_content"
-        android:padding="15dp"
-        android:text="@string/delete_trips">
-    </Button>
+        <Button
+            android:id="@+id/btn_import_geo_data"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:padding="15dp"
+            android:text="@string/import_geo_data">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_import_trips"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:padding="15dp"
+            android:text="@string/import_trips">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_delete_trips"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:padding="15dp"
+            android:text="@string/delete_trips">
+        </Button>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +60,7 @@
             android:id="@+id/input_home_country"
             style="@style/label_text"
             android:layout_width="260dp"
+            android:layout_marginStart="@dimen/label_indentation"
             android:layout_height="wrap_content"
             android:completionThreshold="1"
             android:hint="@string/text_country"
@@ -60,6 +77,7 @@
             android:id="@+id/input_home_city"
             style="@style/label_text"
             android:layout_width="260dp"
+            android:layout_marginStart="@dimen/label_indentation"
             android:layout_height="wrap_content"
             android:hint="@string/text_city"
             android:maxLength="@string/char_limit_country_or_city" />
@@ -83,19 +101,28 @@
         android:textSize="25sp"
         android:text="@string/text_export"/>
 
-    <Button
-        android:id="@+id/btn_export_all"
-        style="@style/button"
-        android:layout_width="wrap_content"
-        android:padding="15dp"
-        android:text="@string/export_all_data">
-    </Button>
-
-    <TextView
-        android:id="@+id/export_path_text"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/text_view_label"
-        android:text="@string/text_export"/>
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/label_indentation">
+
+        <Button
+            android:id="@+id/btn_export_all"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:padding="15dp"
+            android:text="@string/export_all_data">
+        </Button>
+
+        <TextView
+            android:id="@+id/export_path_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/label_indentation"
+            style="@style/text_view_label"
+            android:text="@string/text_export"/>
+
+    </LinearLayout>
 
 </LinearLayout>
