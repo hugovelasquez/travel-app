@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.views.charts.CountriesCloudFragment;
 import com.sucaldo.travelapp.views.charts.KmsAreaChartFragment;
 import com.sucaldo.travelapp.views.charts.KmsBubbleChartFragment;
@@ -44,15 +45,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Show My Trips as a default
-        if (savedInstanceState == null) {
+        // Open Settings Fragment the first time after app is installed
+        DatabaseHelper myDB = new DatabaseHelper(getApplicationContext());
+        if (myDB.isCityLocTableEmpty()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new SettingsFragment()).commit();
+            // Show as selected in the drawer menu
+            navigationView.setCheckedItem(R.id.nav_settings);
+            getSupportActionBar().setTitle(getString(R.string.navbar_settings));
+        } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MyTripsFragment()).commit();
-            // Show as selected in the drawer menu
             navigationView.setCheckedItem(R.id.nav_my_trips);
+            getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
         }
-        getSupportActionBar().setTitle(getString(R.string.navbar_my_trips));
-
     }
 
     // When an option is selected, replace the xml object fragment_container with

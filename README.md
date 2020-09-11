@@ -28,7 +28,6 @@ Android App that stores trips and shows interesting statistics of your travel hi
 
 ## To Do:
 1. Add a loading bar when importing and exporting csv files (loading bar, success, and failure message)
-1. If tables empty, launch Settings instead of MyTrips
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
 1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
