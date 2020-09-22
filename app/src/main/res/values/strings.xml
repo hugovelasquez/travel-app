@@ -97,7 +97,7 @@
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while</string>
     <string name="import_trips">Import Trip History</string>
-    <string name="delete_trips">Delete Trip History</string>
+    <string name="delete_trips">Delete Database</string>
     <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
     <string name="text_input_error">Remove commas and apostrophes</string>
     <string name="text_location">Location</string>
@@ -116,6 +116,9 @@
     <string name="import_geo_data">Import Geo Data</string>
     <string name="toast_trip_history_to_db">Trip History added to database</string>
     <string name="toast_export_all_data">All data exported as csv-files</string>
+    <string name="toast_trip_history_in_db">Trip History already in database</string>
+    <string name="toast_geographic_information_in_db">Geo Data already in database</string>
+    <string name="toast_db_deleted">Database deleted</string>
 
 
 </resources>

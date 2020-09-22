@@ -1,8 +1,10 @@
 package com.sucaldo.travelapp.db;
 
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import com.opencsv.CSVReader;
+import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.CountriesContinents;
 import com.sucaldo.travelapp.model.DistanceCalculator;
@@ -21,23 +23,32 @@ public class CsvHelper {
     private final DatabaseHelper myDB;
     private final String COLUMN_SEPARATOR = ",";
     private final String ROW_SEPARATOR = "\n";
+    private final int IMPORT_TOTAL_STEPS = 40;
 
     // Constructor to define input that CsvHelper receives
     public CsvHelper(DatabaseHelper myDB) {
         this.myDB = myDB;
     }
 
-    public void readCityLocationsCsvFile(InputStream inputStream) {
+    public void readCityLocationsCsvFile(InputStream inputStream, ProgressBar progressBar) {
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-            String[] nextLine;
-            while ((nextLine = reader.readNext()) != null) {
-                if(nextLine.length == 4) {
-                    Log.d("CSV_CityLoc", nextLine[0] + nextLine[1] + nextLine[2] + nextLine[3]);
+            int i = 0;
+            int progressPercentage = 0;
+            List<String[]> csvLines = reader.readAll();
+            int importStep = csvLines.size() / IMPORT_TOTAL_STEPS;
+            for (String[] nextLine : csvLines) {
+                // % is equivalent to MOD in Excel
+                if (i++ % importStep == 0) {
+                    progressPercentage += (100 / IMPORT_TOTAL_STEPS);
+                    progressBar.setProgress(progressPercentage);
+                }
+                if (nextLine.length == 4) {
                     myDB.addCityLocation(nextLine[0], nextLine[1], Float.parseFloat(nextLine[2]),
                             Float.parseFloat(nextLine[3]));
                 }
             }
+            progressBar.setProgress(100);
         } catch (IOException e) {
             Log.e("CSV_CityLoc", "Line in .csv file could not be read");
         }

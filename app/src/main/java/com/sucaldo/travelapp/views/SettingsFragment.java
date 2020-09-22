@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.opencsv.CSVReader;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.CsvHelper;
 import com.sucaldo.travelapp.db.DatabaseHelper;
@@ -27,6 +31,8 @@ import com.sucaldo.travelapp.model.AppPreferences;
 import com.sucaldo.travelapp.model.CityLocation;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
@@ -37,6 +43,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private File exportPath;
     private AutoCompleteTextView homeCountry, homeCity;
     private AppPreferences appPreferences;
+    private ProgressBar progressBar;
+    private LinearLayout layoutProgressBar;
 
     @Nullable
     @Override
@@ -50,14 +58,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         homeCountry = rootView.findViewById(R.id.input_home_country);
         homeCity = rootView.findViewById(R.id.input_home_city);
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        layoutProgressBar = rootView.findViewById(R.id.layout_progress_bar);
+        layoutProgressBar.setVisibility(View.INVISIBLE);
+
         Button btnImportTrips = rootView.findViewById(R.id.btn_import_trips);
         Button btnImportGeoData = rootView.findViewById(R.id.btn_import_geo_data);
-        Button btnDeleteTrips = rootView.findViewById(R.id.btn_delete_trips);
+        Button btnDeleteDb = rootView.findViewById(R.id.btn_delete_db);
         Button btnExportAll = rootView.findViewById(R.id.btn_export_all);
         Button btnSaveHome = rootView.findViewById(R.id.btn_save_home);
         btnImportTrips.setOnClickListener(this);
         btnImportGeoData.setOnClickListener(this);
-        btnDeleteTrips.setOnClickListener(this);
+        btnDeleteDb.setOnClickListener(this);
         btnExportAll.setOnClickListener(this);
         btnSaveHome.setOnClickListener(this);
 
@@ -71,6 +83,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         setTextWatcher(homeCountry);
 
+        // If home was already selected before, get that data and show it
         if (appPreferences.isHomeLocationPresent()) {
             CityLocation homeLocation = appPreferences.getSavedHomeLocation();
             homeCountry.setText(homeLocation.getCountry());
@@ -89,8 +102,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_import_geo_data:
                 importGeoDataFromCsvFiles();
                 break;
-            case R.id.btn_delete_trips:
-                myDB.deleteAllTripsInDb();
+            case R.id.btn_delete_db:
+                deleteDatabase();
                 break;
             case R.id.btn_export_all:
                 exportAllDataAsCsvFiles();
@@ -101,15 +114,26 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void importTripsFromCsvFile() {
-        Toast.makeText(getContext(), getString(R.string.toast_trip_history_to_db), Toast.LENGTH_LONG).show();
+    private void deleteDatabase() {
+        myDB.deleteDatabase();
+        Toast.makeText(getContext(), getString(R.string.toast_db_deleted), Toast.LENGTH_SHORT).show();
+    }
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                csvHelper.readTripsCsvFile(getResources().openRawResource(R.raw.trips));
-            }
-        });
+    private void importTripsFromCsvFile() {
+        if (myDB.isTripsTableEmpty()) {
+            Toast.makeText(getContext(), getString(R.string.toast_trip_history_to_db), Toast.LENGTH_SHORT).show();
+            // Due to low size of file no progress bar is necessary
+            layoutProgressBar.setVisibility(View.INVISIBLE);
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    csvHelper.readTripsCsvFile(getResources().openRawResource(R.raw.trips));
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), getString(R.string.toast_trip_history_in_db), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void exportAllDataAsCsvFiles() {
@@ -165,21 +189,25 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         final boolean countriesTableEmpty = myDB.isCountriesTableEmpty();
         if (cityLocTableEmpty || countriesTableEmpty) {
             Toast.makeText(getContext(), getString(R.string.toast_geographic_information_to_db), Toast.LENGTH_LONG).show();
-            Toast.makeText(getContext(), getString(R.string.wait_message), Toast.LENGTH_LONG).show();
+            final ProgressBar pb = progressBar;
+            layoutProgressBar.setVisibility(View.VISIBLE);
 
-            // Read csv data in the background
-            AsyncTask.execute(new Runnable() {
+            Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (cityLocTableEmpty) {
-                        new CsvHelper(myDB).readCityLocationsCsvFile(getResources().openRawResource(R.raw.city_locations));
-                    }
-                    if (countriesTableEmpty) {
-                        new CsvHelper(myDB).readCountriesContinentsCsvFile(getResources().openRawResource(R.raw.countries_continents));
-                    }
+                    new CsvHelper(myDB).readCityLocationsCsvFile(getResources().openRawResource
+                            (R.raw.city_locations), pb);
+
+                    // Due to low size of file no real progress bar progression is necessary
+                    new CsvHelper(myDB).readCountriesContinentsCsvFile(getResources().openRawResource
+                            (R.raw.countries_continents));
+                    pb.setProgress(0);
                 }
             });
-        }
+            thread.start();
+        } else {
+        Toast.makeText(getContext(), getString(R.string.toast_geographic_information_in_db), Toast.LENGTH_SHORT).show();
+    }
     }
 
     private void setDropdownOfCountries() {
@@ -196,9 +224,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 setDropdownOfCountries();
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }

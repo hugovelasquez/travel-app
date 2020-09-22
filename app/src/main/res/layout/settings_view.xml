@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/text_view_label"
+        android:layout_marginTop="0dp"
         android:textSize="25sp"
         android:text="@string/text_import"/>
 
@@ -35,7 +36,7 @@
         </Button>
 
         <Button
-            android:id="@+id/btn_delete_trips"
+            android:id="@+id/btn_delete_db"
             style="@style/button"
             android:layout_width="wrap_content"
             android:padding="15dp"
@@ -122,6 +123,24 @@
             android:layout_marginStart="@dimen/label_indentation"
             style="@style/text_view_label"
             android:text="@string/text_export"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar" />
 
     </LinearLayout>
 
