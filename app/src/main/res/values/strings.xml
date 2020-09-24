@@ -121,6 +121,7 @@
     <string name="toast_trip_history_in_db">Trip History already in database</string>
     <string name="toast_geographic_information_in_db">Geo Data already in database</string>
     <string name="toast_db_deleted">Database deleted</string>
+    <string name="text_start_date_error">Start date must be after End date of previous stop</string>
 
 
 </resources>

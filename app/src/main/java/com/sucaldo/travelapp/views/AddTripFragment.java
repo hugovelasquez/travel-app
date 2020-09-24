@@ -210,9 +210,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 latitude.setText("");
                 longitude.setText("");
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -450,9 +452,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
 
         // start date cannot be empty
-        // end date cannot be empty only if trip is of type RETURN
+        // end date cannot be empty if trip is of type RETURN or MULTI_STOP
         if (!validateFieldNotEmpty(startDateField) |
-                (tripType.equals(TripType.RETURN) && !validateFieldNotEmpty(endDateField))) {
+                (tripType.equals(TripType.RETURN) && !validateFieldNotEmpty(endDateField)) |
+                (tripType.equals(TripType.MULTI_STOP) && !validateFieldNotEmpty(endDateField))) {
             return false;
         }
 
@@ -464,6 +467,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return false;
         }
+
         if (!endDateField.getText().toString().equals("")) {
             try {
                 endDate = formatter.parse(endDateField.getText().toString());
@@ -473,15 +477,27 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
                 return false;
             }
+
             if (startDate.after(endDate)) {
                 endDateField.setError(getString(R.string.text_end_date_error));
                 return false;
             }
         }
 
+        // If multi-stop, validate that dates are sequential
+        if (tripType.equals(TripType.MULTI_STOP)) {
+            Trip previousTrip = myDB.getTripById(myDB.getLastTripId());
+            if (previousTrip != null) {
+                Date endDatePreviousStop = previousTrip.getEndDate();
+                if (endDatePreviousStop.after(startDate)) {
+                    startDateField.setError(getString(R.string.text_start_date_error));
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
-
 
     private DatePickerDialog getPicker(final EditText dateInput) {
         final Calendar calendar = Calendar.getInstance();
