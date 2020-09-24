@@ -55,6 +55,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private AutoCompleteTextView fromCountry, toCountry;
 
     private Trip trip;
+    private int selectedYear;
 
     @Nullable
     @Override
@@ -116,8 +117,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         setTextWatcher(toCity, toLat, toLong);
 
 
-        // This method will be automatically called only if trip fragment request key from TripDetailsFragment.java is present.
-        // This is the case when selecting a trip in the trips view to edit its content.
+        // The following lines will be automatically called only if there is a fragment request key from TripDetailsFragment.java.
+        // This is the case when the user selects a trip in the trips view to edit its content.
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_edit), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
@@ -127,7 +128,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 tripType = trip.getType();
 
                 activity.getSupportActionBar().setTitle(getString(R.string.navbar_edit_trip));
-                // RadioGroup not necessary
                 ((ViewManager) radioGroup.getParent()).removeView(radioGroup);
 
                 fromCountry.setText(trip.getFromCountry());
@@ -139,6 +139,10 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 endDateField.setText(trip.getPickerFormattedEndDate());
                 getLocationOfCity(trip.getFromCountry(), trip.getFromCity(), fromLat, fromLong);
                 getLocationOfCity(trip.getToCountry(), trip.getToCity(), toLat, toLong);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(trip.getStartDate());
+                selectedYear = calendar.get(Calendar.YEAR);
             }
         });
 
@@ -173,6 +177,7 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_cancel:
                 activity.goToMyTrips();
+                activity.passSelectedYearToOtherFragments(selectedYear, getString(R.string.fragment_request_key_year));
                 break;
             case R.id.from_loc_icon:
                 if (validateInputTextCharacters(fromCity)) {

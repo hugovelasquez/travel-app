@@ -28,7 +28,6 @@ Android App that stores trips and shows interesting statistics of your travel hi
 
 ## To Do:
 1. Calculate DB statistics just once in TripStatisticsFragment and pass it on to Chart Fragments
-1. When returning to TripListView -> have year extended
 1. Check in multi stop trip that dates are sequential
 1. Rename package structure (get rid of .com.example.)
 1. Final Refactoring (don't forget to reorder columns in db and to delete button "Delete trips.csv" from settings)

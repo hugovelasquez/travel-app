@@ -159,5 +159,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().setFragmentResult(fragmentRequestKey, result);
     }
 
+    public void passSelectedYearToOtherFragments(int year, String fragmentRequestKey) {
+        Bundle result = new Bundle();
+        result.putString(getString(R.string.fragment_key_year), String.valueOf(year));
+        getSupportFragmentManager().setFragmentResult(fragmentRequestKey, result);
+    }
+
 }
 

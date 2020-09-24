@@ -148,14 +148,14 @@
                 android:text="@string/text_cancel" />
 
             <Button
-                android:id="@+id/btn_delete_view"
-                style="@style/button_trip_view"
-                android:text="@string/text_delete" />
-
-            <Button
                 android:id="@+id/btn_edit_view"
                 style="@style/button_trip_view"
                 android:text="@string/text_edit" />
+
+            <Button
+                android:id="@+id/btn_delete_view"
+                style="@style/button_trip_view"
+                android:text="@string/text_delete" />
 
         </LinearLayout>
 

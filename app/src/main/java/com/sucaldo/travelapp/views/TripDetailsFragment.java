@@ -21,6 +21,7 @@ import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.model.TripType;
 
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +31,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
     private MainActivity activity;
     private int tripId;
     private DatabaseHelper myDB;
+    private int selectedYear;
 
 
     @Nullable
@@ -48,7 +50,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
 
         myDB = new DatabaseHelper(getContext());
 
-        // Get information from other fragment
+        // Get information from MyTripsFragment
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_view), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
@@ -74,6 +76,10 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 endDate.setText(trip.getFormattedEndDate());
                 description.setText(trip.getDescription());
                 distance.setText(getString(R.string.km_display_format, NumberFormat.getNumberInstance(Locale.GERMAN).format(trip.getDistance())));
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(trip.getStartDate());
+                selectedYear = calendar.get(Calendar.YEAR);
 
                 // Add information of stop number and next stop if trip is part of a multi-stop-trip
                 if (trip.getType().equals(TripType.MULTI_STOP)) {
@@ -110,6 +116,7 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.btn_cancel_view:
                 activity.goToMyTrips();
+                activity.passSelectedYearToOtherFragments(selectedYear, getString(R.string.fragment_request_key_year));
                 break;
             case R.id.btn_delete_view:
                 myDB.deleteTrip(tripId);

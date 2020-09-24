@@ -21,8 +21,10 @@
 
     <!-- fragment keys / preference keys -->
     <string name="fragment_key_trip_id">tripId</string>
+    <string name="fragment_key_year">year</string>
     <string name="fragment_request_key_view">requestKeyView</string>
     <string name="fragment_request_key_edit">requestKeyEdit</string>
+    <string name="fragment_request_key_year">requestKeyYear</string>
     <string name="home_country_key">HOME COUNTRY</string>
     <string name="home_city_key">HOME CITY</string>
     <string name="preferences_id">app_preferences_id</string>

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
@@ -39,15 +40,33 @@ public class MyTripsFragment extends Fragment {
         listView = rootView.findViewById(R.id.listView_my_trips);
 
         List<Integer> years = myDB.getAllYearsOfTrips();
-        List<YearListItem> yearItems = new ArrayList<>();
+        final List<YearListItem> yearItems = new ArrayList<>();
         for (int year : years) {
             yearItems.add(new YearListItem(year));
         }
 
         // List of type Object because it can get inputs from two different classes: Trip and Integer
         final List<Object> tripsAndYears = new ArrayList<Object>(yearItems);
-
         setAdapterOfListView(tripsAndYears);
+
+        // The following lines will be automatically called only if there is a fragment request key from TripDetailsFragment.java.
+        // This is the case when the user presses the cancel button and wants to go back to the extended trip view list.
+        getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_year), this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                int selectedYear = Integer.parseInt(bundle.getString(getString(R.string.fragment_key_year)));
+                YearListItem yearItem = null;
+
+                for (YearListItem yearListItem : yearItems) {
+                    if (yearListItem.getYear().equals(selectedYear)) {
+                        yearItem = yearListItem;
+                    }
+                }
+
+                yearItem.setExpanded(true);
+                addTripsOfClickedYearToList(yearItem, tripsAndYears);
+            }
+        });
 
         // Define listener for items in listView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
