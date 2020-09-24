@@ -516,4 +516,5 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 }, year, month, day);
 
     }
+
 }

@@ -67,16 +67,12 @@
     <string name="text_empty_field_error">Field is empty</string>
     <string name="text_date_format_error">Date format is invalid</string>
     <string name="text_end_date_error">End date is before start date</string>
-    <string name="text_alert_dialog_trip_not_saved_title">Trip could not be saved</string>
-    <string name="text_alert_dialog_trip_not_saved_message">Please try again later</string>
-    <string name="text_alert_dialog_trip_saved_title">Trip Saved</string>
-    <string name="text_alert_dialog_trip_saved_message">What do you want to do?</string>
     <string name="text_go_to_trips">Go to My Trips</string>
     <string name="text_add_another_trip">Add another Trip</string>
     <string name="header_start_date">Start Date</string>
     <string name="header_end_date">End Date</string>
     <string name="text_edit">edit</string>
-    <string name="text_delete">delete</string>
+    <string name="text_delete">Delete</string>
     <string name="text_trip_deleted">Trip deleted</string>
     <string name="text_trip_updated">Trip was updated</string>
     <string name="text_radio_return">Return trip</string>
@@ -84,7 +80,6 @@
     <string name="text_radio_multi">Multi stop</string>
     <string name="text_add_next_stop">Add next stop</string>
     <string name="text_trip_completed">Trip completed</string>
-    <string name="text_alert_dialog_stop_saved_title">Stop Saved</string>
     <string name="text_latitude">Latitude</string>
     <string name="text_longitude">Longitude</string>
     <string name="text_location_error">Not in DB. Add manually.</string>
@@ -96,7 +91,6 @@
     <string name="date_picker_image_description">open calendar</string>
     <string name="add_edit_trip_image_description">Add or edit your trip</string>
     <string name="dropdown_arrow_image_description">Dropdown arrow</string>
-    <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
     <string name="wait_message">This might take a while</string>
     <string name="import_trips">Import Trip History</string>
     <string name="delete_trips">Delete Database</string>
@@ -107,21 +101,32 @@
     <string name="text_search_entry_error">Country AND city cannot be empty</string>
     <string name="text_search_location_error">Location does not exist in DB</string>
     <string name="text_id">ID</string>
-    <string name="text_toast_coord_saved">New coordinated saved. Recalculating distance.</string>
     <string name="text_import">IMPORT</string>
     <string name="text_export">EXPORT</string>
     <string name="export_all_data">Export all data</string>
     <string name="export_path">csv files will be stored under: %1$s</string>
     <string name="text_set_home">SET HOME LOCATION</string>
-    <string name="text_toast_home_saved">Home Location saved</string>
     <string name="text_tables_empty_error">"Import Geo Data and Trip History first "</string>
     <string name="import_geo_data">Import Geo Data</string>
+    <string name="text_start_date_error">Start date must be after End date of previous stop</string>
+
+    <!-- toasts -->
     <string name="toast_trip_history_to_db">Trip History added to database</string>
     <string name="toast_export_all_data">All data exported as csv-files</string>
     <string name="toast_trip_history_in_db">Trip History already in database</string>
     <string name="toast_geographic_information_in_db">Geo Data already in database</string>
     <string name="toast_db_deleted">Database deleted</string>
-    <string name="text_start_date_error">Start date must be after End date of previous stop</string>
+    <string name="text_toast_home_saved">Home Location saved</string>
+    <string name="text_toast_coord_saved">New coordinated saved. Recalculating distance.</string>
+    <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
 
+    <!-- alert dialogs -->
+    <string name="text_alert_dialog_delete_trip">Delete Trip</string>
+    <string name="text_alert_dialog_delete_trip_message">Are you sure you want to delete it?</string>
+    <string name="text_alert_dialog_trip_not_saved_title">Trip could not be saved</string>
+    <string name="text_alert_dialog_trip_not_saved_message">Please try again later</string>
+    <string name="text_alert_dialog_trip_saved_title">Trip Saved</string>
+    <string name="text_alert_dialog_trip_saved_message">What do you want to do?</string>
+    <string name="text_alert_dialog_stop_saved_title">Stop Saved</string>
 
 </resources>

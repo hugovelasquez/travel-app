@@ -1,6 +1,8 @@
 package com.sucaldo.travelapp.views;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,15 +121,35 @@ public class TripDetailsFragment extends Fragment implements View.OnClickListene
                 activity.passSelectedYearToOtherFragments(selectedYear, getString(R.string.fragment_request_key_year));
                 break;
             case R.id.btn_delete_view:
-                myDB.deleteTrip(tripId);
-                activity.goToMyTrips();
-                Toast.makeText(getContext(), R.string.text_trip_deleted, Toast.LENGTH_SHORT).show();
+                showDeleteTripPopUpMessage();
                 break;
             case R.id.btn_edit_view:
                 activity.goToAddTrip();
                 activity.passTripIdToOtherFragments(tripId, getString(R.string.fragment_request_key_edit));
                 break;
         }
+    }
+
+    private void showDeleteTripPopUpMessage() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setTitle(getString(R.string.text_alert_dialog_delete_trip));
+        alertDialog.setMessage(getString(R.string.text_alert_dialog_delete_trip_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.text_delete), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                myDB.deleteTrip(tripId);
+                activity.goToMyTrips();
+                activity.passSelectedYearToOtherFragments(selectedYear, getString(R.string.fragment_request_key_year));
+                Toast.makeText(getContext(), R.string.text_trip_deleted, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.text_cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 }
