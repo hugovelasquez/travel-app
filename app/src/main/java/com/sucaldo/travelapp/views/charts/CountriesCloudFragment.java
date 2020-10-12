@@ -11,11 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import com.anychart.AnyChartView;
+import com.anychart.charts.Cartesian;
 import com.anychart.charts.TagCloud;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.ChartData;
 import com.sucaldo.travelapp.views.MainActivity;
 
 
@@ -46,8 +49,7 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         radioCitiesCloud.setOnClickListener(this);
 
         textView = rootView.findViewById(R.id.text_explanation_cloud_chart);
-        AnyChartView countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
-        tagCloud = chartHelper.initCountriesCloudChart(countriesCloudChart, true);
+        final AnyChartView countriesCloudChart = rootView.findViewById(R.id.countries_cloud);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);
@@ -55,6 +57,15 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         // Default case is show countries cloud
         radioCountriesCloud.setChecked(true);
         setExplanationText(countCountries,R.string.text_visited_countries);
+
+        // Get data from TripStaticsFragment.java
+        getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_cloud_chart), this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                ChartData chartData = bundle.getParcelable(getString(R.string.fragment_key_cloud_chart));
+                tagCloud = chartHelper.initCountriesCloudChart(countriesCloudChart, true, chartData.getDataEntries());
+            }
+        });
 
         return rootView;
     }

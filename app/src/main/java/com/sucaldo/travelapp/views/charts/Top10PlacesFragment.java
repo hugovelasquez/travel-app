@@ -10,11 +10,14 @@ import android.widget.RadioButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import com.anychart.AnyChartView;
 import com.anychart.charts.Cartesian;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.ChartData;
+import com.sucaldo.travelapp.model.YearListItem;
 import com.sucaldo.travelapp.views.MainActivity;
 
 import java.util.ArrayList;
@@ -47,14 +50,22 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
         radioTop105yrs.setOnClickListener(this);
         radioTop1010yrs.setOnClickListener(this);
 
-        AnyChartView top10CitiesChart = rootView.findViewById(R.id.top_10_places);
-        barChart = chartHelper.initTop10PlacesChart(top10CitiesChart, true);
+        final AnyChartView top10CitiesChart = rootView.findViewById(R.id.top_10_places);
 
         ImageView returnToStatsIcon = rootView.findViewById(R.id.return_to_stats_icon);
         returnToStatsIcon.setOnClickListener(this);
 
         // Default case is show top10 overall
         radioTop10All.setChecked(true);
+
+        // Get data from TripStaticsFragment.java
+        getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_top10chart), this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                ChartData chartData = bundle.getParcelable(getString(R.string.fragment_key_top10chart));
+                barChart = chartHelper.initTop10PlacesChart(top10CitiesChart, true, chartData.getDataEntries());
+            }
+        });
 
         return rootView;
     }

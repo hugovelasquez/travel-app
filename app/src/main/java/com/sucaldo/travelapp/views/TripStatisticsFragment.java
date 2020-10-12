@@ -13,12 +13,16 @@ import androidx.fragment.app.Fragment;
 import com.anychart.AnyChartView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.ChartData;
 import com.sucaldo.travelapp.views.charts.ChartHelper;
+
+import java.util.Collections;
 
 
 public class TripStatisticsFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity activity;
+    private ChartData top10Data, countryCloudData, areaChartData, bubbleChartData;
 
 
     @Nullable
@@ -44,11 +48,17 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
         AnyChartView kmsAreaChart = rootView.findViewById(R.id.stats_kms_area_chart);
         AnyChartView kmsBubbleChart = rootView.findViewById(R.id.stats_kms_bubble_chart);
 
+        // Data must be stored in parcelable objects so that in can be passed between fragments
+        top10Data = new ChartData(myDB.getTop10VisitedPlaces(Collections.<String>emptyList()));
+        countryCloudData = new ChartData(myDB.getVisitedCountries());
+        areaChartData = new ChartData(myDB.getKmsPerContinentPerYear());
+        bubbleChartData = new ChartData(myDB.getKmsAndTripsPerYear());
+
         ChartHelper chartHelper = new ChartHelper(myDB, getContext());
-        chartHelper.initTop10PlacesChart(top10PlacesChart, false);
-        chartHelper.initCountriesCloudChart(countriesCloudChart, false);
-        chartHelper.initKmsAreaChart(kmsAreaChart, false);
-        chartHelper.initKmsBubbleChart(kmsBubbleChart, false);
+        chartHelper.initTop10PlacesChart(top10PlacesChart, false, top10Data.getDataEntries());
+        chartHelper.initCountriesCloudChart(countriesCloudChart, false, countryCloudData.getDataEntries());
+        chartHelper.initKmsAreaChart(kmsAreaChart, false, areaChartData.getDataEntries());
+        chartHelper.initKmsBubbleChart(kmsBubbleChart, false, bubbleChartData.getDataEntries());
 
 
         return rootView;
@@ -58,16 +68,16 @@ public class TripStatisticsFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.expand_top_10_places_icon:
-                activity.goToTop10CitiesChart();
+                activity.goToTop10CitiesChart(top10Data);
                 break;
             case R.id.expand_countries_cloud_icon:
-                activity.goToCountriesCloudChart();
+                activity.goToCountriesCloudChart(countryCloudData);
                 break;
             case R.id.expand_kms_area_chart_icon:
-                activity.goToKmsAreaChart();
+                activity.goToKmsAreaChart(areaChartData);
                 break;
             case R.id.expand_kms_bubble_chart_icon:
-                activity.goToKmsBubbleChart();
+                activity.goToKmsBubbleChart(bubbleChartData);
                 break;
         }
     }

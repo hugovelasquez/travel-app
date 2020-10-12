@@ -25,6 +25,14 @@
     <string name="fragment_request_key_view">requestKeyView</string>
     <string name="fragment_request_key_edit">requestKeyEdit</string>
     <string name="fragment_request_key_year">requestKeyYear</string>
+    <string name="fragment_key_top10chart">TOP_10_DATA</string>
+    <string name="fragment_request_key_top10chart">REQUEST_TOP_10_DATA</string>
+    <string name="fragment_key_cloud_chart">CLOUD_DATA</string>
+    <string name="fragment_request_key_cloud_chart">REQUEST_CLOUD_DATA</string>
+    <string name="fragment_key_area_chart">AREA_DATA</string>
+    <string name="fragment_request_key_area_chart">REQUEST_AREA_DATA</string>
+    <string name="fragment_key_bubble_chart">BUBBLE_DATA</string>
+    <string name="fragment_request_key_bubble_chart">REQUEST_BUBBLE_DATA</string>
     <string name="home_country_key">HOME COUNTRY</string>
     <string name="home_city_key">HOME CITY</string>
     <string name="preferences_id">app_preferences_id</string>

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
+import com.sucaldo.travelapp.model.ChartData;
 import com.sucaldo.travelapp.views.charts.CountriesCloudFragment;
 import com.sucaldo.travelapp.views.charts.KmsAreaChartFragment;
 import com.sucaldo.travelapp.views.charts.KmsBubbleChartFragment;
@@ -128,28 +129,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(getString(R.string.navbar_statistics));
     }
 
-    public void goToTop10CitiesChart() {
+    public void goToTop10CitiesChart(ChartData chartData) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new Top10PlacesFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_top_10_places));
+
+        passChartDataToOtherFragments(chartData, getString(R.string.fragment_key_top10chart),
+                getString(R.string.fragment_request_key_top10chart));
     }
 
-    public void goToCountriesCloudChart() {
+    public void goToCountriesCloudChart(ChartData chartData) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new CountriesCloudFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_countries_cloud));
+
+        passChartDataToOtherFragments(chartData, getString(R.string.fragment_key_cloud_chart),
+                getString(R.string.fragment_request_key_cloud_chart));
     }
 
-    public void goToKmsAreaChart() {
+    public void goToKmsAreaChart(ChartData chartData) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsAreaChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_area_chart));
+
+        passChartDataToOtherFragments(chartData, getString(R.string.fragment_key_area_chart),
+                getString(R.string.fragment_request_key_area_chart));
     }
 
-    public void goToKmsBubbleChart() {
+    public void goToKmsBubbleChart(ChartData chartData) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new KmsBubbleChartFragment()).commit();
         getSupportActionBar().setTitle(getString(R.string.title_kms_bubble_chart));
+
+        passChartDataToOtherFragments(chartData, getString(R.string.fragment_key_bubble_chart),
+                getString(R.string.fragment_request_key_bubble_chart));
     }
 
     public void passTripIdToOtherFragments(int tripId, String fragmentRequestKey) {
@@ -163,6 +176,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle result = new Bundle();
         result.putString(getString(R.string.fragment_key_year), String.valueOf(year));
         getSupportFragmentManager().setFragmentResult(fragmentRequestKey, result);
+    }
+
+    private void passChartDataToOtherFragments(ChartData chartData, String objectKey, String requestKey) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(objectKey, chartData);
+        getSupportFragmentManager().setFragmentResult(requestKey, bundle);
     }
 
 }

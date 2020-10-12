@@ -57,12 +57,10 @@ public class ChartHelper {
      ********* BAR CHART **********************
      */
 
-    public Cartesian initTop10PlacesChart(AnyChartView anyChartView, boolean fullscreen) {
+    public Cartesian initTop10PlacesChart(AnyChartView anyChartView, boolean fullscreen, List<DataEntry> data) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         Cartesian barChart = AnyChart.column();
-
-        List<DataEntry> data = myDB.getTop10VisitedPlaces(Collections.<String>emptyList());
 
         Column column = barChart.column(data);
 
@@ -112,7 +110,7 @@ public class ChartHelper {
      ********* CLOUD CHART **********************
      */
 
-    public TagCloud initCountriesCloudChart(AnyChartView anyChartView, boolean fullscreen) {
+    public TagCloud initCountriesCloudChart(AnyChartView anyChartView, boolean fullscreen, List<DataEntry> data) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         TagCloud tagCloud = AnyChart.tagCloud();
@@ -132,8 +130,6 @@ public class ChartHelper {
             tagCloud.colorRange().enabled(true);
             tagCloud.colorRange().colorLineSize(15d);
         }
-
-        List<DataEntry> data = myDB.getVisitedCountries();
 
         tagCloud.tooltip().useHtml(true);
         tagCloud.tooltip().format(TAG_CLOUD_COUNTRIES_TOOLTIP);
@@ -205,7 +201,7 @@ public class ChartHelper {
      ********* AREA CHART **********************
      */
 
-    public void initKmsAreaChart(AnyChartView anyChartView, boolean fullscreen) {
+    public void initKmsAreaChart(AnyChartView anyChartView, boolean fullscreen, List<DataEntry> data) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         Cartesian areaChart = AnyChart.area();
@@ -222,10 +218,8 @@ public class ChartHelper {
 
         areaChart.yScale().stackMode(ScaleStackMode.VALUE);
 
-        List<DataEntry> seriesData = myDB.getKmsPerContinentPerYear();
-
         Set set = Set.instantiate();
-        set.data(seriesData);
+        set.data(data);
 
         for (int i = 0; i < DatabaseHelper.CONTINENTS.size(); i++) {
             int valuePostfix = i + 1;
@@ -284,7 +278,7 @@ public class ChartHelper {
      ********* BUBBLE CHART **********************
      */
 
-    public void initKmsBubbleChart(AnyChartView anyChartView, boolean fullscreen) {
+    public void initKmsBubbleChart(AnyChartView anyChartView, boolean fullscreen, List<DataEntry> data) {
         APIlib.getInstance().setActiveAnyChartView(anyChartView);
 
         Scatter bubble = AnyChart.bubble();
@@ -299,7 +293,6 @@ public class ChartHelper {
                 .title(context.getString(R.string.kms_bubble_chart_y_axis));
         bubble.yGrid(true);
 
-        List<DataEntry> data = myDB.getKmsAndTripsPerYear();
         bubble.bubble(data).name("Details").selected().fill("#31eb97", 0.5);
         bubble.padding(20d, 20d, 10d, 20d);
 
