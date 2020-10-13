@@ -260,13 +260,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteDatabase() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_TRIPS);
-        db.execSQL("DELETE FROM " + TABLE_CITY_LOC);
-        db.execSQL("DELETE FROM " + TABLE_COUNTRIES);
-    }
-
     public List<Trip> getTripsThatContainSpecificLocation(String country, String city) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_TRIPS +

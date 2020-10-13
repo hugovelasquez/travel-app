@@ -27,5 +27,4 @@ Android App that stores trips and shows interesting statistics of your travel hi
 - SQLite
 
 ## To Do:
-1. Final Refactoring (delete button "Delete trips.csv" from settings)
 1. Rename package structure (get rid of .com.example.)

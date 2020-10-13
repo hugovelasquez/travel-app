@@ -57,7 +57,7 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
 
         // Default case is show countries cloud
         radioCountriesCloud.setChecked(true);
-        setExplanationText(countCountries,R.string.text_visited_countries);
+        setExplanationText(countCountries, R.string.text_visited_countries);
 
         // Get data from TripStaticsFragment.java
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_cloud_chart), this, new FragmentResultListener() {
@@ -80,14 +80,14 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.radio_countries_cloud:
                 chartHelper.updateChart(tagCloud, true, countries.getDataEntries());
-                setExplanationText(countCountries,R.string.text_visited_countries);
+                setExplanationText(countCountries, R.string.text_visited_countries);
                 break;
             case R.id.radio_places_cloud:
                 if (places == null) {
                     places = new ChartData(myDB.getVisitedPlaces());
                 }
                 chartHelper.updateChart(tagCloud, false, places.getDataEntries());
-                setExplanationText(countPlaces,R.string.text_visited_places);
+                setExplanationText(countPlaces, R.string.text_visited_places);
                 break;
         }
     }

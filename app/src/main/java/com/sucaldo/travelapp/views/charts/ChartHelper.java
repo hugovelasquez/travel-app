@@ -186,11 +186,11 @@ public class ChartHelper {
 
     private static List<Trip> selectRandomTrips(List<Trip> trips) {
         java.util.Set<Trip> randomTrips = new HashSet<>();
-        while(randomTrips.size() < 15) {
+        while (randomTrips.size() < 15) {
             Random r = new Random();
             int low = 0;
             int high = trips.size() - 1;
-            int result = r.nextInt(high-low) + low;
+            int result = r.nextInt(high - low) + low;
             randomTrips.add(trips.get(result));
         }
         List<Trip> selectedTrips = new ArrayList<>(randomTrips);

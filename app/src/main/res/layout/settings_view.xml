@@ -35,14 +35,6 @@
             android:text="@string/import_trips">
         </Button>
 
-        <Button
-            android:id="@+id/btn_delete_db"
-            style="@style/button"
-            android:layout_width="wrap_content"
-            android:padding="15dp"
-            android:text="@string/delete_trips">
-        </Button>
-
     </LinearLayout>
 
     <TextView

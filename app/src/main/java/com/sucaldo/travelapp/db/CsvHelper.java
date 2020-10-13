@@ -57,7 +57,7 @@ public class CsvHelper {
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                if(nextLine.length == 2) {
+                if (nextLine.length == 2) {
                     Log.d("CSV_CountryContinent", nextLine[0] + nextLine[1]);
                     myDB.addCountryContinentItem(nextLine[0], nextLine[1]);
                 }
@@ -72,7 +72,7 @@ public class CsvHelper {
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                if(nextLine.length == 11) {
+                if (nextLine.length == 11) {
                     Log.d("CSV_trips", nextLine[3]);
                     Trip newTrip = new Trip(Integer.parseInt(nextLine[0]), nextLine[1], nextLine[2],
                             nextLine[3], nextLine[4], nextLine[5], nextLine[6], nextLine[7],

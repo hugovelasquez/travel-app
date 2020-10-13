@@ -59,12 +59,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         Button btnImportTrips = rootView.findViewById(R.id.btn_import_trips);
         Button btnImportGeoData = rootView.findViewById(R.id.btn_import_geo_data);
-        Button btnDeleteDb = rootView.findViewById(R.id.btn_delete_db);
         Button btnExportAll = rootView.findViewById(R.id.btn_export_all);
         Button btnSaveHome = rootView.findViewById(R.id.btn_save_home);
         btnImportTrips.setOnClickListener(this);
         btnImportGeoData.setOnClickListener(this);
-        btnDeleteDb.setOnClickListener(this);
         btnExportAll.setOnClickListener(this);
         btnSaveHome.setOnClickListener(this);
 
@@ -97,9 +95,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_import_geo_data:
                 importGeoDataFromCsvFiles();
                 break;
-            case R.id.btn_delete_db:
-                deleteDatabase();
-                break;
             case R.id.btn_export_all:
                 exportAllDataAsCsvFiles();
                 break;
@@ -107,11 +102,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 storeHomeLocation();
                 break;
         }
-    }
-
-    private void deleteDatabase() {
-        myDB.deleteDatabase();
-        Toast.makeText(getContext(), getString(R.string.toast_db_deleted), Toast.LENGTH_SHORT).show();
     }
 
     private void importTripsFromCsvFile() {
@@ -195,8 +185,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             });
             thread.start();
         } else {
-        Toast.makeText(getContext(), getString(R.string.toast_geographic_information_in_db), Toast.LENGTH_SHORT).show();
-    }
+            Toast.makeText(getContext(), getString(R.string.toast_geographic_information_in_db), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setDropdownOfCountries() {
