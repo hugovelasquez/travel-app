@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.anychart.AnyChartView;
-import com.anychart.charts.Cartesian;
 import com.anychart.charts.TagCloud;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
@@ -30,6 +29,8 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
 
     private TagCloud tagCloud;
     private ChartHelper chartHelper;
+    private ChartData countries, places;
+    private DatabaseHelper myDB;
 
     @Nullable
     @Override
@@ -37,14 +38,14 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         final View rootView = inflater.inflate(R.layout.charts_countries_cloud_view, container, false);
 
         activity = (MainActivity) getActivity();
-        DatabaseHelper myDB = new DatabaseHelper(getContext());
+        myDB = new DatabaseHelper(getContext());
         chartHelper = new ChartHelper(myDB, getContext());
 
         countCountries = myDB.getNumberOfVisitedCountries();
         countPlaces = myDB.getNumberOfVisitedPlaces();
 
         RadioButton radioCountriesCloud = rootView.findViewById(R.id.radio_countries_cloud);
-        RadioButton radioCitiesCloud = rootView.findViewById(R.id.radio_cities_cloud);
+        RadioButton radioCitiesCloud = rootView.findViewById(R.id.radio_places_cloud);
         radioCountriesCloud.setOnClickListener(this);
         radioCitiesCloud.setOnClickListener(this);
 
@@ -62,8 +63,8 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_cloud_chart), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                ChartData chartData = bundle.getParcelable(getString(R.string.fragment_key_cloud_chart));
-                tagCloud = chartHelper.initCountriesCloudChart(countriesCloudChart, true, chartData.getDataEntries());
+                countries = bundle.getParcelable(getString(R.string.fragment_key_cloud_chart));
+                tagCloud = chartHelper.initCountriesCloudChart(countriesCloudChart, true, countries.getDataEntries());
             }
         });
 
@@ -78,11 +79,14 @@ public class CountriesCloudFragment extends Fragment implements View.OnClickList
                 activity.goToStatistics();
                 break;
             case R.id.radio_countries_cloud:
-                chartHelper.updateChart(tagCloud, true);
+                chartHelper.updateChart(tagCloud, true, countries.getDataEntries());
                 setExplanationText(countCountries,R.string.text_visited_countries);
                 break;
-            case R.id.radio_cities_cloud:
-                chartHelper.updateChart(tagCloud, false);
+            case R.id.radio_places_cloud:
+                if (places == null) {
+                    places = new ChartData(myDB.getVisitedPlaces());
+                }
+                chartHelper.updateChart(tagCloud, false, places.getDataEntries());
                 setExplanationText(countPlaces,R.string.text_visited_places);
                 break;
         }

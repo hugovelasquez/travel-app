@@ -31,6 +31,8 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
     private MainActivity activity;
     private ChartHelper chartHelper;
     private Cartesian barChart;
+    private ChartData allYears, twoYears, fiveYears, tenYears;
+    private DatabaseHelper myDB;
 
     @Nullable
     @Override
@@ -38,7 +40,7 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
         final View rootView = inflater.inflate(R.layout.charts_top_10_places_view, container, false);
 
         activity = (MainActivity) getActivity();
-        DatabaseHelper myDB = new DatabaseHelper(getContext());
+        myDB = new DatabaseHelper(getContext());
         chartHelper = new ChartHelper(myDB, getContext());
 
         RadioButton radioTop10All = rootView.findViewById(R.id.radio_top10_all);
@@ -62,8 +64,8 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
         getParentFragmentManager().setFragmentResultListener(getString(R.string.fragment_request_key_top10chart), this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-                ChartData chartData = bundle.getParcelable(getString(R.string.fragment_key_top10chart));
-                barChart = chartHelper.initTop10PlacesChart(top10CitiesChart, true, chartData.getDataEntries());
+                allYears = bundle.getParcelable(getString(R.string.fragment_key_top10chart));
+                barChart = chartHelper.initTop10PlacesChart(top10CitiesChart, true, allYears.getDataEntries());
             }
         });
 
@@ -78,16 +80,25 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
                 activity.goToStatistics();
                 break;
             case R.id.radio_top10_all:
-                chartHelper.updateChart(barChart, Collections.<String>emptyList());
+                chartHelper.updateChart(barChart, allYears.getDataEntries());
                 break;
             case R.id.radio_top10_2yrs:
-                chartHelper.updateChart(barChart, getLastNYears(2));
+                if (twoYears == null) {
+                    twoYears = new ChartData(myDB.getTop10VisitedPlaces(getLastNYears(2)));
+                }
+                chartHelper.updateChart(barChart, twoYears.getDataEntries());
                 break;
             case R.id.radio_top10_5yrs:
-                chartHelper.updateChart(barChart, getLastNYears(5));
+                if (fiveYears == null) {
+                    fiveYears = new ChartData(myDB.getTop10VisitedPlaces(getLastNYears(5)));
+                }
+                chartHelper.updateChart(barChart, fiveYears.getDataEntries());
                 break;
             case R.id.radio_top10_10yrs:
-                chartHelper.updateChart(barChart, getLastNYears(10));
+                if (tenYears == null) {
+                    tenYears = new ChartData(myDB.getTop10VisitedPlaces(getLastNYears(10)));
+                }
+                chartHelper.updateChart(barChart, tenYears.getDataEntries());
                 break;
         }
     }

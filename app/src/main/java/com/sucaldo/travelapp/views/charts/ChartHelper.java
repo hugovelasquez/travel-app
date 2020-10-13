@@ -27,6 +27,7 @@ import com.anychart.enums.TooltipPositionMode;
 import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
+import com.sucaldo.travelapp.model.ChartData;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.util.ArrayList;
@@ -101,8 +102,7 @@ public class ChartHelper {
         return barChart;
     }
 
-    public void updateChart(Cartesian barChart, List<String> years) {
-        List<DataEntry> data = myDB.getTop10VisitedPlaces(years);
+    public void updateChart(Cartesian barChart, List<DataEntry> data) {
         barChart.data(data);
     }
 
@@ -146,13 +146,10 @@ public class ChartHelper {
             " <table style=\"color: #d2d2d2; font-size: 15px\">" +
             "' + this.getData('html') + '</table>';}";
 
-    public void updateChart(TagCloud tagCloud, boolean countries) {
-        List<DataEntry> data;
+    public void updateChart(TagCloud tagCloud, boolean countries, List<DataEntry> data) {
         if (countries) {
-            data = myDB.getVisitedCountries();
             tagCloud.tooltip().format(TAG_CLOUD_COUNTRIES_TOOLTIP);
         } else {
-            data = myDB.getVisitedPlaces();
             tagCloud.tooltip().format("Trips: {%value}");
         }
         tagCloud.data(data);
@@ -167,7 +164,7 @@ public class ChartHelper {
         public void setTripsInfo(List<Trip> trips) {
             String html = "";
             List<Trip> selectedTrips;
-            // A max of 15 trips can fit into tooltip
+            // A max of 15 trips can fit nicely into tooltip based on current Tablet size
             if (trips.size() < 15) {
                 selectedTrips = trips;
             } else {
