@@ -17,12 +17,10 @@ import com.anychart.charts.Cartesian;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.model.ChartData;
-import com.sucaldo.travelapp.model.YearListItem;
 import com.sucaldo.travelapp.views.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -104,12 +102,12 @@ public class Top10PlacesFragment extends Fragment implements View.OnClickListene
     }
 
     private List<String> getLastNYears(int n) {
-        Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         List<String> years = new ArrayList<>();
-        years.add(currentYear.toString());
+        years.add(Integer.toString(currentYear));
         for (int i = 1; i <= n; i++) {
-            Integer year = currentYear - i;
-            years.add(year.toString());
+            int year = currentYear - i;
+            years.add(Integer.toString(year));
         }
         return years;
     }

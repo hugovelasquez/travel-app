@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.opencsv.CSVReader;
 import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.db.CsvHelper;
 import com.sucaldo.travelapp.db.DatabaseHelper;
@@ -31,14 +29,11 @@ import com.sucaldo.travelapp.model.AppPreferences;
 import com.sucaldo.travelapp.model.CityLocation;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private DatabaseHelper myDB;
-    private MainActivity activity;
     private CsvHelper csvHelper;
     private File exportPath;
     private AutoCompleteTextView homeCountry, homeCity;
@@ -52,7 +47,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         final View rootView = inflater.inflate(R.layout.settings_view, container, false);
 
         myDB = new DatabaseHelper(getContext());
-        activity = (MainActivity) getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         csvHelper = new CsvHelper(myDB);
         appPreferences = new AppPreferences(getActivity().getApplicationContext(), myDB);
 
@@ -157,18 +152,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private boolean isExternalStorageReadOnly() {
         String extStorageState = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState);
     }
 
     private boolean isExternalStorageAvailable() {
         String extStorageState = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(extStorageState);
     }
 
     private void storeHomeLocation() {

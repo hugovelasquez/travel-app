@@ -29,14 +29,16 @@
         style="@style/list_adapter"
         android:layout_height="45dp"
         android:layout_weight="3"
-        android:maxLength="@string/char_limit_lat_long" />
+        android:maxLength="@string/char_limit_lat_long"
+        android:inputType="numberSigned|numberDecimal" />
 
     <EditText
         android:id="@+id/coord_longitude"
         style="@style/list_adapter"
         android:layout_height="45dp"
         android:layout_weight="3"
-        android:maxLength="@string/char_limit_lat_long" />
+        android:maxLength="@string/char_limit_lat_long"
+        android:inputType="numberSigned|numberDecimal" />
 
     <Button
         android:id="@+id/btn_save_coordinates"

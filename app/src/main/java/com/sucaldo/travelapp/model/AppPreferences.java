@@ -23,13 +23,13 @@ public class AppPreferences {
     public void storeCountrySelection(String countrySelection) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(countryKey, countrySelection);
-        editor.commit();
+        editor.apply();
     }
 
     public void storeCitySelection(String citySelection) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(cityKey, citySelection);
-        editor.commit();
+        editor.apply();
     }
 
     public String getStoredCountrySelection() {
@@ -48,8 +48,7 @@ public class AppPreferences {
     public CityLocation getSavedHomeLocation() {
         String country = getStoredCountrySelection();
         String city = getStoredCitySelection();
-        CityLocation homeLocation = myDB.getLocationOfCity(country, city);
-        return homeLocation;
+        return myDB.getLocationOfCity(country, city);
     }
 
 }

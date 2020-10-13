@@ -48,10 +48,6 @@ public class CityLocation {
         return id;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public void setLatitude(float latitude) {
         this.latitude = latitude;
     }

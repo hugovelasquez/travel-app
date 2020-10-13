@@ -27,7 +27,6 @@ import com.anychart.enums.TooltipPositionMode;
 import com.anychart.scales.OrdinalColor;
 import com.sucaldo.travelapp.db.DatabaseHelper;
 import com.sucaldo.travelapp.R;
-import com.sucaldo.travelapp.model.ChartData;
 import com.sucaldo.travelapp.model.Trip;
 
 import java.util.ArrayList;
@@ -162,7 +161,7 @@ public class ChartHelper {
         }
 
         public void setTripsInfo(List<Trip> trips) {
-            String html = "";
+            StringBuilder html = new StringBuilder();
             List<Trip> selectedTrips;
             // A max of 15 trips can fit nicely into tooltip based on current Tablet size
             if (trips.size() < 15) {
@@ -171,11 +170,17 @@ public class ChartHelper {
                 selectedTrips = selectRandomTrips(trips);
             }
             for (Trip trip : selectedTrips) {
-                html += "<tr> <td>" + trip.getFormattedStartDate() + "</td>" +
-                        "<td> <b>" + trip.getToCity() + "</b> </td>" +
-                        "<td>" + trip.getDescription() + "</td> </tr>";
+                html.append("<tr> <td>")
+                        .append(trip.getFormattedStartDate())
+                        .append("</td>")
+                        .append("<td> <b>")
+                        .append(trip.getToCity())
+                        .append("</b> </td>")
+                        .append("<td>")
+                        .append(trip.getDescription())
+                        .append("</td> </tr>");
             }
-            setValue("html", html);
+            setValue("html", html.toString());
         }
     }
 

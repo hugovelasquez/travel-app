@@ -521,12 +521,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (years.isEmpty()) {
             return "";
         }
-        String query = " AND ((" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(0) + "')";
+        StringBuilder query = new StringBuilder(" AND ((" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(0) + "')");
         for (int i = 1; i < years.size(); i++) {
-            query += " OR (" + COL_TRIPS_START_DATE + " LIKE '%" + years.get(i) + "')";
+            query.append(" OR (" + COL_TRIPS_START_DATE + " LIKE '%").append(years.get(i)).append("')");
         }
-        query += ")";
-        return query;
+        query.append(")");
+        return query.toString();
     }
 
     public int getNumberOfVisitedPlaces() {

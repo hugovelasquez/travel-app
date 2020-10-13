@@ -4,10 +4,8 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.opencsv.CSVReader;
-import com.sucaldo.travelapp.R;
 import com.sucaldo.travelapp.model.CityLocation;
 import com.sucaldo.travelapp.model.CountriesContinents;
-import com.sucaldo.travelapp.model.DistanceCalculator;
 import com.sucaldo.travelapp.model.Trip;
 import com.sucaldo.travelapp.model.TripType;
 
@@ -23,7 +21,6 @@ public class CsvHelper {
     private final DatabaseHelper myDB;
     private final String COLUMN_SEPARATOR = ",";
     private final String ROW_SEPARATOR = "\n";
-    private final int IMPORT_TOTAL_STEPS = 40;
 
     // Constructor to define input that CsvHelper receives
     public CsvHelper(DatabaseHelper myDB) {
@@ -36,6 +33,7 @@ public class CsvHelper {
             int i = 0;
             int progressPercentage = 0;
             List<String[]> csvLines = reader.readAll();
+            int IMPORT_TOTAL_STEPS = 40;
             int importStep = csvLines.size() / IMPORT_TOTAL_STEPS;
             for (String[] nextLine : csvLines) {
                 // % is equivalent to MOD in Excel
@@ -91,51 +89,68 @@ public class CsvHelper {
     public void writeTripsToCsv(File rootFile) {
         File csvFile = new File(rootFile, "trips.csv");
 
-        String csvString = "";
+        StringBuilder csvString = new StringBuilder();
         List<Trip> trips = myDB.getAllTrips();
 
         for (Trip trip : trips) {
-            csvString += trip.getGroupId() + COLUMN_SEPARATOR
-                    + trip.getFromCountry() + COLUMN_SEPARATOR
-                    + trip.getFromCity() + COLUMN_SEPARATOR
-                    + trip.getToCountry() + COLUMN_SEPARATOR
-                    + trip.getToCity() + COLUMN_SEPARATOR
-                    + trip.getDescription() + COLUMN_SEPARATOR
-                    + trip.getStartDate() + COLUMN_SEPARATOR
-                    + trip.getEndDateAsString() + COLUMN_SEPARATOR
-                    + trip.getDistance() + COLUMN_SEPARATOR
-                    + trip.getToContinent() + COLUMN_SEPARATOR
-                    + trip.getType() + ROW_SEPARATOR;
+            csvString.append(trip.getGroupId())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getFromCountry())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getFromCity())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getToCountry())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getToCity())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getDescription())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getStartDate())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getEndDateAsString())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getDistance())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getToContinent())
+                    .append(COLUMN_SEPARATOR)
+                    .append(trip.getType())
+                    .append(ROW_SEPARATOR);
         }
-        writeCsvFile(csvFile, csvString);
+        writeCsvFile(csvFile, csvString.toString());
     }
 
     public void writeCityLocationsToCsv(File rootFile) {
         File csvFile = new File(rootFile, "city_locations.csv");
 
-        String csvString = "";
+        StringBuilder csvString = new StringBuilder();
         List<CityLocation> cityLocations = myDB.getAllCityLocations();
 
         for (CityLocation cityLocation : cityLocations) {
-            csvString += cityLocation.getCountry() + COLUMN_SEPARATOR
-                    + cityLocation.getCity() + COLUMN_SEPARATOR
-                    + cityLocation.getLatitude() + COLUMN_SEPARATOR
-                    + cityLocation.getLongitude() + ROW_SEPARATOR;
+            csvString.append(cityLocation.getCountry())
+                    .append(COLUMN_SEPARATOR)
+                    .append(cityLocation.getCity())
+                    .append(COLUMN_SEPARATOR)
+                    .append(cityLocation.getLatitude())
+                    .append(COLUMN_SEPARATOR)
+                    .append(cityLocation.getLongitude())
+                    .append(ROW_SEPARATOR);
         }
-        writeCsvFile(csvFile, csvString);
+        writeCsvFile(csvFile, csvString.toString());
     }
 
     public void writeCountriesContinentsToCsv(File rootFile) {
         File csvFile = new File(rootFile, "countries_continents.csv");
 
-        String csvString = "";
+        StringBuilder csvString = new StringBuilder();
         List<CountriesContinents> countriesContinents = myDB.getAllCountriesContinents();
 
         for (CountriesContinents countriesContinent : countriesContinents) {
-            csvString += countriesContinent.getContinent() + COLUMN_SEPARATOR
-                    + countriesContinent.getCountry() + ROW_SEPARATOR;
+            csvString.append(countriesContinent.getContinent())
+                    .append(COLUMN_SEPARATOR)
+                    .append(countriesContinent.getCountry())
+                    .append(ROW_SEPARATOR);
         }
-        writeCsvFile(csvFile, csvString);
+        writeCsvFile(csvFile, csvString.toString());
     }
 
     private void writeCsvFile(File file, String content) {

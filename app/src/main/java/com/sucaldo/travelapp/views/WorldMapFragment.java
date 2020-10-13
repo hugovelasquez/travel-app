@@ -25,15 +25,6 @@ import java.util.List;
 
 public class WorldMapFragment extends Fragment {
 
-    private final int WORLD_CIRCUMFERENCE = 40075;
-    // Width and Height optimized for a tablet with resolution 2048 x 1536 xhdpi
-    private final float CANVAS_WIDTH = 1900;
-    private final float CANVAS_HEIGHT = 842;
-    // Calibration factors defined manually by trial and error
-    private final float CALIBRATION_FACTOR_LAT1 = 30;
-    private final float CALIBRATION_FACTOR_LAT2 = 9;
-    private final float CALIBRATION_FACTOR_LONG = 7;
-
     private Bitmap worldBitmap;
 
     @Nullable
@@ -43,6 +34,7 @@ public class WorldMapFragment extends Fragment {
 
         DatabaseHelper myDB = new DatabaseHelper(getContext());
         int totalKms = myDB.getTotalTravelledKms();
+        int WORLD_CIRCUMFERENCE = 40075;
         float timesAroundWorld = (float) totalKms / WORLD_CIRCUMFERENCE;
 
         TextView timesAroundWorldText = rootView.findViewById(R.id.world_map_travel);
@@ -85,11 +77,15 @@ public class WorldMapFragment extends Fragment {
 
 
     private float getLatitudePosition(float latitude) {
+        float CANVAS_HEIGHT = 842;
         float pixelsLatitude = latitude * CANVAS_HEIGHT / 180;
-
+        // Calibration factors defined manually by trial and error
+        float CALIBRATION_FACTOR_LAT2 = 9;
         if (latitude > 0 && latitude < 35) {
             pixelsLatitude = (CANVAS_HEIGHT / 2) - pixelsLatitude - CALIBRATION_FACTOR_LAT2;
         }
+        // Calibration factors defined manually by trial and error
+        float CALIBRATION_FACTOR_LAT1 = 30;
         if (latitude >= 35) {
             pixelsLatitude = (CANVAS_HEIGHT / 2) - pixelsLatitude - CALIBRATION_FACTOR_LAT1;
         }
@@ -107,8 +103,11 @@ public class WorldMapFragment extends Fragment {
 
 
     private float getLongitudePosition(float longitude) {
+        // Width and Height optimized for a tablet with resolution 2048 x 1536 xhdpi
+        float CANVAS_WIDTH = 1900;
         float pixelsLongitude = longitude * CANVAS_WIDTH / 360 + (CANVAS_WIDTH / 2);
         if (longitude > 0) {
+            float CALIBRATION_FACTOR_LONG = 7;
             pixelsLongitude = pixelsLongitude - CALIBRATION_FACTOR_LONG;
         }
         return pixelsLongitude;

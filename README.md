@@ -27,6 +27,6 @@ Android App that stores trips and shows interesting statistics of your travel hi
 - SQLite
 
 ## To Do:
+1. Bug fix: make end date invisible when editing one-way trip
+1. Final Refactoring (delete button "Delete trips.csv" from settings)
 1. Rename package structure (get rid of .com.example.)
-1. Final Refactoring (don't forget to reorder columns in db and to delete button "Delete trips.csv" from settings)
-

@@ -49,7 +49,6 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private MainActivity activity;
     private DatabaseHelper myDB;
     private RadioGroup radioGroup;
-    private RadioButton radioReturn, radioOneWay, radioMultiStop;
     private TripType tripType;
     boolean editMode;
     private AutoCompleteTextView fromCountry, toCountry;
@@ -87,9 +86,9 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         Button btnSave = rootView.findViewById(R.id.btn_save);
         Button btnCancel = rootView.findViewById(R.id.btn_cancel);
         radioGroup = rootView.findViewById(R.id.radio_group);
-        radioReturn = rootView.findViewById(R.id.radio_return);
-        radioOneWay = rootView.findViewById(R.id.radio_one_way);
-        radioMultiStop = rootView.findViewById(R.id.radio_multi);
+        RadioButton radioReturn = rootView.findViewById(R.id.radio_return);
+        RadioButton radioOneWay = rootView.findViewById(R.id.radio_one_way);
+        RadioButton radioMultiStop = rootView.findViewById(R.id.radio_multi);
 
         // Set home location
         if (appPreferences.isHomeLocationPresent()) {

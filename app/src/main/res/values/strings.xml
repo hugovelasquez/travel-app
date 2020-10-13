@@ -99,7 +99,6 @@
     <string name="date_picker_image_description">open calendar</string>
     <string name="add_edit_trip_image_description">Add or edit your trip</string>
     <string name="dropdown_arrow_image_description">Dropdown arrow</string>
-    <string name="wait_message">This might take a while</string>
     <string name="import_trips">Import Trip History</string>
     <string name="delete_trips">Delete Database</string>
     <string name="text_world_map_travel">You have travelled the equivalent of %1$.2f times around the world!</string>
@@ -125,7 +124,7 @@
     <string name="toast_geographic_information_in_db">Geo Data already in database</string>
     <string name="toast_db_deleted">Database deleted</string>
     <string name="text_toast_home_saved">Home Location saved</string>
-    <string name="text_toast_coord_saved">New coordinated saved. Recalculating distance.</string>
+    <string name="text_toast_coord_saved">New coordinates saved. Recalculating distance.</string>
     <string name="toast_geographic_information_to_db">Adding geographic information to database</string>
 
     <!-- alert dialogs -->

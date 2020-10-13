@@ -52,12 +52,10 @@ public class CityCoordinatesFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_search_coordinates:
-                searchCountry.setError(null);
-                searchCity.setError(null);
-                searchCityCoordinates();
-                break;
+        if (v.getId() == R.id.btn_search_coordinates) {
+            searchCountry.setError(null);
+            searchCity.setError(null);
+            searchCityCoordinates();
         }
     }
 
@@ -93,9 +91,6 @@ public class CityCoordinatesFragment extends Fragment implements View.OnClickLis
     }
 
     private boolean isFieldEmpty(EditText editText) {
-        if (editText.getText().toString().isEmpty()) {
-            return true;
-        }
-        return false;
+        return editText.getText().toString().isEmpty();
     }
 }
