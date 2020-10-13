@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,8 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
     private TripType tripType;
     boolean editMode;
     private AutoCompleteTextView fromCountry, toCountry;
+    private ImageView endDateIcon, startDateIcon;
+    private TextView endDateLabel;
 
     private Trip trip;
     private int selectedYear;
@@ -70,8 +73,9 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
         // Definition of variables
         startDateField = rootView.findViewById(R.id.trip_start_date);
         endDateField = rootView.findViewById(R.id.trip_end_date);
-        ImageView startDateIcon = rootView.findViewById(R.id.start_date_icon);
-        ImageView endDateIcon = rootView.findViewById(R.id.end_date_icon);
+        startDateIcon = rootView.findViewById(R.id.start_date_icon);
+        endDateIcon = rootView.findViewById(R.id.end_date_icon);
+        endDateLabel = rootView.findViewById(R.id.text_end);
         fromCountry = rootView.findViewById(R.id.from_country);
         toCountry = rootView.findViewById(R.id.to_country);
         toCity = rootView.findViewById(R.id.to_city);
@@ -135,7 +139,11 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 toCity.setText(trip.getToCity());
                 description.setText(trip.getDescription());
                 startDateField.setText(trip.getPickerFormattedStartDate());
-                endDateField.setText(trip.getPickerFormattedEndDate());
+                if (tripType.equals(TripType.ONE_WAY)) {
+                    setEndDateVisibility(View.INVISIBLE);
+                } else {
+                    endDateField.setText(trip.getPickerFormattedEndDate());
+                }
                 getLocationOfCity(trip.getFromCountry(), trip.getFromCity(), fromLat, fromLong);
                 getLocationOfCity(trip.getToCountry(), trip.getToCity(), toLat, toLong);
 
@@ -190,16 +198,25 @@ public class AddTripFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.radio_return:
                 tripType = TripType.RETURN;
+                setEndDateVisibility(View.VISIBLE);
                 break;
             case R.id.radio_one_way:
                 tripType = TripType.ONE_WAY;
                 endDateField.setError(null);
+                setEndDateVisibility(View.INVISIBLE);
                 break;
             case R.id.radio_multi:
                 tripType = TripType.MULTI_STOP;
                 endDateField.setError(null);
+                setEndDateVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    private void setEndDateVisibility(int visibility) {
+        endDateField.setVisibility(visibility);
+        endDateIcon.setVisibility(visibility);
+        endDateLabel.setVisibility(visibility);
     }
 
     private void setTextWatcher(EditText location, final EditText latitude, final EditText longitude) {
