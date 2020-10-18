@@ -25,6 +25,3 @@ Android App that stores trips and shows interesting statistics of your travel hi
 - Java
 - Android Studio
 - SQLite
-
-## To Do:
-1. Rename package structure (get rid of .com.example.)
